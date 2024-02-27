@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="720a9985-e030-4c44-bc81-ba72d2d68eb5" name="Changes" comment="" />
+    <list default="true" id="720a9985-e030-4c44-bc81-ba72d2d68eb5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/service/SellerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/service/SellerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paymore/src/main/java/service/SellerService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/paymore/src/main/java/service/UserService.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
