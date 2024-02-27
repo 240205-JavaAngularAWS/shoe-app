@@ -20,7 +20,7 @@ public class UserService {
 
 
 
-    // register as a buyer
+    // register as a buyer/user
 
 
 

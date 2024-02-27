@@ -1,5 +1,6 @@
 package com.revature.paymore.model;
 import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -34,13 +35,11 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
-    private List<Address> address;
-
-
+    private List<Address> addresses;
 
 
     @OneToMany(mappedBy = "creditcard")
-    private Set<Creditcard> creditCards = new HashSet<>();
+    private Set<CreditCard> creditCards = new HashSet<>();
 
 
 
@@ -53,14 +52,14 @@ public class User {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String username, String password, List<Address> address, List<Order> orders) {
+    public User(Long id, String firstName, String lastName, String email, String username, String password, List<Address> addresses, List<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.address = address;
+        this.addresses = addresses;
         this.orders = orders;
     }
 
@@ -112,12 +111,12 @@ public class User {
         this.password = password;
     }
 
-    public List<Address> getAddress() {
-        return address;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(List<Address> address) {
-        this.address = address;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public List<Order> getOrders() {
@@ -132,12 +131,12 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAddress(), user.getAddress()) && Objects.equals(getOrders(), user.getOrders());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAddresses(), user.getAddresses()) && Objects.equals(getOrders(), user.getOrders());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getAddress(), getOrders());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getAddresses(), getOrders());
     }
 
     @Override
@@ -149,7 +148,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", address=" + address +
+                ", address=" + addresses +
                 ", orders=" + orders +
                 '}';
     }
