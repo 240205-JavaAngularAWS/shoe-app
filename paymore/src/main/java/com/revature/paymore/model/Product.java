@@ -4,7 +4,15 @@ import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Color;
 import jakarta.persistence.*;
+
+
+
 import java.util.Objects;
+
+import java.awt.*;
+
+import java.util.Objects;
+
 
 
 @Entity
@@ -28,6 +36,10 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
+
+    public enum Category {
+        ATHLETIC, SNEAKERS, DRESS, BOOTS, SANDALS
+    }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
