@@ -1,5 +1,4 @@
 package com.revature.paymore.service;
-
 import com.revature.paymore.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +21,11 @@ public class UserService {
 
 
     // register as a buyer
-    public User registerSeller(User user)
-    {
 
-    }
 
 
     // Log into the application
-    public long authenticateSeller()
-    {
+    public long authenticateSeller() {
+        return 495L;}
 
-    }
 }
