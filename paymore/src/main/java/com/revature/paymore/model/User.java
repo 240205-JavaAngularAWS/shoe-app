@@ -3,12 +3,7 @@ package com.revature.paymore.model;
 
 import jakarta.persistence.*;
 
-<<<<<<< HEAD
-import java.util.HashSet;
-import java.util.Set;
-=======
 import java.util.Objects;
->>>>>>> 4aa9fc733b6aceaa33faf041ade3fe2ab06047a9
 
 @Entity
 @Table(name = "users")
@@ -30,7 +25,6 @@ public class User {
     @Column(name = "username")
     private String username;
 
-
     @Column(name = "password")
     private String password;
 
@@ -43,14 +37,7 @@ public class User {
     )
     private List<Address> address;
 
-<<<<<<< HEAD
-    private Address address;
-    @Column(name = "creditcards")
-    private Set<Creditcard> creditcards = new HashSet<>();
-
-=======
     @OneToMany(mappedBy = "user")
->>>>>>> 4aa9fc733b6aceaa33faf041ade3fe2ab06047a9
     private List<Order> orders;
 
     private User() {
