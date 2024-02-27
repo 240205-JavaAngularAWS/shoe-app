@@ -1,5 +1,6 @@
 package com.revature.paymore.model;
 
+import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Color;
 import jakarta.persistence.*;
