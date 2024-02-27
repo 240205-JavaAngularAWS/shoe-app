@@ -1,6 +1,7 @@
 package com.revature.paymore.model;
 import jakarta.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class User {
 
 
     @OneToMany(mappedBy = "creditcard")
-    private Set<Creditcard> creditCards = new HashSet<>();
+    private Set<CreditCard> creditCards = new HashSet<>();
 
 
 
