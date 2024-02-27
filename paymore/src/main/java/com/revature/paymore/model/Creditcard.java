@@ -10,9 +10,6 @@ public class Creditcard {
 
     private long id;
 
-    private long userId;
-
-
     private long cardNumber;
 
     private long securityCode;
@@ -21,8 +18,9 @@ public class Creditcard {
 
     private String lastName;
 
-
     private String expirationDate;
+
+    private long user;
 
 
 }
