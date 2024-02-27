@@ -23,6 +23,21 @@ public class SellerService {
 
 
 
+    // register as a seller
+    public Seller registerSeller(Seller seller)
+    {
+
+    }
+
+
+    // Log into the application
+    public long authenticateSeller()
+    {
+
+    }
+
+
+
 
 }
 

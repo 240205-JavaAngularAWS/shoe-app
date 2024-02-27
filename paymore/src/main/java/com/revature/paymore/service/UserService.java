@@ -18,4 +18,19 @@ public class UserService {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+
+
+    // register as a buyer
+    public User registerSeller(User user)
+    {
+
+    }
+
+
+    // Log into the application
+    public long authenticateSeller()
+    {
+
+    }
 }
