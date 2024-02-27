@@ -1,8 +1,14 @@
 package com.revature.paymore.model;
 
+import com.revature.paymore.model.enums.Gender;
+import com.revature.paymore.model.enums.Color;
 import jakarta.persistence.*;
 
+<<<<<<< HEAD
 import java.util.Objects;
+=======
+import java.awt.*;
+>>>>>>> c93dbb172f7da36c61dd36368cedb696ca208796
 
 @Entity
 @Table(name = "products")
@@ -15,24 +21,24 @@ public class Product {
     @Column(name = "price")
     private double price;
 
-    public enum Color {
-        WHITE, BLACK, RED, BLUE, YELLOW, ORANGE, GREEN, PURPLE, PINK, MULTI
-    }
+
     @Enumerated(EnumType.STRING)
     @Column(name = "color")
     private Color color;
 
-    public enum Gender {
-        MENS, WOMENS
-    }
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
 
+<<<<<<< HEAD
     public enum Category {
         ATHLETIC, SNEAKERS, DRESS, BOOTS, SANDALS
     }
+=======
+
+>>>>>>> c93dbb172f7da36c61dd36368cedb696ca208796
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
     private Category category;

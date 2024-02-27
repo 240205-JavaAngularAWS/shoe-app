@@ -1,4 +1,8 @@
 package com.revature.paymore.repository;
 
-public class ReviewRepository extends JpaRepository<Review, Long>{
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ReviewRepository extends JpaRepository<Review, Long>{
 }
