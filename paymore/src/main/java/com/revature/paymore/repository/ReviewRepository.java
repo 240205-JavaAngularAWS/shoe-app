@@ -1,4 +1,4 @@
 package com.revature.paymore.repository;
 
-public class ReviewRepository extends JpaRepository<Review, Long>{
+public interface ReviewRepository extends JpaRepository<Review, Long>{
 }

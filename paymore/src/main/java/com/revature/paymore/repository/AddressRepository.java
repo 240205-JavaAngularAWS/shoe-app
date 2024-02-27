@@ -1,4 +1,4 @@
 package com.revature.paymore.repository;
 
-public class AddressRepository extends JpaRepository<Address, Long>{
+public interface AddressRepository extends JpaRepository<Address, Long>{
 }

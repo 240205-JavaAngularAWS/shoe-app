@@ -1,4 +1,10 @@
 package com.revature.paymore.repository;
 
-public class UserRepository extends JpaRepository<User, Long>{
+import com.revature.paymore.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 }

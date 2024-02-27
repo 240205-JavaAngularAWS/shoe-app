@@ -2,6 +2,8 @@ package com.revature.paymore.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "sellers")
 public class Seller {
