@@ -1,4 +1,4 @@
 package repository;
 
-public class AddressRepository {
+public class AddressRepository extends JpaRepository<Address, Long>{
 }

@@ -1,4 +1,4 @@
 package repository;
 
-public class ReviewRepository {
+public class ReviewRepository extends JpaRepository<Review, Long>{
 }

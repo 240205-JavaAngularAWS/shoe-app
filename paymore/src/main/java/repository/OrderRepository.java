@@ -1,4 +1,4 @@
 package repository;
 
-public class OrderRepository {
+public class OrderRepository extends JpaRepository<Order, Long>{
 }
