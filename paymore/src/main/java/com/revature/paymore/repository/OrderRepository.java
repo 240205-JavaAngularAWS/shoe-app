@@ -1,4 +1,7 @@
 package com.revature.paymore.repository;
 
-public class OrderRepository extends JpaRepository<Order, Long>{
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long>{
 }

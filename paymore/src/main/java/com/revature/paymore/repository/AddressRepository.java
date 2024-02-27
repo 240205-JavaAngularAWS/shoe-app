@@ -1,4 +1,8 @@
 package com.revature.paymore.repository;
 
-public class AddressRepository extends JpaRepository<Address, Long>{
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AddressRepository extends JpaRepository<Address, Long>{
 }
