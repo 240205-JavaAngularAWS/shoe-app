@@ -3,10 +3,15 @@ package com.revature.paymore.model;
 import jakarta.persistence.*;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.Objects;
 =======
 import java.util.List;
 >>>>>>> c93dbb172f7da36c61dd36368cedb696ca208796
+=======
+
+import java.util.Objects;
+>>>>>>> c978bc44066f4415740a28a283847cc293515137
 
 @Entity
 @Table(name = "sellers")
