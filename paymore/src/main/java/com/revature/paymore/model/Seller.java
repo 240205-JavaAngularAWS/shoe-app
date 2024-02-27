@@ -26,6 +26,10 @@ public class Seller {
     @Column(name = "password")
     private String password;
 
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
     @OneToMany(mappedBy = "seller")
     private List<Product> products;
 
@@ -33,12 +37,13 @@ public class Seller {
 
     }
 
-    public Seller(Long id, String companyName, String email, String username, String password, List<Product> products) {
+    public Seller(Long id, String companyName, String email, String username, String password, Address address, List<Product> products) {
         this.id = id;
         this.companyName = companyName;
         this.email = email;
         this.username = username;
         this.password = password;
+        this.address = address;
         this.products = products;
     }
 
@@ -57,6 +62,7 @@ public class Seller {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+
 
     public String getEmail() {
         return email;
@@ -80,6 +86,15 @@ public class Seller {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public List<Product> getProducts() {

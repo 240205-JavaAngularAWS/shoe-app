@@ -28,14 +28,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //a user might have a shipping address and billing address that are different
-    @ManyToMany
-    @JoinTable(
-            name ="user_address",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id")
-    )
-    private List<Address> address;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address shippingAddress;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
@@ -51,7 +46,7 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.address = address;
+        this.shippingAddress = shippingAddress;
         this.orders = orders;
     }
 
