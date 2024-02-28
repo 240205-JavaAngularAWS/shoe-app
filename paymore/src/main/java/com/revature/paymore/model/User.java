@@ -30,6 +30,7 @@ public class User {
     private String password;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address shippingAddress;
@@ -42,16 +43,25 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private Set<Address> addresses;
+=======
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address shippingAddress;
+>>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
 
 
     @OneToMany(mappedBy = "creditcard")
     private Set<CreditCard> creditCards = new HashSet<>();
 
 
+<<<<<<< HEAD
 
 
 >>>>>>> b94d23698f8065784286810bef107517cadac388
 
+=======
+>>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
@@ -59,7 +69,7 @@ public class User {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String username, String password, Set<Address> addresses, Set<Order> orders) {
+    public User(Long id, String firstName, String lastName, String email, String username, String password, Address shippingAddress, Set<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -67,10 +77,14 @@ public class User {
         this.username = username;
         this.password = password;
 <<<<<<< HEAD
+<<<<<<< HEAD
         this.shippingAddress = shippingAddress;
 =======
         this.addresses = addresses;
 >>>>>>> b94d23698f8065784286810bef107517cadac388
+=======
+        this.shippingAddress = shippingAddress;
+>>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
         this.orders = orders;
     }
 
@@ -122,12 +136,12 @@ public class User {
         this.password = password;
     }
 
-    public Set<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Set<Order> getOrders() {
@@ -142,12 +156,12 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAddresses(), user.getAddresses()) && Objects.equals(getOrders(), user.getOrders());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAddress(), user.getAddress()) && Objects.equals(getOrders(), user.getOrders());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getAddresses(), getOrders());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getAddress(), getOrders());
     }
 
     @Override
@@ -159,7 +173,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", address=" + addresses +
+                ", address=" + address +
                 ", orders=" + orders +
                 '}';
     }
