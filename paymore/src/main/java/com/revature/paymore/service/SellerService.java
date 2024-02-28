@@ -1,24 +1,14 @@
 package com.revature.paymore.service;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
+
 
 import com.revature.paymore.exception.AccessDeniedException;
 import com.revature.paymore.exception.UsernameAlreadyExistsException;
 import com.revature.paymore.model.Seller;
-<<<<<<< HEAD
-=======
 import com.revature.paymore.model.*;
 import com.revature.paymore.model.DTO.*;
->>>>>>> b94d23698f8065784286810bef107517cadac388
-=======
-
 import com.revature.paymore.model.*;
 import com.revature.paymore.model.DTO.*;
-
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
 import com.revature.paymore.repository.SellerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,24 +31,13 @@ public class SellerService {
     }
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     private static final Logger logger = LoggerFactory.getLogger(service.SellerService.class);
-=======
 
->>>>>>> b94d23698f8065784286810bef107517cadac388
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
 
     private static final Logger logger = LoggerFactory.getLogger(SellerService.class);
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
     // DTO Methods
     public SellerDTO convertToSimpleDTO(Seller seller){
         // new sellerDTO
@@ -102,16 +81,9 @@ public class SellerService {
 
 
 
-
-
-
-<<<<<<< HEAD
->>>>>>> b94d23698f8065784286810bef107517cadac388
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
-    // register as a seller
-    public Seller registerSeller(SellerDTO sellerDTO) {
-        if (sellerRepository.findByUsername(sellerDTO.getUsername().isPresent)) {
+    // register as a seller)
+    public SellerDTO registerSeller(SellerDTO sellerDTO) {
+        if (sellerRepository.findByUsername(sellerDTO.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
         return sellerRepository.save(sellerDTO);
@@ -119,21 +91,11 @@ public class SellerService {
 
 
     // Log into the application
-    public long authenticateSeller(SellerLoginDTO sellerLoginDTO) {
+    public long authenticateSeller(SellerDTO sellerLoginDTO) {
         Seller seller = (sellerRepository.findByUsernameAndPassword(sellerLoginDTO.getUsername(), user.getPassword()))
                 .orElseThrow(() -> new AccessDeniedException("Invalid username or password"));
                 return seller.getId();
-
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b94d23698f8065784286810bef107517cadac388
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
-
 
 
 }

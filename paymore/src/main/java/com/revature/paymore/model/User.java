@@ -29,12 +29,11 @@ public class User {
     @Column(name = "password")
     private String password;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address shippingAddress;
-=======
+
     //a user might have a shipping address and billing address that are different
     @ManyToMany
     @JoinTable(
@@ -43,25 +42,19 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private Set<Address> addresses;
-=======
+
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address shippingAddress;
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
+
 
 
     @OneToMany(mappedBy = "creditcard")
     private Set<CreditCard> creditCards = new HashSet<>();
 
 
-<<<<<<< HEAD
 
-
->>>>>>> b94d23698f8065784286810bef107517cadac388
-
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
@@ -76,15 +69,7 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-<<<<<<< HEAD
-<<<<<<< HEAD
         this.shippingAddress = shippingAddress;
-=======
-        this.addresses = addresses;
->>>>>>> b94d23698f8065784286810bef107517cadac388
-=======
-        this.shippingAddress = shippingAddress;
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
         this.orders = orders;
     }
 
