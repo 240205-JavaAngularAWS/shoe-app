@@ -1,4 +1,6 @@
 package com.revature.paymore.controller;
+import com.revature.paymore.model.DTO.LoginDTO;
+import com.revature.paymore.model.DTO.UserDTO;
 import com.revature.paymore.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +17,25 @@ public class UserController {
     private UserService userService;
 
 
-
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 
 
     // registerUser
     @PostMapping("/registerUser")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDto){
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDto) {
         UserDTO response = userService.registerUser(userDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
 
 
+    @PostMapping("/loginUser")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
+
+        long userId = userService.authenticateUser(loginDTO);
+
+        return ResponseEntity.ok().body(userId);
+
+    }
 
 }

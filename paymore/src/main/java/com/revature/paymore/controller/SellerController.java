@@ -1,4 +1,5 @@
 package com.revature.paymore.controller;
+import com.revature.paymore.model.DTO.LoginDTO;
 import com.revature.paymore.model.DTO.SellerDTO;
 import com.revature.paymore.service.SellerService;
 import org.slf4j.Logger;
@@ -28,6 +29,14 @@ public class SellerController {
     }
 
 
+    @PostMapping("/loginSeller")
+    public ResponseEntity<?> loginSeller(@RequestBody LoginDTO loginDTO) {
+
+        long userId = sellerService.authenticateSeller(loginDTO);
+
+        return ResponseEntity.ok().body(userId);
+
+    }
 
 
 

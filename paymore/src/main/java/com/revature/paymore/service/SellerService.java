@@ -91,8 +91,8 @@ public class SellerService {
 
 
     // Log into the application
-    public long authenticateSeller(SellerDTO sellerDTO) {
-        Seller seller = (sellerRepository.findByUsernameAndPassword(sellerDTO.getUsername(), sellerDTO.getPassword()))
+    public long authenticateSeller(LoginDTO loginDTO) {
+        Seller seller = (sellerRepository.findByUsernameAndPassword(loginDTO.getUsername(), loginDTO.getPassword()))
                 .orElseThrow(() -> new AccessDeniedException("Invalid username or password"));
                 return seller.getId();
     }
