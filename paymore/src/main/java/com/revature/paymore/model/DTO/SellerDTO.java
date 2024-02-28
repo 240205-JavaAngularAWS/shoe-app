@@ -5,21 +5,10 @@ import java.util.List;
 public class SellerDTO {
 
     private Long id;
-
-
     private String companyName;
-
-
-
     private String email;
-
-
     private String username;
-
-
     private String password;
-
-
     private List<ProductDTO>  products;
 
 
@@ -32,21 +21,27 @@ public class SellerDTO {
         this.products = products;
     }
 
-    public SellerDTO(Long id, String companyName, String email, String username, String password, List<ProductDTO> products) {
+    public SellerDTO(Long id, String companyName, String email, String username, String password) {
         this.id = id;
         this.companyName = companyName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.products = products;
+    }
+
+    public SellerDTO(Long id, String companyName, String email, String username) {
+        this.id = id;
+        this.companyName = companyName;
+        this.email = email;
+        this.username = username;
     }
 
     public SellerDTO(String companyName, String email, String username, String password) {
         this.companyName = companyName;
         this.email = email;
         this.username = username;
-        this.password = password;
     }
+
 
 
     public Long getId() {

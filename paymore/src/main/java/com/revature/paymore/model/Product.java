@@ -1,8 +1,7 @@
 package com.revature.paymore.model;
-
-import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Color;
+import com.revature.paymore.model.enums.Category;
 import jakarta.persistence.*;
 
 
@@ -11,7 +10,7 @@ import java.util.Objects;
 
 import java.util.List;
 
-import java.util.Objects;
+
 
 
 
@@ -36,10 +35,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
-
-    public enum Category {
-        ATHLETIC, SNEAKERS, DRESS, BOOTS, SANDALS
-    }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
@@ -67,6 +62,20 @@ public class Product {
 
     public Product(Long id, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews, List<Order> orders) {
         this.id = id;
+        this.price = price;
+        this.color = color;
+        this.gender = gender;
+        this.category = category;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.seller = seller;
+        this.reviews = reviews;
+        this.orders = orders;
+    }
+
+
+    public Product(double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews, List<Order> orders) {
         this.price = price;
         this.color = color;
         this.gender = gender;

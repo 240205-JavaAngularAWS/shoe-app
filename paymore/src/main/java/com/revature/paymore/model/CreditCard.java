@@ -13,7 +13,7 @@ public class CreditCard {
 
 
     @Column(name = "card_number")
-    private long cardNumber;
+    private String cardNumber;
 
 
     @Column(name = "security_code")
@@ -30,7 +30,19 @@ public class CreditCard {
     private String expirationDate;
 
     @JoinColumn(name = "user_id")
-    private long user;
+    private User user;
+
+    public CreditCard() {
+    }
+
+    public CreditCard(Long id, String cardNumber, String firstName, String lastName, String expirationDate, User user) {
+        this.id = id;
+        this.cardNumber = cardNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.expirationDate = expirationDate;
+        this.user = user;
+    }
 
 
     public Long getId() {
@@ -41,11 +53,11 @@ public class CreditCard {
         this.id = id;
     }
 
-    public long getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(long cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
@@ -81,11 +93,11 @@ public class CreditCard {
         this.expirationDate = expirationDate;
     }
 
-    public long getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(long user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

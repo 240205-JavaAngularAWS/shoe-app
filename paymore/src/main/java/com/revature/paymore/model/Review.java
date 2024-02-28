@@ -13,22 +13,25 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
-
     @Column(name = "content")
-    private double content;
+    private String content;
+
+    @Column(name = "rating")
+    private int rating;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product products;
+    private Product product;
 
 
     public Review() {
     }
 
-    public Review(Long id, double content, Product products) {
+    public Review(Long id, String content, Product product) {
         this.id = id;
         this.content = content;
-        this.products = products;
+        this.product = product;
+
     }
 
     public Long getId() {
@@ -39,33 +42,37 @@ public class Review {
         this.id = id;
     }
 
-    public double getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(double content) {
+    public void setContent(String content) {
         this.content = content;
     }
 
-    public Product getProducts() {
-        return products;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProducts(Product products) {
-        this.products = products;
+    public void setProduct(Product product) {
+        this.product = product;
     }
+
+
+    public int getRating() {return rating;}
+
+    public void setRating(int rating) {this.rating = rating;}
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Review review = (Review) o;
-        return Double.compare(content, review.content) == 0 && Objects.equals(id, review.id) && Objects.equals(products, review.products);
+        if (!(o instanceof Review review)) return false;
+        return rating == review.rating && Objects.equals(id, review.id) && Objects.equals(content, review.content) && Objects.equals(product, review.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, products);
+        return Objects.hash(id, content, rating, product);
     }
 
     @Override
@@ -73,7 +80,7 @@ public class Review {
         return "Review{" +
                 "id=" + id +
                 ", content=" + content +
-                ", products=" + products +
+                ", products=" + product +
                 '}';
     }
 }
