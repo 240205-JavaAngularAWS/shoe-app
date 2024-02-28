@@ -1,8 +1,9 @@
 package com.revature.paymore.model;
-
-
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Set;
 import java.util.Objects;
 
 @Entity
@@ -28,18 +29,24 @@ public class User {
     @Column(name = "password")
     private String password;
 
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address shippingAddress;
 
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
 
-    private User() {
+    @OneToMany(mappedBy = "creditcard")
+    private Set<CreditCard> creditCards = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
+
+    public User() {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String username, String password, List<Address> address, List<Order> orders) {
+    public User(Long id, String firstName, String lastName, String email, String username, String password, Address shippingAddress, Set<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -98,19 +105,19 @@ public class User {
         this.password = password;
     }
 
-    public List<Address> getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(List<Address> address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 
