@@ -1,6 +1,7 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.model.DTO.LoginDTO;
 import com.revature.paymore.model.DTO.UserDTO;
+import com.revature.paymore.model.User;
 import com.revature.paymore.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,8 @@ public class UserController {
 
     // registerUser
     @PostMapping("/registerUser")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDto) {
-        UserDTO response = userService.registerUser(userDto);
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        UserDTO response = userService.registerUser(user);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }

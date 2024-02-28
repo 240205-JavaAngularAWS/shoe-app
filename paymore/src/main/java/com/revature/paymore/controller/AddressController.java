@@ -1,7 +1,12 @@
 package com.revature.paymore.controller;
 
 
+import com.revature.paymore.model.Address;
 import com.revature.paymore.model.DTO.AddressDTO;
+import com.revature.paymore.model.DTO.OrderDTO;
+import com.revature.paymore.model.Order;
+import com.revature.paymore.model.Product;
+import com.revature.paymore.model.User;
 import com.revature.paymore.service.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class AddressController {
@@ -22,9 +30,11 @@ public class AddressController {
     private static final Logger logger = LoggerFactory.getLogger(AddressController.class);
 
 
+
+
     @PostMapping("/registerAddress")
-    public ResponseEntity<?> registerAddress(@RequestBody AddressDTO addressDto){
-        AddressDTO response = addressService.registerAddress(addressDto);
+    public ResponseEntity<?> registerAddress(@RequestBody Address address){
+        AddressDTO response = addressService.registerAddress(address);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }

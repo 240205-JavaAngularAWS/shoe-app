@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "orders")
 public class Order {
+    // OK
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +34,13 @@ public class Order {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Product> products = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "order_product", // The join table name
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products;
 
     public Order() {
     }
@@ -47,6 +53,8 @@ public class Order {
         this.user = user;
         this.products = products;
     }
+
+
 
 
     public Long getId() {

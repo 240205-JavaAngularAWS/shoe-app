@@ -1,5 +1,7 @@
 package com.revature.paymore.model.DTO;
 
+import com.revature.paymore.model.Address;
+
 public class AddressDTO {
 
     private Long id;
@@ -7,17 +9,32 @@ public class AddressDTO {
     private String city;
     private String state;
     private int zipCode;
+    private Long userId;
+    private Long sellerId;
 
 
     public AddressDTO() {
     }
 
-    public AddressDTO(Long id, String address, String city, String state, int zipCode) {
+    public AddressDTO(Long id, String address, String city, String state, int zipCode, Long userId, Long sellerId) {
         this.id = id;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+        this.userId = userId;
+        this.sellerId = sellerId;
+    }
+
+    // Constructor that accepts an Address entity
+    public AddressDTO(Address address) {
+        this.id = address.getId();
+        this.address = address.getAddress();
+        this.city = address.getCity();
+        this.state = address.getState();
+        this.zipCode = address.getZipCode();
+        this.userId = address.getUser() != null ? address.getUser().getId() : null;
+        this.sellerId = address.getSeller() != null ? address.getSeller().getId() : null;
     }
 
 
@@ -61,15 +78,19 @@ public class AddressDTO {
         this.zipCode = zipCode;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
 
-    @Override
-    public String toString() {
-        return "AddressDTO{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zipCode=" + zipCode +
-                '}';
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Long sellerId) {
+        this.sellerId = sellerId;
     }
 }

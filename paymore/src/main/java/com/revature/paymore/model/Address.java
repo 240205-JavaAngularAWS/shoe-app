@@ -3,7 +3,6 @@ package com.revature.paymore.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -30,20 +29,35 @@ public class Address {
     private int zipCode;
 
 
-    @ManyToMany(mappedBy = "address")
-    private List<User> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
+
 
 
     public Address() {
     }
 
-    public Address(Long id, String address, String city, String state, int zipCode, List<User> users) {
+    public Address(Long id, String address, String city, String state, int zipCode, User user) {
         this.id = id;
         this.address = address;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.users = users;
+        this.user = user;
+    }
+
+    public Address(String address, String city, String state, int zipCode, User user) {
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.user = user;
     }
 
 
@@ -87,28 +101,35 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public List<User> getUsers() {
-        return users;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address1 = (Address) o;
-        return zipCode == address1.zipCode && Objects.equals(id, address1.id) && Objects.equals(address, address1.address) && Objects.equals(city, address1.city) && Objects.equals(state, address1.state) && Objects.equals(users, address1.users);
+        if (!(o instanceof Address address1)) return false;
+        return zipCode == address1.zipCode && Objects.equals(id, address1.id) && Objects.equals(address, address1.address) && Objects.equals(city, address1.city) && Objects.equals(state, address1.state) && Objects.equals(user, address1.user) && Objects.equals(seller, address1.seller);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, city, state, zipCode, users);
+        return Objects.hash(id, address, city, state, zipCode, user, seller);
     }
-
 
     @Override
     public String toString() {
@@ -118,7 +139,8 @@ public class Address {
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipCode=" + zipCode +
-                ", users=" + users +
+                ", user=" + user +
+                ", seller=" + seller +
                 '}';
     }
 }

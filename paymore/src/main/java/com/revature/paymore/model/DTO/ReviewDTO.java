@@ -5,18 +5,26 @@ public class ReviewDTO {
     private Long id;
     private String content;
     private int rating;
-    // Including only the product ID instead of the entire Product object to simplify the DTO
-    private Long productId;
+    private Long productId; // Only the product ID is included to keep the DTO simple
 
-    // Constructors
+    // Default constructor
     public ReviewDTO() {
     }
 
+    // Constructor using fields
     public ReviewDTO(Long id, String content, int rating, Long productId) {
         this.id = id;
         this.content = content;
         this.rating = rating;
         this.productId = productId;
+    }
+
+    // Constructor that converts a Review entity to ReviewDTO
+    public ReviewDTO(com.revature.paymore.model.Review review) {
+        this.id = review.getId();
+        this.content = review.getContent();
+        this.rating = review.getRating();
+        this.productId = review.getProduct() != null ? review.getProduct().getId() : null;
     }
 
     // Getters and Setters

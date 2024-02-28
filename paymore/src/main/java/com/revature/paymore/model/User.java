@@ -1,14 +1,13 @@
 package com.revature.paymore.model;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
+import java.util.*;
 import java.util.Set;
-import java.util.Set;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User {
+    // OK
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -29,56 +28,48 @@ public class User {
     @Column(name = "password")
     private String password;
 
+//    @ManyToMany
+//    @JoinTable(
+//            name = "user_address",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "address_id")
+//    )
+    @OneToMany(mappedBy = "user")
+    private Set<Address> addresses;
 
-
-
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address shippingAddress;
-
-    //a user might have a shipping address and billing address that are different
-    @ManyToMany
-    @JoinTable(
-            name ="user_address",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id")
-    )
-
-
-
-    @OneToMany(mappedBy = "creditcard")
+    @OneToMany(mappedBy = "user") // Assuming 'user' is the correct field name in CreditCard class
     private Set<CreditCard> creditCards = new HashSet<>();
-
-
 
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
+
 
     public User() {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String username, String password, Address shippingAddress, Set<Order> orders) {
+    public User(Long id, String firstName, String lastName, String email, String username, String password, Set<Address> shippingAddresses, Set<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.shippingAddress = shippingAddress;
+        this.addresses = shippingAddresses;
         this.orders = orders;
     }
 
 
-    public User(String firstName, String lastName, String email, String username, String password, Address shippingAddress, Set<Order> orders) {
+    public User(String firstName, String lastName, String email, String username, String password, Set<Address> shippingAddresses, Set<Order> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.shippingAddress = shippingAddress;
+        this.addresses = shippingAddresses;
         this.orders = orders;
     }
+
 
     public Long getId() {
         return id;
@@ -128,12 +119,20 @@ public class User {
         this.password = password;
     }
 
-    public Address getShippingAddress() {
-        return shippingAddress;
+    public Set<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public Set<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(Set<CreditCard> creditCards) {
+        this.creditCards = creditCards;
     }
 
     public Set<Order> getOrders() {
@@ -148,12 +147,12 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getShippingAddress(), user.getShippingAddress()) && Objects.equals(getOrders(), user.getOrders());
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(addresses, user.addresses) && Objects.equals(creditCards, user.creditCards) && Objects.equals(orders, user.orders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getShippingAddress(), getOrders());
+        return Objects.hash(id, firstName, lastName, email, username, password, addresses, creditCards, orders);
     }
 
     @Override
@@ -165,7 +164,8 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", address=" + shippingAddress +
+                ", addresses=" + addresses +
+                ", creditCards=" + creditCards +
                 ", orders=" + orders +
                 '}';
     }

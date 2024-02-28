@@ -1,5 +1,6 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.model.DTO.OrderDTO;
+import com.revature.paymore.model.Order;
 import com.revature.paymore.service.AddressService;
 import com.revature.paymore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class OrderController {
 
 
     @PostMapping("/order")
-    public ResponseEntity<?> registerOrder(@RequestBody OrderDTO orderDto){
-        OrderDTO response = orderService.registerAddress(orderDto);
+    public ResponseEntity<?> registerOrder(@RequestBody Order order){
+        OrderDTO response = orderService.registerOrder(order);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }

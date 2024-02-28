@@ -14,6 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sellers")
 public class Seller {
+    // OK
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,81 +1,44 @@
 package com.revature.paymore.model.DTO;
-import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
-@Entity
-@Table(name = "users")
 public class UserDTO {
-
     private Long id;
-
-
     private String firstName;
-
-
     private String lastName;
-
-
     private String email;
-
-
     private String username;
+    // Addresses and orders could be represented by their IDs or simplified DTOs
+    private Set<Long> addressIds;
+    private Set<Long> orderIds;
 
-
-    private String password;
-
-    //a user might have a shipping address and billing address that are different
-
-    private Long shippingAddressId;
-
-    private Set<OrderDTO> orders = new HashSet<>();
-
-    private UserDTO() {
-
+    public UserDTO() {
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String email, String username, String password, Long shippingAddressId, Set<OrderDTO> orders) {
+    // Constructor to directly initialize fields
+    public UserDTO(Long id, String firstName, String lastName, String email, String username, Set<Long> addressIds, Set<Long> orderIds) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
-        this.password = password;
-        this.shippingAddressId = shippingAddressId;
-        this.orders = orders;
+        this.addressIds = addressIds;
+        this.orderIds = orderIds;
     }
 
-    public UserDTO(String firstName, String lastName, String email, String username, String password, Long shippingAddressId, Set<OrderDTO> orders) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.shippingAddressId = shippingAddressId;
-        this.orders = orders;
+    // Constructor to convert User entity to UserDTO
+    public UserDTO(com.revature.paymore.model.User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+        this.username = user.getUsername();
+        this.addressIds = user.getAddresses().stream().map(com.revature.paymore.model.Address::getId).collect(Collectors.toSet());
+        this.orderIds = user.getOrders().stream().map(com.revature.paymore.model.Order::getId).collect(Collectors.toSet());
     }
 
-    public UserDTO(String firstName, String lastName, String email, String username, Long shippingAddressId, Set<OrderDTO> orders) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.shippingAddressId = shippingAddressId;
-        this.orders = orders;
-    }
-    
-    
-
-
-    public UserDTO(String firstName, String lastName, String email, String username) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -116,54 +79,33 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public Set<Long> getAddressIds() {
+        return addressIds;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAddressIds(Set<Long> addressIds) {
+        this.addressIds = addressIds;
     }
 
-    public Long getShippingAddressId() {
-        return shippingAddressId;
+    public Set<Long> getOrderIds() {
+        return orderIds;
     }
 
-    public void setShippingAddressId(Long shippingAddressId) {
-        this.shippingAddressId = shippingAddressId;
+    public void setOrderIds(Set<Long> orderIds) {
+        this.orderIds = orderIds;
     }
 
-
-    public Set<OrderDTO> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<OrderDTO> orders) {
-        this.orders = orders;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDTO userDTO)) return false;
-        return Objects.equals(id, userDTO.id) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(email, userDTO.email) && Objects.equals(username, userDTO.username) && Objects.equals(password, userDTO.password) && Objects.equals(shippingAddressId, userDTO.shippingAddressId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getShippingAddressId());
-    }
-
+    // toString method for debugging purposes
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", address=" + shippingAddressId +
+                ", addressIds=" + addressIds +
+                ", orderIds=" + orderIds +
                 '}';
     }
 }
