@@ -1,6 +1,7 @@
 package com.revature.paymore.model.DTO;
 
-import java.util.List;
+import java.util.Set;
+import java.util.Set;
 
 public class SellerDTO {
 
@@ -9,11 +10,12 @@ public class SellerDTO {
     private String email;
     private String username;
     private String password;
-    private List<ProductDTO>  products;
+    private Set<ProductDTO> products;
 
 
 
-    public SellerDTO(String companyName, String email, String username, String password, List<ProductDTO> products) {
+    public SellerDTO(Long id, String companyName, String email, String username, String password, Set<ProductDTO> products) {
+        this.id = id;
         this.companyName = companyName;
         this.email = email;
         this.username = username;
@@ -36,7 +38,7 @@ public class SellerDTO {
         this.username = username;
     }
 
-    public SellerDTO(String companyName, String email, String username, String password) {
+    public SellerDTO(String companyName, String email, String username) {
         this.companyName = companyName;
         this.email = email;
         this.username = username;
@@ -84,11 +86,11 @@ public class SellerDTO {
         this.password = password;
     }
 
-    public List<ProductDTO> getProducts() {
+    public Set<ProductDTO> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductDTO> products) {
+    public void setProducts(Set<ProductDTO> products) {
         this.products = products;
     }
 }

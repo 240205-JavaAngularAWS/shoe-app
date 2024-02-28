@@ -2,7 +2,7 @@ package com.revature.paymore.model.DTO;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.Set;
 import java.util.Objects;
 
@@ -29,13 +29,15 @@ public class UserDTO {
 
     //a user might have a shipping address and billing address that are different
 
-    private List<AddressDTO> addresses;
+    private Set<AddressDTO> addresses = new HashSet<>();
+
+    private Set<OrderDTO> orders = new HashSet<>();
 
     private UserDTO() {
 
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String email, String username, String password, List<AddressDTO> addresses) {
+    public UserDTO(Long id, String firstName, String lastName, String email, String username, String password, Set<AddressDTO> addresses, Set<OrderDTO> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,6 +45,36 @@ public class UserDTO {
         this.username = username;
         this.password = password;
         this.addresses = addresses;
+        this.orders = orders;
+    }
+
+    public UserDTO(String firstName, String lastName, String email, String username, String password, Set<AddressDTO> addresses, Set<OrderDTO> orders) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.addresses = addresses;
+        this.orders = orders;
+    }
+
+    public UserDTO(String firstName, String lastName, String email, String username, Set<AddressDTO> addresses, Set<OrderDTO> orders) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.addresses = addresses;
+        this.orders = orders;
+    }
+    
+    
+
+
+    public UserDTO(String firstName, String lastName, String email, String username) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
     }
 
     public Long getId() {
@@ -93,12 +125,21 @@ public class UserDTO {
         this.password = password;
     }
 
-    public List<AddressDTO> getAddresses() {
+    public Set<AddressDTO> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<AddressDTO> addresses) {
+    public void setAddresses(Set<AddressDTO> addresses) {
         this.addresses = addresses;
+    }
+
+
+    public Set<OrderDTO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<OrderDTO> orders) {
+        this.orders = orders;
     }
 
 

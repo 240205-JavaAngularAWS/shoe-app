@@ -2,7 +2,7 @@ package com.revature.paymore.model;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.Set;
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
 
     @OneToMany(mappedBy = "creditcard")
@@ -47,13 +47,13 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
-    private List<Order> orders;
+    private Set<Order> orders;
 
-    private User() {
+    public User() {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String username, String password, List<Address> addresses, List<Order> orders) {
+    public User(Long id, String firstName, String lastName, String email, String username, String password, Set<Address> addresses, Set<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -112,19 +112,19 @@ public class User {
         this.password = password;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 
