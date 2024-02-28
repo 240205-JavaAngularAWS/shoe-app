@@ -1,5 +1,9 @@
 package com.revature.paymore.service;
+import com.revature.paymore.exception.AccessDeniedException;
+import com.revature.paymore.exception.UnauthorizedException;
+import com.revature.paymore.exception.UsernameAlreadyExistsException;
 import com.revature.paymore.model.DTO.AddressDTO;
+import com.revature.paymore.model.DTO.LoginDTO;
 import com.revature.paymore.model.DTO.OrderDTO;
 import com.revature.paymore.model.DTO.UserDTO;
 import com.revature.paymore.model.User;
@@ -92,11 +96,35 @@ public class UserService {
 
 
     // register as a buyer/user
+    public UserDTO registerUser(UserDTO userDTO){
+
+        User user = convertToEntity(userDTO);
+
+        // checking for username doesn't exist
+//        userRepository.findByUsername(user.getUsername()).ifPresent(existingUser -> {
+//                    throw new UsernameAlreadyExistsException("Username already exists.");
+
+        if(userRepository.findByUsername(user.getUsername()).isPresent()){
+            throw new UsernameAlreadyExistsException("Username already exists.");
+        }
+
+        userRepository.save(user);
+        return convertToSimpleDTO(user);
+
+    }
 
 
 
-    // Log into the application
-    public long authenticateSeller() {
-        return 495L;}
+    // Log into the User application
+    public long authenticateUser(LoginDTO loginDTO) {
+
+        User foundUser = userRepository.findByUsername(loginDTO.getUsername())
+                .orElseThrow(() -> new AccessDeniedException("User not found."));
+        if (!loginDTO.getPassword().equals(foundUser.getPassword())) {
+            throw new UnauthorizedException("Incorrect Username or Password");
+        }
+
+        return foundUser.getId();
+    }
 
 }
