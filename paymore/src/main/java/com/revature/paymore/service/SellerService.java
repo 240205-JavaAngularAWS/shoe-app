@@ -31,8 +31,6 @@ public class SellerService {
     }
 
 
-    private static final Logger logger = LoggerFactory.getLogger(service.SellerService.class);
-
 
     private static final Logger logger = LoggerFactory.getLogger(SellerService.class);
 
@@ -83,10 +81,12 @@ public class SellerService {
 
     // register as a seller)
     public SellerDTO registerSeller(SellerDTO sellerDTO) {
-        if (sellerRepository.findByUsername(sellerDTO.getUsername()).isPresent()) {
+        Seller seller = convertToEntity(sellerDTO);
+        if (sellerRepository.findByUsername(seller.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
-        return sellerRepository.save(sellerDTO);
+        sellerRepository.save(seller);
+        return convertToSimpleDTO(seller);
     }
 
 

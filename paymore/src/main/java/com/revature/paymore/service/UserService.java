@@ -5,6 +5,7 @@ import com.revature.paymore.model.DTO.UserDTO;
 import com.revature.paymore.model.User;
 import com.revature.paymore.model.Address;
 import com.revature.paymore.model.Order;
+import com.revature.paymore.repository.AddressRepository;
 import com.revature.paymore.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
 
     public UserService(UserRepository userRepository){
         this.userRepository =userRepository;
@@ -44,7 +48,6 @@ public class UserService {
 
     public UserDTO convertToExtendedDTO(User user){
         // new userDTO
-        Set<AddressDTO> addresses = new HashSet<>();
         Set<OrderDTO> orders = new HashSet<>();
         return new UserDTO(
                 user.getId(),
@@ -53,7 +56,7 @@ public class UserService {
                 user.getEmail(),
                 user.getUsername(),
                 user.getPassword(),
-                addresses,
+                user.getShippingAddress().getId(),
                 orders
         );
 
@@ -62,7 +65,7 @@ public class UserService {
     public User convertToEntity(UserDTO userDto) {
         // requires Extended DTO
 
-        // Add logic to pull addresses and orders.
+        // Add logic to pull orders.
         Set<Address> addresses = new HashSet<>();
         Set<Order> orders = new HashSet<>();
         User user = new User();
@@ -72,7 +75,13 @@ public class UserService {
                 user.setEmail(userDto.getEmail());
                 user.setUsername(userDto.getUsername());
                 user.setPassword(userDto.getPassword());
-                user.setAddresses(addresses);
+                if(user.getShippingAddress() != null){
+                    // TODO: create custom exception
+                    Address shippingAddress = addressRepository.findById(userDto.getShippingAddressId())
+                            .orElseThrow(() -> new RuntimeException());
+                    user.setShippingAddress(shippingAddress);
+                }
+
                 user.setOrders(orders);
                 return user;
     }

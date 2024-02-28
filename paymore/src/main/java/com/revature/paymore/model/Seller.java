@@ -97,10 +97,6 @@ public class Seller {
         this.password = password;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
 
     public Address getAddress() {
         return address;
@@ -110,14 +106,11 @@ public class Seller {
         this.address = address;
     }
 
-<<<<<<< HEAD
-    public List<Product> getProducts() {
-=======
+
+
+
+
     public Set<Product> getProducts() {
->>>>>>> b94d23698f8065784286810bef107517cadac388
-=======
-    public Set<Product> getProducts() {
->>>>>>> 328fcc0cba1cf17ecbee7370c2fee724bb1821ba
         return products;
     }
 

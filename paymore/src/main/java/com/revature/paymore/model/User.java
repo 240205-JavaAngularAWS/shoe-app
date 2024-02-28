@@ -30,6 +30,8 @@ public class User {
     private String password;
 
 
+
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address shippingAddress;
@@ -41,12 +43,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
-    private Set<Address> addresses;
-
-
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address shippingAddress;
 
 
 
@@ -64,6 +60,17 @@ public class User {
 
     public User(Long id, String firstName, String lastName, String email, String username, String password, Address shippingAddress, Set<Order> orders) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.shippingAddress = shippingAddress;
+        this.orders = orders;
+    }
+
+
+    public User(String firstName, String lastName, String email, String username, String password, Address shippingAddress, Set<Order> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -121,12 +128,12 @@ public class User {
         this.password = password;
     }
 
-    public Address getAddress() {
-        return address;
+    public Address getShippingAddress() {
+        return shippingAddress;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
     public Set<Order> getOrders() {
@@ -141,12 +148,12 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getAddress(), user.getAddress()) && Objects.equals(getOrders(), user.getOrders());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getShippingAddress(), user.getShippingAddress()) && Objects.equals(getOrders(), user.getOrders());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getAddress(), getOrders());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getShippingAddress(), getOrders());
     }
 
     @Override
@@ -158,7 +165,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", address=" + address +
+                ", address=" + shippingAddress +
                 ", orders=" + orders +
                 '}';
     }

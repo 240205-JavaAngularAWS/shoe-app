@@ -3,7 +3,6 @@ import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Set;
 import java.util.Objects;
 
 @Entity
@@ -29,7 +28,7 @@ public class UserDTO {
 
     //a user might have a shipping address and billing address that are different
 
-    private Set<AddressDTO> addresses = new HashSet<>();
+    private Long shippingAddressId;
 
     private Set<OrderDTO> orders = new HashSet<>();
 
@@ -37,33 +36,33 @@ public class UserDTO {
 
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String email, String username, String password, Set<AddressDTO> addresses, Set<OrderDTO> orders) {
+    public UserDTO(Long id, String firstName, String lastName, String email, String username, String password, Long shippingAddressId, Set<OrderDTO> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.addresses = addresses;
+        this.shippingAddressId = shippingAddressId;
         this.orders = orders;
     }
 
-    public UserDTO(String firstName, String lastName, String email, String username, String password, Set<AddressDTO> addresses, Set<OrderDTO> orders) {
+    public UserDTO(String firstName, String lastName, String email, String username, String password, Long shippingAddressId, Set<OrderDTO> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.addresses = addresses;
+        this.shippingAddressId = shippingAddressId;
         this.orders = orders;
     }
 
-    public UserDTO(String firstName, String lastName, String email, String username, Set<AddressDTO> addresses, Set<OrderDTO> orders) {
+    public UserDTO(String firstName, String lastName, String email, String username, Long shippingAddressId, Set<OrderDTO> orders) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
-        this.addresses = addresses;
+        this.shippingAddressId = shippingAddressId;
         this.orders = orders;
     }
     
@@ -125,12 +124,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<AddressDTO> getAddresses() {
-        return addresses;
+    public Long getShippingAddressId() {
+        return shippingAddressId;
     }
 
-    public void setAddresses(Set<AddressDTO> addresses) {
-        this.addresses = addresses;
+    public void setShippingAddressId(Long shippingAddressId) {
+        this.shippingAddressId = shippingAddressId;
     }
 
 
@@ -147,12 +146,12 @@ public class UserDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserDTO userDTO)) return false;
-        return Objects.equals(id, userDTO.id) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(email, userDTO.email) && Objects.equals(username, userDTO.username) && Objects.equals(password, userDTO.password) && Objects.equals(addresses, userDTO.addresses);
+        return Objects.equals(id, userDTO.id) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(email, userDTO.email) && Objects.equals(username, userDTO.username) && Objects.equals(password, userDTO.password) && Objects.equals(shippingAddressId, userDTO.shippingAddressId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getAddresses());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getUsername(), getPassword(), getShippingAddressId());
     }
 
     @Override
@@ -164,7 +163,7 @@ public class UserDTO {
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", address=" + addresses +
+                ", address=" + shippingAddressId +
                 '}';
     }
 }
