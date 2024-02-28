@@ -43,7 +43,7 @@ public class SellerService {
     public SellerDTO convertToExtendedDTO(Seller seller){
         // new sellerDTO
 
-        // Add logic to pull addresses and orders.
+        // Add logic to pull products.
         Set<ProductDTO> products = new HashSet<>();
         return new SellerDTO(
                 seller.getId(),
@@ -59,7 +59,7 @@ public class SellerService {
     public Seller convertToEntity(SellerDTO sellerDto) {
         // requires Extended DTO
 
-        // Add logic to pull addresses and orders.
+        // Add logic to pull products.
         Set<Product> products = new HashSet<>();
         Seller seller = new Seller();
         seller.setId(sellerDto.getId());
