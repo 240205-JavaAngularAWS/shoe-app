@@ -1,4 +1,5 @@
 package com.revature.paymore.controller;
+import com.revature.paymore.model.DTO.UserDTO;
 import com.revature.paymore.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
