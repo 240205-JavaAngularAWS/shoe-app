@@ -37,58 +37,16 @@ public class SellerService {
 
 
     // DTO Methods
-    public SellerDTO convertToSimpleDTO(Seller seller){
-        // new sellerDTO
-        return new SellerDTO(
-                seller.getCompanyName(),
-                seller.getEmail(),
-                seller.getUsername());
-
-    }
-
-    public SellerDTO convertToExtendedDTO(Seller seller){
-        // new sellerDTO
-
-        // Add logic to pull products.
-        Set<ProductDTO> products = new HashSet<>();
-        return new SellerDTO(
-                seller.getId(),
-                seller.getCompanyName(),
-                seller.getEmail(),
-                seller.getUsername(),
-                seller.getPassword(),
-                products
-        );
-
-    }
-
-    public Seller convertToEntity(SellerDTO sellerDto) {
-        // requires Extended DTO
-
-        // Add logic to pull products.
-        Set<Product> products = new HashSet<>();
-        Seller seller = new Seller();
-        seller.setId(sellerDto.getId());
-        seller.setCompanyName(sellerDto.getCompanyName());
-        seller.setEmail(sellerDto.getEmail());
-        seller.setUsername(sellerDto.getUsername());
-        seller.setPassword(sellerDto.getPassword());
-        seller.setProducts(products);
-        return seller;
-    }
-
 
 
     // register as a seller)
-    public SellerDTO registerSeller(SellerDTO sellerDTO) {
-        Seller seller = convertToEntity(sellerDTO);
+    public SellerDTO registerSeller(Seller seller) {
         if (sellerRepository.findByUsername(seller.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
         sellerRepository.save(seller);
-        return convertToSimpleDTO(seller);
+        return new SellerDTO(seller);
     }
-
 
     // Log into the application
     public long authenticateSeller(LoginDTO loginDTO) {

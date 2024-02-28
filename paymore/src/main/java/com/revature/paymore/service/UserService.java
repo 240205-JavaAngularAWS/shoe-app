@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -52,6 +53,12 @@ public class UserService {
 
         userRepository.save(user);
         return new UserDTO(user);
+
+    }
+
+    public List<UserDTO> getAllUsers(){
+        return userRepository.findAll().stream()
+                .map(UserDTO::new).toList();
 
     }
 

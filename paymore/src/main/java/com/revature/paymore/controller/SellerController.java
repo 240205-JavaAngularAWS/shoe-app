@@ -1,6 +1,7 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.model.DTO.LoginDTO;
 import com.revature.paymore.model.DTO.SellerDTO;
+import com.revature.paymore.model.Seller;
 import com.revature.paymore.service.SellerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,9 @@ public class SellerController {
 
 
     @PostMapping("/registerSeller")
-    public ResponseEntity<?> registerSeller(@RequestBody SellerDTO sellerDto){
-        SellerDTO response = sellerService.registerSeller(sellerDto);
+    public ResponseEntity<SellerDTO> registerSeller(@RequestBody Seller seller){
+        SellerDTO response = sellerService.registerSeller(seller);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-
     }
 
 

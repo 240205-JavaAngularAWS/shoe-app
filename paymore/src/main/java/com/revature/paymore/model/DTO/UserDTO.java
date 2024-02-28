@@ -1,5 +1,9 @@
 package com.revature.paymore.model.DTO;
 
+import com.revature.paymore.model.User;
+import com.revature.paymore.model.Order;
+import com.revature.paymore.model.Address;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,14 +32,14 @@ public class UserDTO {
     }
 
     // Constructor to convert User entity to UserDTO
-    public UserDTO(com.revature.paymore.model.User user) {
+    public UserDTO(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.username = user.getUsername();
-        this.addressIds = user.getAddresses().stream().map(com.revature.paymore.model.Address::getId).collect(Collectors.toSet());
-        this.orderIds = user.getOrders().stream().map(com.revature.paymore.model.Order::getId).collect(Collectors.toSet());
+        this.addressIds = user.getAddresses().stream().map(Address::getId).collect(Collectors.toSet());
+        this.orderIds = user.getOrders().stream().map(Order::getId).collect(Collectors.toSet());
     }
 
     // Getters and Setters
