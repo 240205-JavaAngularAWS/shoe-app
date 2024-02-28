@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/paymore/paymore.iml" filepath="$PROJECT_DIR$/paymore/paymore.iml" />
+=======
       <module fileurl="file://$PROJECT_DIR$/.idea/shoe-app.iml" filepath="$PROJECT_DIR$/.idea/shoe-app.iml" />
+>>>>>>> origin/working
     </modules>
   </component>
 </project>

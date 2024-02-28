@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
-import java.util.List;
+import java.util.Set;
 
 
 import java.util.Objects;
@@ -37,13 +37,14 @@ public class Seller {
     private Address address;
 
     @OneToMany(mappedBy = "seller")
-    private List<Product> products;
+    private Set<Product> products;
 
-    private Seller() {
+    public Seller() {
 
     }
 
-    public Seller(Long id, String companyName, String email, String username, String password, Address address, List<Product> products) {
+
+    public Seller(Long id, String companyName, String email, String username, String password, Address address, Set<Product> products) {
         this.id = id;
         this.companyName = companyName;
         this.email = email;
@@ -52,6 +53,8 @@ public class Seller {
         this.address = address;
         this.products = products;
     }
+
+
 
     public Long getId() {
         return id;
@@ -94,6 +97,7 @@ public class Seller {
         this.password = password;
     }
 
+<<<<<<< HEAD
 
     public Address getAddress() {
         return address;
@@ -104,10 +108,13 @@ public class Seller {
     }
 
     public List<Product> getProducts() {
+=======
+    public Set<Product> getProducts() {
+>>>>>>> b94d23698f8065784286810bef107517cadac388
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 
