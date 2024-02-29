@@ -19,13 +19,16 @@ public class ProductValidator implements Validator {
     @Override
     public void validate(@NonNull Object target, Errors errors) {
 
-        Product Product = (Product) target;
+        Product product = (Product) target;
+        if(product.getProductName() == null){
+            errors.rejectValue("product_name", "product_name.empty", "product name can't be empty.");
+        }
 
-        if(Product.getPrice() == 0){
+        if(product.getPrice() == 0){
             errors.rejectValue("price", "price.zero", "price cannot be zero.");
         }
 
-        if(Product.getQuantity() == 0){
+        if(product.getQuantity() == 0){
             errors.rejectValue("quantity", "quantity.zero", "minimum quantity is 1");
         }
 
