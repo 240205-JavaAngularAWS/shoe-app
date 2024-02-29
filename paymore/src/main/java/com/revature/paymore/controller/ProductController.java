@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class ProductController {
 
-
     ProductService productService;
 
     @Autowired
@@ -45,7 +44,7 @@ public class ProductController {
         if(!deleted){
             throw new BadRequestException("Product with id " + productId + " was not found.");
         }
-        return new ResponseEntity<>("{\"message\":\"Successfully Deleted\"}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"message\":\"Product Successfully Deleted\"}", HttpStatus.OK);
     }
 
 }

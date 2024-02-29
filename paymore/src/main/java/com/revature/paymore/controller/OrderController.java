@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController {
 
 
+
+    private final OrderService orderService;
+
+
     @Autowired
-    private OrderService orderService;
-
-
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
 
     @PostMapping("/order")

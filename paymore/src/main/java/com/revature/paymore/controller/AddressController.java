@@ -17,16 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AddressController {
 
 
-    @Autowired
-    private AddressService addressService;
+
+    private final AddressService addressService;
 
     private static final Logger logger = LoggerFactory.getLogger(AddressController.class);
 
 
+    @Autowired
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
+    }
 
 
     @PostMapping("/registerAddress")
-    public ResponseEntity<?> registerAddress(@RequestBody Address address){
+    public ResponseEntity<AddressDTO> registerAddress(@RequestBody Address address){
         AddressDTO response = addressService.registerAddress(address);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 

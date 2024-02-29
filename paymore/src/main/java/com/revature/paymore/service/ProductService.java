@@ -57,7 +57,6 @@ public class ProductService {
 
 
     public boolean deleteProduct(long productId){
-
         return productRepository.findById(productId)
                                 .map(user -> { productRepository.deleteById(productId);
                                 return true;})
