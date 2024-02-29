@@ -22,33 +22,6 @@ public class ProductDTO {
     public ProductDTO() {
         // empty no args constructor
     }
-
-<<<<<<< HEAD
-
-    public ProductDTO(Long id, String productName, double size, double price, Color color, int quantity) {
-        this.id = id;
-        this.productName = productName;
-        this.size = size;
-        this.price = price;
-        this.color = color;
-        this.quantity = quantity;
-    }
-
-    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description) {
-        this.id = id;
-        this.productName = productName;
-        this.size = size;
-        this.price = price;
-        this.color = color;
-        this.gender = gender;
-        this.category = category;
-        this.quantity = quantity;
-        this.imageUrl = imageUrl;
-        this.description = description;
-    }
-
-=======
->>>>>>> 9ce7239d0e230c28f14a440453ec5d4852b8c7c0
     // Constructor that converts a Product entity into a Product DTO
 
     public ProductDTO(Product product){

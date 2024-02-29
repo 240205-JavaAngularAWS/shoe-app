@@ -1,18 +1,22 @@
 package com.revature.paymore.service;
 
 import com.revature.paymore.exception.BadRequestException;
+import com.revature.paymore.exception.InvalidProductException;
 import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.repository.ProductRepository;
 import com.revature.paymore.repository.SellerRepository;
+import com.revature.paymore.validation.ProductValidator;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,13 +27,15 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-
     private final SellerRepository sellerRepository;
 
+    private final ProductValidator productValidator;
+
     @Autowired
-    public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
+    public ProductService(ProductRepository productRepository, SellerRepository sellerRepository, ProductValidator productValidator) {
         this.productRepository = productRepository;
         this.sellerRepository = sellerRepository;
+        this.productValidator = productValidator;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
@@ -46,26 +52,21 @@ public class ProductService {
     }
 
 
+    private void validateProduct(Product product){
+        Errors errors = new BeanPropertyBindingResult(product, "product");
+        productValidator.validate(product, errors);
+        if (errors.hasErrors()) {
+            throw new InvalidProductException("Product input is Invalid.", errors);
+        }
+    }
+
+
     public ProductDTO addProduct(Product product){
         // check if seller exists
         sellerRepository.findById(product.getSeller().getId())
                 .orElseThrow(() -> new EntityNotFoundException(" This product does not have any Seller "));
 
-        // check if price and quantity is greater than 0
-        if(product.getPrice() < 0 && product.getQuantity() < 0){
-            throw new BadRequestException("Product's price or quantity is not valid");
-        }
-
-        // check if user inputs a valid gender and category
-        if(product.getGender() != Gender.MENS && product.getGender() != Gender.WOMENS){
-            throw new BadRequestException("Product gender input is invalid");
-        }
-        // TODO: May need to be expanded if additional enum options are added to category
-
-        if(product.getCategory() != Category.ATHLETIC && product.getCategory() != Category.CASUAL && product.getCategory() != Category.DRESS){
-            throw new BadRequestException("Product category input is invalid");
-        }
-
+        validateProduct(product);
         productRepository.save(product);
         return new ProductDTO(product);
     }
