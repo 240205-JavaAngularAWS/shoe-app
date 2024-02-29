@@ -143,6 +143,18 @@ public class User {
         this.orders = orders;
     }
 
+    // helper functions
+    public void addOrder(Order order){
+        this.orders.add(order);
+        order.setUser(this);
+
+    }
+    public void removeOrder(Order order){
+        this.orders.remove(order);
+        order.setUser(null);
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

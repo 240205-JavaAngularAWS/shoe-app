@@ -11,12 +11,15 @@ import com.revature.paymore.repository.SellerRepository;
 import com.revature.paymore.repository.UserRepository;
 import com.revature.paymore.validation.ProductValidator;
 import com.revature.paymore.validation.SellerValidator;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
+
+import java.util.List;
 
 
 @Service
@@ -33,6 +36,8 @@ public class SellerService {
 
     private static final Logger logger = LoggerFactory.getLogger(SellerService.class);
 
+    private ModelMapper modelMapper = new ModelMapper();
+
 
     @Autowired
     public SellerService(SellerRepository sellerRepository, UserRepository userRepository, AddressRepository addressRepository, ProductRepository productRepository, ValidationService validationService) {
@@ -43,7 +48,7 @@ public class SellerService {
         this.validationService = validationService;
     }
 
-    
+
 
     // register as a seller
     public SellerDTO registerSeller(Seller seller) {
@@ -79,6 +84,13 @@ public class SellerService {
         }
         sellerRepository.save(seller);
         return new SellerDTO(seller);
+    }
+
+
+    public List<SellerDTO> getAllSellers(){
+        return sellerRepository.findAll().stream()
+                .map(seller -> modelMapper.map(seller, SellerDTO.class)).toList();
+
     }
 
     // Log into the application

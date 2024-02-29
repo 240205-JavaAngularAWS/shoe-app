@@ -18,23 +18,15 @@ public class ProductDTO {
     private String imageUrl;
     private String description;
 
+    private Long sellerId;
+
     // Constructors
     public ProductDTO() {
         // empty no args constructor
     }
 
 
-
-    public ProductDTO(Long id, String productName, double size, double price, Color color, int quantity) {
-        this.id = id;
-        this.productName = productName;
-        this.size = size;
-        this.price = price;
-        this.color = color;
-        this.quantity = quantity;
-    }
-
-    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description) {
+    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Long sellerId) {
         this.id = id;
         this.productName = productName;
         this.size = size;
@@ -45,25 +37,20 @@ public class ProductDTO {
         this.quantity = quantity;
         this.imageUrl = imageUrl;
         this.description = description;
+        this.sellerId = sellerId;
     }
 
-
-    // Constructor that converts a Product entity into a Product DTO
-
-    public ProductDTO(Product product){
-        this.id = product.getId();
-        this.productName = product.getProductName();
-        this.size = product.getSize();
-        this.price = product.getPrice();
-        this.color = product.getColor();
-        this.gender = product.getGender();
-        this.category = product.getCategory();
-        this.quantity = product.getQuantity();
-        this.imageUrl = product.getImageUrl();
-        this.description = product.getDescription();
-
-
-
+    public ProductDTO(String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Long sellerId) {
+        this.productName = productName;
+        this.size = size;
+        this.price = price;
+        this.color = color;
+        this.gender = gender;
+        this.category = category;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.sellerId = sellerId;
     }
 
     // Getters and Setters
