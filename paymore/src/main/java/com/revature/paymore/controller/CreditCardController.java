@@ -1,2 +1,4 @@
-package com.revature.paymore.controller;public class CreditCardController {
+package com.revature.paymore.controller;
+
+public class CreditCardController {
 }

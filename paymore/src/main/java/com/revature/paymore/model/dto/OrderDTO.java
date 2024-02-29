@@ -1,6 +1,7 @@
 package com.revature.paymore.model.dto;
 
 import com.revature.paymore.model.Order;
+import com.revature.paymore.model.OrderItem;
 import com.revature.paymore.model.enums.Status;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class OrderDTO {
     private Status status;
     private LocalDateTime timestamp;
     private Long userId;
-    private Set<Long> productIds; // product IDs included in the order
+    private Set<Long> orderItemIds; // product IDs included in the order
 
     // Default constructor
     public OrderDTO() {
@@ -28,8 +29,10 @@ public class OrderDTO {
         this.status = order.getStatus();
         this.timestamp = order.getTimestamp();
         this.userId = order.getUser() != null ? order.getUser().getId() : null; // Safely handle null
-        this.productIds = order.getProducts() != null ? order.getProducts().stream().map(product -> product.getId()).collect(Collectors.toSet()) : null;
+        this.orderItemIds = order.getOrderItems() != null ? order.getOrderItems().stream().map(OrderItem::getId).collect(Collectors.toSet()) : null;
     }
+
+
 
 
     public Long getId() {
@@ -72,12 +75,12 @@ public class OrderDTO {
         this.userId = userId;
     }
 
-    public Set<Long> getProductIds() {
-        return productIds;
+    public Set<Long> getOrderItemIds() {
+        return orderItemIds;
     }
 
-    public void setProductIds(Set<Long> productIds) {
-        this.productIds = productIds;
+    public void setOrderItemIds(Set<Long> productIds) {
+        this.orderItemIds = productIds;
     }
 
     // toString method for debugging purposes
@@ -89,7 +92,7 @@ public class OrderDTO {
                 ", status=" + status +
                 ", timestamp=" + timestamp +
                 ", userId=" + userId +
-                ", productIds=" + productIds +
+                ", orderItemIds=" + orderItemIds +
                 '}';
     }
 
@@ -97,12 +100,12 @@ public class OrderDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof OrderDTO orderDTO)) return false;
-        return Double.compare(priceTotal, orderDTO.priceTotal) == 0 && Objects.equals(id, orderDTO.id) && status == orderDTO.status && Objects.equals(timestamp, orderDTO.timestamp) && Objects.equals(userId, orderDTO.userId) && Objects.equals(productIds, orderDTO.productIds);
+        return Double.compare(priceTotal, orderDTO.priceTotal) == 0 && Objects.equals(id, orderDTO.id) && status == orderDTO.status && Objects.equals(timestamp, orderDTO.timestamp) && Objects.equals(userId, orderDTO.userId) && Objects.equals(orderItemIds, orderDTO.orderItemIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, priceTotal, status, timestamp, userId, productIds);
+        return Objects.hash(id, priceTotal, status, timestamp, userId, orderItemIds);
     }
 }
 

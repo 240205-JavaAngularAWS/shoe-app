@@ -30,7 +30,7 @@ public class ProductController {
     // adding a Product
     @PostMapping("/products")
     public ResponseEntity<ProductDTO> addProduct(@RequestBody Product product){
-
+        // add product to seller
         ProductDTO addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.OK);
     }

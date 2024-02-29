@@ -1,2 +1,6 @@
-package com.revature.paymore.repository;public class CreditCardRepository {
+package com.revature.paymore.repository;
+
+public class CreditCardRepository {
+
+
 }

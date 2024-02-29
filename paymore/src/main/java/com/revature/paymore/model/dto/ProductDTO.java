@@ -20,6 +20,13 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
+    public ProductDTO(Long id, double price, Color color, int quantity) {
+        this.id = id;
+        this.price = price;
+        this.color = color;
+        this.quantity = quantity;
+    }
+
     public ProductDTO(Long id, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description) {
         this.id = id;
         this.price = price;
