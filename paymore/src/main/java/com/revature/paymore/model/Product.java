@@ -19,10 +19,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
-<<<<<<< HEAD
 
-=======
->>>>>>> 9ce7239d0e230c28f14a440453ec5d4852b8c7c0
     @Column(name="product_name")
     private String productName;
 
@@ -63,11 +60,8 @@ public class Product {
     private List<Review> reviews;
 
     public Product() {
-<<<<<<< HEAD
         // empty no args constructor
-=======
     }
-
 
     public Product(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
         this.id = id;
@@ -82,7 +76,6 @@ public class Product {
         this.description = description;
         this.seller = seller;
         this.reviews = reviews;
->>>>>>> 9ce7239d0e230c28f14a440453ec5d4852b8c7c0
     }
 
     public Long getId() {
@@ -182,9 +175,7 @@ public class Product {
         this.size = size;
     }
 
-<<<<<<< HEAD
 
-=======
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -197,7 +188,7 @@ public class Product {
     public int hashCode() {
         return Objects.hash(id, productName, size, price, color, gender, category, quantity, imageUrl, description, seller, reviews);
     }
->>>>>>> 9ce7239d0e230c28f14a440453ec5d4852b8c7c0
+
 
     @Override
     public String toString() {
@@ -217,17 +208,6 @@ public class Product {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Product product)) return false;
-        return Double.compare(size, product.size) == 0 && Double.compare(price, product.price) == 0 && quantity == product.quantity && Objects.equals(id, product.id) && Objects.equals(productName, product.productName) && color == product.color && gender == product.gender && category == product.category && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(description, product.description) && Objects.equals(seller, product.seller) && Objects.equals(reviews, product.reviews);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, productName, size, price, color, gender, category, quantity, imageUrl, description, seller, reviews);
-    }
 }
 
 
