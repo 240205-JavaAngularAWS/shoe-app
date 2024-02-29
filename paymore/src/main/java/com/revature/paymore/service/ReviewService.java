@@ -23,8 +23,9 @@ public class ReviewService {
 
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository){
+    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository){
         this.reviewRepository = reviewRepository;
+        this.productRepository = productRepository;
     }
     // validate the review
     public ReviewDTO addReview(Review review) throws EntityNotFoundException{
@@ -37,11 +38,11 @@ public class ReviewService {
         return new ReviewDTO(review);
     }
 
-    public List<ReviewDTO> getReviewsByProduct(Long productId){
+    public List<ReviewDTO> findReviewsByProductId(Long productId){
         // check to ensure Product exists.
         productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found.  No reviews"));
-        return reviewRepository.findReviewsByProduct(productId).stream().map(ReviewDTO::new).toList();
+        return reviewRepository.findByProductId(productId).stream().map(ReviewDTO::new).toList();
     }
 
 
@@ -51,6 +52,8 @@ public class ReviewService {
                     return true;})
                 .orElse(false);
     }
+
+
 
 
 

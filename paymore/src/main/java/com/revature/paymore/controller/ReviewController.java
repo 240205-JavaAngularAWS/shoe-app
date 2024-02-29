@@ -1,8 +1,6 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.model.Product;
 import com.revature.paymore.model.Review;
-import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +34,8 @@ public class ReviewController {
 
 
     @GetMapping("/reviews/product/{productId}")
-    public ResponseEntity<List<ReviewDTO>> getReviewsByProduct(@PathVariable Long productId){
-        List<ReviewDTO> response = reviewService.getReviewsByProduct(productId);
+    public ResponseEntity<List<ReviewDTO>> findReviewsByProductId(@PathVariable Long productId){
+        List<ReviewDTO> response = reviewService.findReviewsByProductId(productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
