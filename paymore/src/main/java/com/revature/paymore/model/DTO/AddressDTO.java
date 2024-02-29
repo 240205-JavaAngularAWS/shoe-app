@@ -1,6 +1,9 @@
 package com.revature.paymore.model.DTO;
 
 import com.revature.paymore.model.Address;
+import com.revature.paymore.model.enums.AddressType;
+
+import java.util.Objects;
 
 public class AddressDTO {
 
@@ -11,6 +14,8 @@ public class AddressDTO {
     private int zipCode;
     private Long userId;
     private Long sellerId;
+
+    private AddressType addressType;
 
 
     public AddressDTO() {
@@ -92,5 +97,39 @@ public class AddressDTO {
 
     public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
+    }
+
+    public AddressType getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(AddressType addressType) {
+        this.addressType = addressType;
+    }
+
+    @Override
+    public String toString() {
+        return "AddressDTO{" +
+                "id=" + id +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zipCode=" + zipCode +
+                ", userId=" + userId +
+                ", sellerId=" + sellerId +
+                ", addressType=" + addressType +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AddressDTO that)) return false;
+        return zipCode == that.zipCode && Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(userId, that.userId) && Objects.equals(sellerId, that.sellerId) && addressType == that.addressType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, address, city, state, zipCode, userId, sellerId, addressType);
     }
 }
