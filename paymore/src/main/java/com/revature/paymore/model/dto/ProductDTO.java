@@ -8,6 +8,8 @@ import com.revature.paymore.model.enums.Category;
 public class ProductDTO {
 
     private Long id;
+    private String productName;
+    private double size;
     private double price;
     private Color color;
     private Gender gender;
@@ -20,8 +22,10 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description) {
+    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description) {
         this.id = id;
+        this.productName = productName;
+        this.size = size;
         this.price = price;
         this.color = color;
         this.gender = gender;
@@ -31,11 +35,12 @@ public class ProductDTO {
         this.description = description;
     }
 
-
     // Constructor that converts a Product entity into a Product DTO
 
     public ProductDTO(Product product){
         this.id = product.getId();
+        this.productName = product.getProductName();
+        this.size = product.getSize();
         this.price = product.getPrice();
         this.color = product.getColor();
         this.gender = product.getGender();
@@ -113,11 +118,30 @@ public class ProductDTO {
         this.description = description;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
     // toString method for debugging purposes
+
     @Override
     public String toString() {
         return "ProductDTO{" +
                 "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", size=" + size +
                 ", price=" + price +
                 ", color=" + color +
                 ", gender=" + gender +
