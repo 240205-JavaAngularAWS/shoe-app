@@ -38,8 +38,6 @@ public class UserService {
 
     // register as a buyer/user
     public UserDTO registerUser(User user){
-
-
         // check if username exists
         if(userRepository.findByUsername(user.getUsername()).isPresent()){
             throw new UsernameAlreadyExistsException("Username already exists.");
