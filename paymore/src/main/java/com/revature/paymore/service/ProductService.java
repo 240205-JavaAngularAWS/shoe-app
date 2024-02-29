@@ -47,10 +47,6 @@ public class ProductService {
         return modelMapper.map(product, ProductDTO.class);
     }
 
-    private ProductDTO convertToDto2(Long id) {
-        return modelMapper.map(id, ProductDTO.class);
-    }
-
 
     private void validateProduct(Product product){
         Errors errors = new BeanPropertyBindingResult(product, "product");
