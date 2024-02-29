@@ -97,7 +97,7 @@ public class Review {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Review review)) return false;
-        return rating == review.rating && Objects.equals(id, review.id) && Objects.equals(content, review.content) && Objects.equals(product, review.product) && Objects.equals(user, review.user) && Objects.equals(reviewDate, review.reviewDate);
+        return rating == review.rating && Objects.equals(id, review.id) && Objects.equals(content, review.content) && Objects.equals(product, review.product) && Objects.equals(reviewDate, review.reviewDate);
     }
 
     @Override
