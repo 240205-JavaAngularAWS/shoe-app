@@ -12,8 +12,6 @@ import java.util.List;
 
 
 
-
-
 @Entity
 @Table(name = "products")
 public class Product {
@@ -21,6 +19,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
+    @Column(name="product_name")
+    private String productName;
+
+    @Column(name="product_size")
+    private double size;
+
 
     @Column(name = "price")
     private double price;
@@ -29,8 +33,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "color")
     private Color color;
-
-
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
@@ -56,14 +58,14 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Review> reviews;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Order> orders;
-
     public Product() {
     }
 
-    public Product(Long id, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews, List<Order> orders) {
+
+    public Product(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
         this.id = id;
+        this.productName = productName;
+        this.size = size;
         this.price = price;
         this.color = color;
         this.gender = gender;
@@ -73,21 +75,6 @@ public class Product {
         this.description = description;
         this.seller = seller;
         this.reviews = reviews;
-        this.orders = orders;
-    }
-
-
-    public Product(double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews, List<Order> orders) {
-        this.price = price;
-        this.color = color;
-        this.gender = gender;
-        this.category = category;
-        this.quantity = quantity;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.seller = seller;
-        this.reviews = reviews;
-        this.orders = orders;
     }
 
     public Long getId() {
@@ -170,30 +157,43 @@ public class Product {
         this.reviews = reviews;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+
+
+    public String getProductName() {
+        return productName;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Product product)) return false;
-        return Double.compare(getPrice(), product.getPrice()) == 0 && getQuantity() == product.getQuantity() && Objects.equals(getId(), product.getId()) && getColor() == product.getColor() && getGender() == product.getGender() && getCategory() == product.getCategory() && Objects.equals(getImageUrl(), product.getImageUrl()) && Objects.equals(getDescription(), product.getDescription()) && Objects.equals(getSeller(), product.getSeller()) && Objects.equals(getReviews(), product.getReviews()) && Objects.equals(getOrders(), product.getOrders());
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(size, product.size) == 0 && Double.compare(price, product.price) == 0 && quantity == product.quantity && Objects.equals(id, product.id) && Objects.equals(productName, product.productName) && color == product.color && gender == product.gender && category == product.category && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(description, product.description) && Objects.equals(seller, product.seller) && Objects.equals(reviews, product.reviews);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getPrice(), getColor(), getGender(), getCategory(), getQuantity(), getImageUrl(), getDescription(), getSeller(), getReviews(), getOrders());
+        return Objects.hash(id, productName, size, price, color, gender, category, quantity, imageUrl, description, seller, reviews);
     }
 
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", size=" + size +
                 ", price=" + price +
                 ", color=" + color +
                 ", gender=" + gender +
@@ -203,7 +203,6 @@ public class Product {
                 ", description='" + description + '\'' +
                 ", seller=" + seller +
                 ", reviews=" + reviews +
-                ", orders=" + orders +
                 '}';
     }
 }
