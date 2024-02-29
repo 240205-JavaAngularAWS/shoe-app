@@ -59,6 +59,8 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Order> orders;
 
+    public Product() {
+    }
 
     public Product(Long id, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews, List<Order> orders) {
         this.id = id;

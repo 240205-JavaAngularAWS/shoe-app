@@ -31,8 +31,10 @@ public class ProductDTO {
         this.description = description;
     }
 
+
     // Constructor that converts a Product entity into a Product DTO
-    public ProductDTO(Product product) {
+
+    public ProductDTO(Product product){
         this.id = product.getId();
         this.price = product.getPrice();
         this.color = product.getColor();
@@ -41,6 +43,8 @@ public class ProductDTO {
         this.quantity = product.getQuantity();
         this.imageUrl = product.getImageUrl();
         this.description = product.getDescription();
+
+
 
     }
 
