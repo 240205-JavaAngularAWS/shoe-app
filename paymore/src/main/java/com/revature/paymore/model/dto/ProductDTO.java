@@ -23,6 +23,7 @@ public class ProductDTO {
         // empty no args constructor
     }
 
+<<<<<<< HEAD
 
     public ProductDTO(Long id, String productName, double size, double price, Color color, int quantity) {
         this.id = id;
@@ -46,6 +47,8 @@ public class ProductDTO {
         this.description = description;
     }
 
+=======
+>>>>>>> 9ce7239d0e230c28f14a440453ec5d4852b8c7c0
     // Constructor that converts a Product entity into a Product DTO
 
     public ProductDTO(Product product){
