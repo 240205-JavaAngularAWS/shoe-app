@@ -60,7 +60,7 @@ public class Product {
     private List<Review> reviews;
 
     public Product() {
-        // empty no args constructor
+
     }
 
     public Product(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
@@ -76,6 +76,7 @@ public class Product {
         this.description = description;
         this.seller = seller;
         this.reviews = reviews;
+
     }
 
     public Long getId() {
@@ -207,6 +208,7 @@ public class Product {
                 ", reviews=" + reviews +
                 '}';
     }
+
 
 }
 
