@@ -28,10 +28,7 @@ public class Review {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    // Assuming reviews are linked to users
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+
 
     @Column(name = "review_date")
     private LocalDateTime reviewDate = LocalDateTime.now(); // Automatically set the review date
@@ -40,19 +37,17 @@ public class Review {
     }
 
     // Constructor without id for new review creation
-    public Review(String content, int rating, Product product, User user) {
+    public Review(String content, int rating, Product product) {
         this.content = content;
         this.rating = rating;
         this.product = product;
-        this.user = user;
     }
 
-    public Review(Long id, String content, int rating, Product product, User user, LocalDateTime reviewDate) {
+    public Review(Long id, String content, int rating, Product product, LocalDateTime reviewDate) {
         this.id = id;
         this.content = content;
         this.rating = rating;
         this.product = product;
-        this.user = user;
         this.reviewDate = reviewDate;
     }
 
@@ -88,13 +83,7 @@ public class Review {
         this.product = product;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public LocalDateTime getReviewDate() {
         return reviewDate;
@@ -113,7 +102,7 @@ public class Review {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, rating, product, user, reviewDate);
+        return Objects.hash(id, content, rating, product, reviewDate);
     }
 
     @Override
@@ -123,7 +112,6 @@ public class Review {
                 ", content='" + content + '\'' +
                 ", rating=" + rating +
                 ", product=" + product +
-                ", user=" + user +
                 ", reviewDate=" + reviewDate +
                 '}';
     }
