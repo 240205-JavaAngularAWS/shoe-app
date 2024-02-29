@@ -1,24 +1,18 @@
 package com.revature.paymore.service;
 
 import com.revature.paymore.model.Address;
-import com.revature.paymore.model.DTO.AddressDTO;
-import com.revature.paymore.model.DTO.UserDTO;
-import com.revature.paymore.model.User;
+import com.revature.paymore.model.dto.AddressDTO;
 import com.revature.paymore.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Service
 public class AddressService {
 
-    @Autowired
-    AddressRepository addressRepository;
 
+    private final AddressRepository addressRepository;
+
+    @Autowired
     public AddressService(AddressRepository addressRepository){
         this.addressRepository = addressRepository;
     }

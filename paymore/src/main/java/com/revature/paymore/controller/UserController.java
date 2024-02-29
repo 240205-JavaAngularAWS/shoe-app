@@ -1,6 +1,6 @@
 package com.revature.paymore.controller;
-import com.revature.paymore.model.DTO.LoginDTO;
-import com.revature.paymore.model.DTO.UserDTO;
+import com.revature.paymore.model.dto.LoginDTO;
+import com.revature.paymore.model.dto.UserDTO;
 import com.revature.paymore.model.User;
 import com.revature.paymore.service.UserService;
 import org.slf4j.Logger;
@@ -17,23 +17,29 @@ import java.util.List;
 
 @Controller
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+
     // registerUser
     @PostMapping("/registerUser")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody User user) {
         UserDTO response = userService.registerUser(user);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> response = userService.getAllUsers();
         return new ResponseEntity<>(response, HttpStatus.OK);
 
@@ -43,7 +49,7 @@ public class UserController {
 
 
     @PostMapping("/loginUser")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Long> loginUser(@RequestBody LoginDTO loginDTO) {
 
         long userId = userService.authenticateUser(loginDTO);
 

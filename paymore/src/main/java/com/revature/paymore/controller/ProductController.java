@@ -1,6 +1,6 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.model.DTO.ProductDTO;
+import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.service.ProductService;
 import org.slf4j.Logger;
@@ -17,15 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class ProductController {
 
-    @Autowired
+
     ProductService productService;
+
+    @Autowired
+    ProductController(ProductService productService){
+        this.productService = productService;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 
     // adding a Product
     @PostMapping("/products")
-    public ResponseEntity<?> addProduct(@RequestBody Product product){
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody Product product){
 
         ProductDTO addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.OK);
@@ -34,7 +39,7 @@ public class ProductController {
 
     // deleting a Product
     @DeleteMapping("/products/{productId}")
-    public ResponseEntity<?> deleteProductById(@PathVariable Long productId){
+    public ResponseEntity<String> deleteProductById(@PathVariable Long productId){
 
         boolean deleted = productService.deleteProduct(productId);
         if(!deleted){

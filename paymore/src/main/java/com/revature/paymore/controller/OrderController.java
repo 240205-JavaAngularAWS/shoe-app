@@ -1,7 +1,6 @@
 package com.revature.paymore.controller;
-import com.revature.paymore.model.DTO.OrderDTO;
+import com.revature.paymore.model.dto.OrderDTO;
 import com.revature.paymore.model.Order;
-import com.revature.paymore.service.AddressService;
 import com.revature.paymore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

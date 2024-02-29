@@ -1,7 +1,7 @@
 package com.revature.paymore.service;
 
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.model.DTO.ProductDTO;
+import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.Seller;
 import com.revature.paymore.model.enums.Category;
@@ -17,12 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService {
 
-    @Autowired
-    ProductRepository productRepository;
+
+    private final ProductRepository productRepository;
+
+
+    private final SellerRepository sellerRepository;
 
     @Autowired
-    SellerRepository sellerRepository;
-
     public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
         this.productRepository = productRepository;
         this.sellerRepository = sellerRepository;
@@ -31,10 +32,9 @@ public class ProductService {
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     public ProductDTO addProduct(Product product){
-
         // check if seller exists
-        Seller activeSeller = sellerRepository.findById(product.getSeller().getId())
-                .orElseThrow(() -> new EntityNotFoundException( " This product does not have any Seller " ));
+        sellerRepository.findById(product.getSeller().getId())
+                .orElseThrow(() -> new EntityNotFoundException(" This product does not have any Seller "));
 
         // check if price and quantity is greater than 0
         if(product.getPrice() < 0 && product.getQuantity() < 0){
@@ -46,6 +46,7 @@ public class ProductService {
             throw new BadRequestException("Product gender input is invalid");
         }
         // TODO: May need to be expanded if additional enum options are added to category
+
         if(product.getCategory() != Category.ATHLETIC && product.getCategory() != Category.CASUAL && product.getCategory() != Category.DRESS){
             throw new BadRequestException("Product category input is invalid");
         }

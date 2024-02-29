@@ -1,4 +1,4 @@
-package com.revature.paymore.model.DTO;
+package com.revature.paymore.model.dto;
 
 public class ReviewDTO {
 

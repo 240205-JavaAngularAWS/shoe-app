@@ -1,4 +1,4 @@
-package com.revature.paymore.model.DTO;
+package com.revature.paymore.model.dto;
 
 import com.revature.paymore.model.Address;
 import com.revature.paymore.model.enums.AddressType;
@@ -34,7 +34,7 @@ public class AddressDTO {
     // Constructor that accepts an Address entity
     public AddressDTO(Address address) {
         this.id = address.getId();
-        this.address = address.getAddress();
+        this.address = address.getAddressText();
         this.city = address.getCity();
         this.state = address.getState();
         this.zipCode = address.getZipCode();

@@ -8,8 +8,6 @@ import java.util.Objects;
 import java.util.Set;
 
 
-import java.util.Objects;
-
 
 @Entity
 @Table(name = "sellers")
