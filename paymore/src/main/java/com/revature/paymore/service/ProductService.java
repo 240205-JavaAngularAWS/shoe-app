@@ -1,22 +1,18 @@
 package com.revature.paymore.service;
 
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.exception.GlobalExceptionHandler;
 import com.revature.paymore.model.DTO.ProductDTO;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.Seller;
 import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.repository.ProductRepository;
-import com.revature.paymore.repository.ReviewRepository;
 import com.revature.paymore.repository.SellerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class ProductService {
@@ -34,9 +30,7 @@ public class ProductService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
-
-
-    public ProductDTO addProducts(Product product){
+    public ProductDTO addProduct(Product product){
 
         // check if seller exists
         Seller activeSeller = sellerRepository.findById(product.getSeller().getId())
@@ -51,7 +45,7 @@ public class ProductService {
         if(product.getGender() != Gender.MENS && product.getGender() != Gender.WOMENS){
             throw new BadRequestException("Product gender input is invalid");
         }
-
+        // TODO: May need to be expanded if additional enum options are added to category
         if(product.getCategory() != Category.ATHLETIC && product.getCategory() != Category.CASUAL && product.getCategory() != Category.DRESS){
             throw new BadRequestException("Product category input is invalid");
         }
@@ -68,7 +62,6 @@ public class ProductService {
                                 return true;})
                                 .orElse(false);
     }
-
 
 
 

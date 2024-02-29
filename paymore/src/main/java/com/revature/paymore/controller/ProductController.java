@@ -23,18 +23,18 @@ public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 
-    // adding Products
+    // adding a Product
     @PostMapping("/products")
-    public ResponseEntity<?> addProducts(@RequestBody Product product){
+    public ResponseEntity<?> addProduct(@RequestBody Product product){
 
-        ProductDTO addedProduct = productService.addProducts(product);
+        ProductDTO addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.OK);
     }
 
 
-    // deleting Products
+    // deleting a Product
     @DeleteMapping("/products/{productId}")
-    public ResponseEntity<?> deleteProducts(@PathVariable Long productId){
+    public ResponseEntity<?> deleteProductById(@PathVariable Long productId){
 
         boolean deleted = productService.deleteProduct(productId);
         if(!deleted){
