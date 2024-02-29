@@ -27,18 +27,21 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
-
-
     @ExceptionHandler(InvalidOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleInvalidOrderException(InvalidOrderException ex){
         return ex.getMessage();
     }
 
-
     @ExceptionHandler(InvalidSellerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleInvalidSellerException(InvalidSellerException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(InvalidProductException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleInvalidProductException(InvalidProductException ex){
         return ex.getMessage();
     }
 
