@@ -1,5 +1,6 @@
 package com.revature.paymore.model.DTO;
 
+import com.revature.paymore.model.Product;
 import com.revature.paymore.model.enums.Color;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Category;
@@ -28,6 +29,23 @@ public class ProductDTO {
         this.quantity = quantity;
         this.imageUrl = imageUrl;
         this.description = description;
+    }
+
+
+    // Constructor that converts a Product entity into a Product DTO
+
+    public ProductDTO(Product product){
+        this.id = product.getId();
+        this.price = product.getPrice();
+        this.color = product.getColor();
+        this.gender = product.getGender();
+        this.category = product.getCategory();
+        this.quantity = product.getQuantity();
+        this.imageUrl = product.getImageUrl();
+        this.description = product.getDescription();
+
+
+
     }
 
     // Getters and Setters

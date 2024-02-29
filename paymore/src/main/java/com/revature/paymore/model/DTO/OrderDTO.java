@@ -14,8 +14,8 @@ public class OrderDTO {
     private double priceTotal;
     private Status status;
     private LocalDateTime timestamp;
-    private Long userId; // Assuming you only want to expose the user ID
-    private Set<Long> productIds; // A set of product IDs included in the order
+    private Long userId;
+    private Set<Long> productIds; // product IDs included in the order
 
     // Default constructor
     public OrderDTO() {
