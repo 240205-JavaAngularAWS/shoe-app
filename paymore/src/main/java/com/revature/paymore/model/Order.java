@@ -30,27 +30,39 @@ public class Order {
     private LocalDateTime timestamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_product", // The join table name
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private Set<Product> products;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "order_product", // The join table name
+//            joinColumns = @JoinColumn(name = "order_id"),
+//            inverseJoinColumns = @JoinColumn(name = "product_id")
+//    )
 
-    public Order() {
+    @OneToMany(mappedBy = "order")
+    private Set<OrderItem> orderItems;
+
+    public Order(User user, Set<OrderItem> orderItems) {
+        this.user = user;
+        this.status = Status.PENDING;
+        this.orderItems = orderItems;
     }
 
-    public Order(Long id, double priceTotal, Status status, LocalDateTime timestamp, User user, Set<Product> products) {
+    public Order(Long id, double priceTotal, Status status, LocalDateTime timestamp, User user, Set<OrderItem> orderItems) {
         this.id = id;
         this.priceTotal = priceTotal;
         this.status = status;
         this.timestamp = timestamp;
         this.user = user;
-        this.products = products;
+        this.orderItems = orderItems;
+    }
+
+    public Order(Status status, LocalDateTime timestamp, User user, Set<OrderItem> orderItems) {
+        this.status = status;
+        this.timestamp = timestamp;
+        this.user = user;
+        this.orderItems = orderItems;
     }
 
 
@@ -96,12 +108,24 @@ public class Order {
         this.user = user;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
+    public void addOrderItem(OrderItem orderItem){
+        this.orderItems.add(orderItem);
+        orderItem.setOrder(this);
+
+    }
+
+    public void removeOrderItem(OrderItem orderItem){
+        this.orderItems.remove(orderItem);
+        orderItem.setOrder(null);
+
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
 
@@ -110,12 +134,12 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order orders = (Order) o;
-        return Double.compare(priceTotal, orders.priceTotal) == 0 && Objects.equals(id, orders.id) && status == orders.status && Objects.equals(timestamp, orders.timestamp) && Objects.equals(user, orders.user) && Objects.equals(products, orders.products);
+        return Double.compare(priceTotal, orders.priceTotal) == 0 && Objects.equals(id, orders.id) && status == orders.status && Objects.equals(timestamp, orders.timestamp) && Objects.equals(user, orders.user) && Objects.equals(orderItems, orders.orderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, priceTotal, status, timestamp, user, products);
+        return Objects.hash(id, priceTotal, status, timestamp, user, orderItems);
     }
 
 
@@ -127,7 +151,7 @@ public class Order {
                 ", status=" + status +
                 ", timestamp=" + timestamp +
                 ", user=" + user +
-                ", products=" + products +
+                ", products=" + orderItems +
                 '}';
     }
 }

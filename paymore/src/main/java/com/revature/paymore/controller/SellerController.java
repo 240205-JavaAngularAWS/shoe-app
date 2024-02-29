@@ -37,7 +37,7 @@ public class SellerController {
 
 
     @PostMapping("/loginSeller")
-    public ResponseEntity<?> loginSeller(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Long> loginSeller(@RequestBody LoginDTO loginDTO) {
 
         long userId = sellerService.authenticateSeller(loginDTO);
 
