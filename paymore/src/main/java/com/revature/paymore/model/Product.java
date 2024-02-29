@@ -12,8 +12,6 @@ import java.util.List;
 
 
 
-
-
 @Entity
 @Table(name = "products")
 public class Product {
@@ -21,15 +19,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
-
-<<<<<<< HEAD
     @Column(name="product_name")
     private String productName;
 
     @Column(name="product_size")
     private double size;
-=======
->>>>>>> 8dcd10d4003ae7d723ff68a19d2c97bec901790d
+
 
     @Column(name = "price")
     private double price;
@@ -66,29 +61,11 @@ public class Product {
     public Product() {
     }
 
-<<<<<<< HEAD
-    public Product(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews, List<Order> orders) {
+
+    public Product(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
         this.id = id;
         this.productName = productName;
         this.size = size;
-=======
-    public Product(Long id, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
-        this.id = id;
-        this.price = price;
-        this.color = color;
-        this.gender = gender;
-        this.category = category;
-        this.quantity = quantity;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.seller = seller;
-        this.reviews = reviews;
-
-    }
-
-
-    public Product(double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
->>>>>>> 8dcd10d4003ae7d723ff68a19d2c97bec901790d
         this.price = price;
         this.color = color;
         this.gender = gender;
@@ -201,25 +178,15 @@ public class Product {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-<<<<<<< HEAD
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Double.compare(size, product.size) == 0 && Double.compare(price, product.price) == 0 && quantity == product.quantity && Objects.equals(id, product.id) && Objects.equals(productName, product.productName) && color == product.color && gender == product.gender && category == product.category && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(description, product.description) && Objects.equals(seller, product.seller) && Objects.equals(reviews, product.reviews) && Objects.equals(orders, product.orders);
-=======
-        if (!(o instanceof Product product)) return false;
-        return Double.compare(getPrice(), product.getPrice()) == 0 && getQuantity() == product.getQuantity() && Objects.equals(getId(), product.getId()) && getColor() == product.getColor() && getGender() == product.getGender() && getCategory() == product.getCategory() && Objects.equals(getImageUrl(), product.getImageUrl()) && Objects.equals(getDescription(), product.getDescription()) && Objects.equals(getSeller(), product.getSeller()) && Objects.equals(getReviews(), product.getReviews());
->>>>>>> 8dcd10d4003ae7d723ff68a19d2c97bec901790d
+        return Double.compare(size, product.size) == 0 && Double.compare(price, product.price) == 0 && quantity == product.quantity && Objects.equals(id, product.id) && Objects.equals(productName, product.productName) && color == product.color && gender == product.gender && category == product.category && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(description, product.description) && Objects.equals(seller, product.seller) && Objects.equals(reviews, product.reviews);
     }
 
     @Override
     public int hashCode() {
-<<<<<<< HEAD
-        return Objects.hash(id, productName, size, price, color, gender, category, quantity, imageUrl, description, seller, reviews, orders);
-=======
-        return Objects.hash(getId(), getPrice(), getColor(), getGender(), getCategory(), getQuantity(), getImageUrl(), getDescription(), getSeller(), getReviews());
->>>>>>> 8dcd10d4003ae7d723ff68a19d2c97bec901790d
+        return Objects.hash(id, productName, size, price, color, gender, category, quantity, imageUrl, description, seller, reviews);
     }
-
 
     @Override
     public String toString() {
