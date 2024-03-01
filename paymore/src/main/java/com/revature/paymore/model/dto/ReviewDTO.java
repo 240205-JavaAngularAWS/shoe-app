@@ -19,12 +19,17 @@ public class ReviewDTO {
         this.productId = productId;
     }
 
+    public ReviewDTO(String content, int rating, Long productId) {
+        this.content = content;
+        this.rating = rating;
+        this.productId = productId;
+    }
+
     // Constructor that converts a Review entity to ReviewDTO
-    public ReviewDTO(com.revature.paymore.model.Review review) {
-        this.id = review.getId();
-        this.content = review.getContent();
-        this.rating = review.getRating();
-        this.productId = review.getProduct() != null ? review.getProduct().getId() : null;
+
+    public ReviewDTO(int rating, Long productId) {
+        this.rating = rating;
+        this.productId = productId;
     }
 
     // Getters and Setters

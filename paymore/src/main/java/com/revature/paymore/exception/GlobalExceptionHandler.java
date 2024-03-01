@@ -45,4 +45,17 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(InvalidReviewException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleInvalidReviewException(InvalidReviewException ex){
+        return ex.getMessage();
+    }
+
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleNullPointerException(NullPointerException ex){
+        return ex.getMessage();
+    }
+
 }

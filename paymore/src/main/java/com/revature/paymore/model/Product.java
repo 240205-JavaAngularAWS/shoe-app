@@ -176,6 +176,17 @@ public class Product {
         this.size = size;
     }
 
+    public void addReview(Review review){
+        this.reviews.add(review);
+        review.setProduct(this);
+
+    }
+    public void removeReview(Review review){
+        this.reviews.remove(review);
+        review.setProduct(null);
+
+    }
+
 
     @Override
     public boolean equals(Object o) {

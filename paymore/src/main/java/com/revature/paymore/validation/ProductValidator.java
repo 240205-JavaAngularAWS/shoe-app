@@ -54,7 +54,7 @@ public class ProductValidator implements Validator {
             errors.rejectValue("category", "category.invalid", "Invalid category specified");
         }
 
-        // TODO: May need to be expanded if additional enum options are added to category
+
 
 
 
