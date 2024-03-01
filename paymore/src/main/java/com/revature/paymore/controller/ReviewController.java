@@ -1,9 +1,7 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.model.Review;
 import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ReviewService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
