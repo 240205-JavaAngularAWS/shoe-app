@@ -4,6 +4,7 @@ import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ProductService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ProductController {
 
     // adding a Product
     @PostMapping("/products")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody Product product){
+    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody Product product){
         // add product to seller
         ProductDTO addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.OK);

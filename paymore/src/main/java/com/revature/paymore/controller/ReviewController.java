@@ -3,6 +3,7 @@ import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.Review;
 import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ReviewService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ReviewController {
 
 
     @PostMapping("/reviews")
-    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDto){
+    public ResponseEntity<ReviewDTO> addReview(@Valid @RequestBody ReviewDTO reviewDto){
         logger.info(reviewDto.toString());
         ReviewDTO response = reviewService.addReview(reviewDto);
         return new ResponseEntity<>(response, HttpStatus.OK);

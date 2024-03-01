@@ -4,6 +4,7 @@ package com.revature.paymore.controller;
 import com.revature.paymore.model.Address;
 import com.revature.paymore.model.dto.AddressDTO;
 import com.revature.paymore.service.AddressService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class AddressController {
 
 
     @PostMapping("/registerAddress")
-    public ResponseEntity<AddressDTO> registerAddress(@RequestBody Address address){
+    public ResponseEntity<AddressDTO> registerAddress(@Valid @RequestBody Address address){
         AddressDTO response = addressService.registerAddress(address);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 

@@ -4,6 +4,7 @@ import com.revature.paymore.model.dto.SellerDTO;
 import com.revature.paymore.model.Seller;
 import com.revature.paymore.model.dto.UserDTO;
 import com.revature.paymore.service.SellerService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SellerController {
 
 
     @PostMapping("/registerSeller")
-    public ResponseEntity<SellerDTO> registerSeller(@RequestBody Seller seller){
+    public ResponseEntity<SellerDTO> registerSeller(@Valid @RequestBody Seller seller){
         SellerDTO response = sellerService.registerSeller(seller);
         logger.info(response.toString());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -48,7 +49,7 @@ public class SellerController {
     }
 
     @PostMapping("/loginSeller")
-    public ResponseEntity<Long> loginSeller(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Long> loginSeller(@Valid @RequestBody LoginDTO loginDTO) {
 
         long userId = sellerService.authenticateSeller(loginDTO);
 

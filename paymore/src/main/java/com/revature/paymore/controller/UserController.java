@@ -3,6 +3,7 @@ import com.revature.paymore.model.dto.LoginDTO;
 import com.revature.paymore.model.dto.UserDTO;
 import com.revature.paymore.model.User;
 import com.revature.paymore.service.UserService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UserController {
 
     // registerUser
     @PostMapping("/registerUser")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody User user) {
         UserDTO response = userService.registerUser(user);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
@@ -49,7 +50,7 @@ public class UserController {
 
 
     @PostMapping("/loginUser")
-    public ResponseEntity<Long> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<Long> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
 
         long userId = userService.authenticateUser(loginDTO);
 

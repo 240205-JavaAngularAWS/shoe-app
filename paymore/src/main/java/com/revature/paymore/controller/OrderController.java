@@ -4,6 +4,7 @@ import com.revature.paymore.model.Order;
 import com.revature.paymore.model.dto.OrderItemDTO;
 import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class OrderController {
 
 
     @PostMapping("/order")
-    public ResponseEntity<OrderDTO> registerCart(@RequestBody Order order){
+    public ResponseEntity<OrderDTO> registerCart(@Valid @RequestBody Order order){
         // A cart is a pending order.
         OrderDTO response = orderService.registerCart(order);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -37,7 +38,7 @@ public class OrderController {
 
     // add product to order
     @PutMapping("/order/item")
-    public ResponseEntity<OrderDTO> addItemToCart(@RequestBody OrderItemDTO orderItemDto){
+    public ResponseEntity<OrderDTO> addItemToCart(@Valid @RequestBody OrderItemDTO orderItemDto){
         OrderDTO response = orderService.addItemToCart(orderItemDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
