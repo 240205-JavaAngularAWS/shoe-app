@@ -30,9 +30,16 @@ public class ReviewController {
 
     @PostMapping("/reviews")
     public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDto){
-        logger.info(reviewDto.toString());
         ReviewDTO response = reviewService.addReview(reviewDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/reviews/all")
+    public ResponseEntity<List<ReviewDTO>> findAllReviews(){
+        List<ReviewDTO> response = reviewService.findAllReviews();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 

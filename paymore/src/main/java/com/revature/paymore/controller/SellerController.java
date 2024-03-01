@@ -35,7 +35,6 @@ public class SellerController {
     @PostMapping("/registerSeller")
     public ResponseEntity<SellerDTO> registerSeller(@RequestBody Seller seller){
         SellerDTO response = sellerService.registerSeller(seller);
-        logger.info(response.toString());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
