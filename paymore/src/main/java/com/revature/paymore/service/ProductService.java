@@ -1,11 +1,7 @@
 package com.revature.paymore.service;
-
-import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.exception.InvalidProductException;
 import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
-import com.revature.paymore.model.enums.Category;
-import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.repository.ProductRepository;
 import com.revature.paymore.repository.SellerRepository;
 import com.revature.paymore.validation.ProductValidator;
@@ -19,7 +15,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductService {

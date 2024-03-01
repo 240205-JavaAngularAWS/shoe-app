@@ -26,14 +26,7 @@ public class ReviewService {
 
     ReviewRepository reviewRepository;
     ProductRepository productRepository;
-
     ValidationService validationService;
-
-    ModelMapper modelMapper;
-
-    private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
-
-
 
     @Autowired
     public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository, ValidationService validationService) {
@@ -42,20 +35,31 @@ public class ReviewService {
         this.validationService = validationService;
     }
 
+
+    private ModelMapper modelMapper = new ModelMapper();
+
+    private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
+
     public ReviewDTO addReview(ReviewDTO reviewDto) throws EntityNotFoundException{
        if(reviewDto == null){
            throw new NullPointerException("Object cannot be empty.");
        }
-       logger.info(reviewDto.toString());
-        // convert DTO to review.
-        Review review = new Review();
-
-        // validate review object
-        validationService.validateReview(review);
 
         // check if product exists
-        Product product = productRepository.findById(review.getProduct().getId())
+        Product product = productRepository.findById(reviewDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException(" This product does not have any Seller "));
+
+        // convert DTO to review.
+        Review review = new Review(reviewDto.getContent(),
+                                    reviewDto.getRating(),
+                                    product);
+
+
+
+        // validate review object
+
+
+
 
         // get local timestamp
         review.setReviewDate(LocalDateTime.now());
@@ -76,6 +80,13 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found.  No reviews"));
         return reviewRepository.findByProductId(productId).stream().map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
     }
+
+    public List<ReviewDTO> findAllReviews(){
+        return reviewRepository.findAll().stream().map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
+    }
+
+
+
 
 
     public boolean deleteReview(long reviewId){
