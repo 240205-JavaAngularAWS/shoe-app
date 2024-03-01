@@ -64,7 +64,7 @@ public class ProductService {
 
         validateProduct(product);
         productRepository.save(product);
-        return new ProductDTO(product);
+        return modelMapper.map(product, ProductDTO.class);
     }
 
 
@@ -80,15 +80,14 @@ public class ProductService {
     public List<ProductDTO> getAllProducts(){
         List<Product> products = productRepository.findAll();
         return products.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+                .map(this::convertToDto).toList();
     }
 
 
     public List<ProductDTO> findProductsBySellerID(Long sellerId){
         sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new EntityNotFoundException("There is no product because seller wasn't found"));
-        return productRepository.findBySellerId(sellerId).stream().map(ProductDTO::new).toList();
+        return productRepository.findBySellerId(sellerId).stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
     }
 
 

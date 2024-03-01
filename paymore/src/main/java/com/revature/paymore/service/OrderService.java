@@ -12,6 +12,7 @@ import com.revature.paymore.repository.OrderRepository;
 import com.revature.paymore.repository.ProductRepository;
 import com.revature.paymore.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     private final OrderItemRepository orderItemRepository;
+
+    private ModelMapper modelMapper = new ModelMapper();
 
 
     @Autowired
@@ -61,7 +64,7 @@ public class OrderService {
             throw new InvalidOrderException("Invalid Status. Status must be PENDING for Carts");
         }
         orderRepository.save(order);
-        return new OrderDTO(order);
+        return modelMapper.map(order, OrderDTO.class);
 
     }
 
@@ -81,13 +84,15 @@ public class OrderService {
         checkStock(product.getQuantity(), orderItemDto.getQuantity());
 
         // create new order item
-        OrderItem orderItem = convertOrderItemToEntity(orderItemDto);
-
+        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
+        // save new order item
         orderItemRepository.save(orderItem);
+
+        // add to order
         order.addOrderItem(orderItem);
         orderRepository.save(order);
 
-        return new OrderDTO(order);
+        return modelMapper.map(order, OrderDTO.class);
 
     }
 

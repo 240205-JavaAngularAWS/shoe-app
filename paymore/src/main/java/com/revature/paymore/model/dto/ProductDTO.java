@@ -18,10 +18,42 @@ public class ProductDTO {
     private String imageUrl;
     private String description;
 
+    private Long sellerId;
+
     // Constructors
     public ProductDTO() {
         // empty no args constructor
     }
+
+
+
+    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Long sellerId) {
+        this.id = id;
+        this.productName = productName;
+        this.size = size;
+        this.price = price;
+        this.color = color;
+        this.gender = gender;
+        this.category = category;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.sellerId = sellerId;
+    }
+
+    public ProductDTO(String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Long sellerId) {
+        this.productName = productName;
+        this.size = size;
+        this.price = price;
+        this.color = color;
+        this.gender = gender;
+        this.category = category;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+        this.description = description;
+        this.sellerId = sellerId;
+    }
+
     // Constructor that converts a Product entity into a Product DTO
 
     public ProductDTO(Product product){
@@ -35,8 +67,6 @@ public class ProductDTO {
         this.quantity = product.getQuantity();
         this.imageUrl = product.getImageUrl();
         this.description = product.getDescription();
-
-
 
     }
 

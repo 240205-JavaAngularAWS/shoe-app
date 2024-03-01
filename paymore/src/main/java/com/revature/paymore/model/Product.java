@@ -63,7 +63,6 @@ public class Product {
 
     }
 
-
     public Product(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Seller seller, List<Review> reviews) {
         this.id = id;
         this.productName = productName;
