@@ -3,7 +3,8 @@ import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Color;
 import com.revature.paymore.model.enums.Category;
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.URL;
 
 
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
+    @NotBlank(message = "Product name cannot be blank")
     @Column(name="product_name")
     private String productName;
 
@@ -27,28 +29,36 @@ public class Product {
     private double size;
 
 
+    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     @Column(name = "price")
     private double price;
 
-
+    @NotNull(message = "Must select a color")
     @Enumerated(EnumType.STRING)
     @Column(name = "color")
     private Color color;
 
+    @NotNull(message = "Must select a gender")
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
 
+    @NotNull(message = "Must select a category")
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
     private Category category;
 
+    @Min(value = 1, message = "Quantity must be at least 1")
     @Column(name = "quantity")
     private int quantity;
 
+    @URL(message = "Invalid image URL")
+    @Pattern(regexp = ".*\\.(jpg|png|jpeg|gif)$", message="Image URL must end with a valid image extension (.jpg, .png, .jpeg, .gif)")
     @Column(name = "image")
     private String imageUrl;
 
+    @NotBlank(message = "Description cannot be blank")
+    @Size(min = 10, max = 500, message = "Description should be between 10 and 500 characters")
     @Column(name = "description")
     private String description;
 

@@ -2,6 +2,8 @@ package com.revature.paymore.model;
 
 import com.revature.paymore.model.enums.Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -17,10 +19,12 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
+    @DecimalMin(value = "0.01", message = "Price total must be greater than 0")
     @Column(name = "price_total")
     private double priceTotal;
 
 
+    @NotNull(message = "Order status must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;

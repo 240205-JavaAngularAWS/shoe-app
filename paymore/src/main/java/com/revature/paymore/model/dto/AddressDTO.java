@@ -11,7 +11,7 @@ public class AddressDTO {
     private String address;
     private String city;
     private String state;
-    private int zipCode;
+    private String zipCode;
     private Long userId;
     private Long sellerId;
 
@@ -21,7 +21,7 @@ public class AddressDTO {
     public AddressDTO() {
     }
 
-    public AddressDTO(Long id, String address, String city, String state, int zipCode, Long userId, Long sellerId) {
+    public AddressDTO(Long id, String address, String city, String state, String zipCode, Long userId, Long sellerId) {
         this.id = id;
         this.address = address;
         this.city = city;
@@ -75,11 +75,11 @@ public class AddressDTO {
         this.state = state;
     }
 
-    public int getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -125,7 +125,7 @@ public class AddressDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AddressDTO that)) return false;
-        return zipCode == that.zipCode && Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(userId, that.userId) && Objects.equals(sellerId, that.sellerId) && addressType == that.addressType;
+        return Objects.equals(zipCode, that.zipCode) && Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(userId, that.userId) && Objects.equals(sellerId, that.sellerId) && addressType == that.addressType;
     }
 
     @Override
