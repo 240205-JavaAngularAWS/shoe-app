@@ -1,4 +1,5 @@
 package com.revature.paymore.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -77,6 +78,17 @@ public class User {
         this.addresses = addresses;
         this.orders = orders;
     }
+
+
+    public User(String firstName, String lastName, String email, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+
+    }
+
 
 
     public Long getId() {

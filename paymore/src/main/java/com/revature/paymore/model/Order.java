@@ -1,5 +1,6 @@
 package com.revature.paymore.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.revature.paymore.model.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
@@ -19,7 +20,7 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @DecimalMin(value = "0.01", message = "Price total must be greater than 0")
+//    @DecimalMin(value = "0.01", message = "Price total must be greater than 0")
     @Column(name = "price_total")
     private double priceTotal;
 
@@ -33,25 +34,15 @@ public class Order {
     @Column(name = "time_stamp")
     private LocalDateTime timestamp;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "order_product", // The join table name
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "product_id")
-//    )
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     private Set<OrderItem> orderItems;
 
-    public Order(User user, Set<OrderItem> orderItems) {
-        this.user = user;
-        this.status = Status.PENDING;
-        this.orderItems = orderItems;
-    }
+
 
     public Order(Long id, double priceTotal, Status status, LocalDateTime timestamp, User user, Set<OrderItem> orderItems) {
         this.id = id;
@@ -62,11 +53,18 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    public Order(Status status, LocalDateTime timestamp, User user, Set<OrderItem> orderItems) {
+    public Order(double priceTotal, Status status, LocalDateTime timestamp, User user, Set<OrderItem> orderItems) {
+        this.priceTotal = priceTotal;
         this.status = status;
         this.timestamp = timestamp;
         this.user = user;
         this.orderItems = orderItems;
+    }
+    public Order(double priceTotal, Status status, LocalDateTime timestamp, User user) {
+        this.priceTotal = priceTotal;
+        this.status = status;
+        this.timestamp = timestamp;
+        this.user = user;
     }
 
     public Order() {
@@ -142,10 +140,7 @@ public class Order {
         return Double.compare(priceTotal, orders.priceTotal) == 0 && Objects.equals(id, orders.id) && status == orders.status && Objects.equals(timestamp, orders.timestamp) && Objects.equals(user, orders.user) && Objects.equals(orderItems, orders.orderItems);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, priceTotal, status, timestamp, user, orderItems);
-    }
+
 
 
     @Override
@@ -155,7 +150,6 @@ public class Order {
                 ", priceTotal=" + priceTotal +
                 ", status=" + status +
                 ", timestamp=" + timestamp +
-                ", user=" + user +
                 ", products=" + orderItems +
                 '}';
     }

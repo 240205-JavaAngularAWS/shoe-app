@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ReviewController {
 
 
@@ -35,6 +35,7 @@ public class ReviewController {
     @PostMapping("/reviews")
     public ResponseEntity<?> addReview(@Valid @RequestBody ReviewDTO reviewDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
+            // using DTO so we don't have to use the entire Product object in schema.
             return responseHelperService.getBindingErrors(bindingResult);
         }
         logger.info(reviewDto.toString());

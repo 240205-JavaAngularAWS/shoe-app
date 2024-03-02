@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@Controller
+@RestController
 public class CreditCardController {
 
     private final CreditCardService creditCardService;
@@ -30,6 +30,7 @@ public class CreditCardController {
 
     @PostMapping("/creditcards")
     public ResponseEntity<?> addCreditCard(@Valid @RequestBody CreditCardDTO creditCardDto, BindingResult bindingResult){
+        // Using DTO so we don't have to use the entire User object.
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
         }

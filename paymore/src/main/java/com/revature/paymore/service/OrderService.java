@@ -1,4 +1,5 @@
 package com.revature.paymore.service;
+import com.revature.paymore.exception.EntityAlreadyExistsException;
 import com.revature.paymore.exception.InvalidEntityException;
 import com.revature.paymore.exception.StockException;
 import com.revature.paymore.model.OrderItem;
@@ -14,8 +15,13 @@ import com.revature.paymore.repository.ProductRepository;
 import com.revature.paymore.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -27,6 +33,8 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
 
     @Autowired
@@ -40,73 +48,89 @@ public class OrderService {
 
 
     // register new order.
-    public OrderDTO registerCart(Order order){
+    public OrderDTO registerCart(OrderDTO orderDto){
+        // registers a pending order as a cart.
         // check if user exists.
-        userRepository.findById(order.getUser().getId())
-                        .orElseThrow(() -> new EntityNotFoundException("User Not Found."));
-        if(order.getStatus() != Status.PENDING){
-            throw new InvalidEntityException("Invalid Status. Status must be PENDING for Carts");
-        }
-        orderRepository.save(order);
-        return modelMapper.map(order, OrderDTO.class);
+        User user = userRepository.findById(orderDto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found."));
 
+        // make sure User does not have a currently pending order, which means they have an active cart.
+        boolean hasPendingOrder = user.getOrders().stream()
+                .anyMatch(order -> order.getStatus() == Status.PENDING);
+
+        if(hasPendingOrder){
+            // remove one
+            throw new EntityAlreadyExistsException("A cart is already present. Please use existing cart.");
+        } else {
+            Order order = new Order(orderDto.getPriceTotal(),
+                    Status.PENDING,
+                    null,
+                    user);
+
+            orderRepository.save(order);
+            Order existingOrder = orderRepository.findByUserAndStatus(user, Status.PENDING).get(0);
+
+            user.addOrder(existingOrder);
+            userRepository.save(user);
+
+            return modelMapper.map(order, OrderDTO.class);
+        }
     }
 
     public void checkOrderItem(OrderItem orderItem, Product product) {
         double expectedTotalPrice = product.getPrice() * orderItem.getQuantity();
-        double actualTotalPrice = orderItem.getPriceTotal();
+        double actualTotalPrice = orderItem.getPrice();
 
         // Allow for a small difference to account for floating-point arithmetic issues
         final double EPSILON = 0.01;
 
         if (Math.abs(expectedTotalPrice - actualTotalPrice) > EPSILON) {
             // If the difference is greater than the allowed margin, adjust the price
-            orderItem.setPriceTotal(expectedTotalPrice);
+            orderItem.setPrice(expectedTotalPrice);
             orderItemRepository.save(orderItem);
         }
     }
 
 
 
-    public OrderDTO addItemToCart(OrderItemDTO orderItemDto){
+    @Transactional
+    public OrderDTO addItemToCart(OrderItemDTO orderItemDto) {
+        logger.info("Adding Item to Cart: {}", orderItemDto);
+        Order order = validateAndGetOrder(orderItemDto.getOrderId());
+        Product product = validateAndGetProduct(orderItemDto.getProductId());
 
-        // check order exists
-        Order order = orderRepository.findById(orderItemDto.getOrderId())
-                .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
-        // check order status
-        // Only an order with a PENDING status is considered a cart.
-        if(order.getStatus() != Status.PENDING){
-            throw new InvalidEntityException("Invalid Status. Status must be PENDING.");
-        }
-        // check product
-        Product product = productRepository.findById(orderItemDto.getProductId())
-                .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
-
-        // create new order item
-        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
-
-        // check stock
-        checkStock(product.getQuantity(), orderItem.getQuantity());
-
-        // ensure price is accurate
-        checkOrderItem(orderItem, product);
-
-        // get orderItem price and add to total order price
-        double updatedOrderPrice = order.getPriceTotal() + (orderItemDto.getQuantity() *  orderItemDto.getPriceTotal());
-
-        // update order price total
-        order.setPriceTotal(updatedOrderPrice);
-
-        // save new order item
-        orderItemRepository.save(orderItem);
-
-        // add to order
+        OrderItem orderItem = createOrderItem(orderItemDto, product);
+        updateOrderTotalPrice(order, orderItem);
         order.addOrderItem(orderItem);
+
         orderRepository.save(order);
-
         return modelMapper.map(order, OrderDTO.class);
-
     }
+
+    private Order validateAndGetOrder(Long orderId) {
+        return orderRepository.findById(orderId)
+                .filter(order -> order.getStatus() == Status.PENDING)
+                .orElseThrow(() -> new EntityNotFoundException("Order Not Found or Invalid Status"));
+    }
+
+    private Product validateAndGetProduct(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
+    }
+
+    private OrderItem createOrderItem(OrderItemDTO dto, Product product) {
+        OrderItem orderItem = modelMapper.map(dto, OrderItem.class);
+        orderItem.setProductId(product.getId());
+        checkStock(product.getQuantity(), orderItem.getQuantity());
+        return orderItemRepository.save(orderItem);
+    }
+
+    private void updateOrderTotalPrice(Order order, OrderItem item) {
+        double updatedPrice = order.getPriceTotal() + (item.getQuantity() * item.getPrice());
+        order.setPriceTotal(updatedPrice);
+    }
+
+
 
     public OrderDTO removeItemFromCart(long orderItemId){
         // check order exists
@@ -120,7 +144,7 @@ public class OrderService {
         order.removeOrderItem(orderItem);
 
         // update Price total
-        double updatedOrderPrice = order.getPriceTotal() - (orderItem.getQuantity() *  orderItem.getPriceTotal());
+        double updatedOrderPrice = order.getPriceTotal() - (orderItem.getQuantity() *  orderItem.getPrice());
         order.setPriceTotal(updatedOrderPrice);
 
 
@@ -177,6 +201,34 @@ public class OrderService {
         orderRepository.save(order);
         return modelMapper.map(order, OrderDTO.class);
     }
+
+
+    public List<OrderDTO> findCartByUser(long userId){
+        User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        return orderRepository.findByUserAndStatus(user, Status.PENDING).stream()
+                .map(order ->  modelMapper.map(order, OrderDTO.class)).toList();
+
+
+
+    }
+
+    public boolean deleteOrder(long orderId){
+        return orderRepository.findById(orderId)
+                .map(user -> { orderRepository.deleteById(orderId);
+                    return true;})
+                .orElse(false);
+    }
+
+
+    public List<OrderItemDTO> findOrderItemsByOrder(long orderId){
+        Order order = orderRepository.findById(orderId)
+                        .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
+        return orderItemRepository.findByOrder(order).stream()
+                .map(orderItem -> modelMapper.map(orderItem, OrderItemDTO.class)).toList();
+
+    }
+
 
 
 }
