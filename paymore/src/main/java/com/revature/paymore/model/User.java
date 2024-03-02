@@ -1,5 +1,7 @@
 package com.revature.paymore.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.*;
 import java.util.Set;
@@ -13,18 +15,24 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @NotBlank(message = "First name cannot be blank")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank(message = "Last name cannot be blank")
     @Column(name = "last_name")
     private String lastName;
 
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
     @Column(name = "email")
     private String email;
 
-    @Column(name = "username")
+    @NotBlank(message = "Username cannot be blank")
+    @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank(message = "Password cannot be blank")
     @Column(name = "password")
     private String password;
 

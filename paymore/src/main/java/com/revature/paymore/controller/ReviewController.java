@@ -1,6 +1,7 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.dto.ReviewDTO;
+import com.revature.paymore.service.ResponseHelperService;
 import com.revature.paymore.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,19 +18,25 @@ import java.util.List;
 public class ReviewController {
 
 
-    ReviewService reviewService;
+    private final ReviewService reviewService;
+    private final ResponseHelperService responseHelperService;
 
     private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, ResponseHelperService responseHelperService) {
         this.reviewService = reviewService;
+        this.responseHelperService = responseHelperService;
     }
 
 
     @PostMapping("/reviews")
-    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDto){
+    public ResponseEntity<?> addReview(@Valid @RequestBody ReviewDTO reviewDto, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return responseHelperService.getBindingErrors(bindingResult);
+        }
+        logger.info(reviewDto.toString());
         ReviewDTO response = reviewService.addReview(reviewDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
