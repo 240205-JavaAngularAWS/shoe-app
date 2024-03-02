@@ -1,6 +1,8 @@
 package com.revature.paymore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 
 import java.util.Objects;
 
@@ -14,9 +16,11 @@ public class OrderItem {
     private Long id;
 
 
+    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     @Column(name = "price_total")
     private double priceTotal;
 
+    @Min(value = 1, message = "Quantity must be at least 1")
     @Column(name = "quantity")
     private int quantity;
 

@@ -4,6 +4,8 @@ import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ProductService;
+import com.revature.paymore.service.ResponseHelperService;
+import com.revature.paymore.validation.ProductValidator;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +21,15 @@ import java.util.List;
 @Controller
 public class ProductController {
 
-    ProductService productService;
+    private final ProductService productService;
+    private final ResponseHelperService responseHelperService;
+    private final ProductValidator productValidator;
 
     @Autowired
-    ProductController(ProductService productService){
+    ProductController(ProductService productService, ResponseHelperService responseHelperService, ProductValidator productValidator){
         this.productService = productService;
+        this.responseHelperService = responseHelperService;
+        this.productValidator = productValidator;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -30,7 +37,11 @@ public class ProductController {
 
     // adding a Product
     @PostMapping("/products")
-    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody Product product){
+    public ResponseEntity<?> addProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
+        productValidator.validate(product, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return responseHelperService.getBindingErrors(bindingResult);
+        }
         // add product to seller
         ProductDTO addedProduct = productService.addProduct(product);
         return new ResponseEntity<>(addedProduct, HttpStatus.OK);
