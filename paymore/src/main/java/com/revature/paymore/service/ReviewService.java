@@ -1,7 +1,5 @@
 package com.revature.paymore.service;
 
-
-import com.revature.paymore.controller.AddressController;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.Review;
 
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+
 
 @Service
 public class ReviewService {

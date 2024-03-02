@@ -2,10 +2,8 @@ package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
-import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ProductService;
 import com.revature.paymore.service.ResponseHelperService;
-import com.revature.paymore.validation.ProductValidator;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +21,12 @@ public class ProductController {
 
     private final ProductService productService;
     private final ResponseHelperService responseHelperService;
-    private final ProductValidator productValidator;
+
 
     @Autowired
-    ProductController(ProductService productService, ResponseHelperService responseHelperService, ProductValidator productValidator){
+    ProductController(ProductService productService, ResponseHelperService responseHelperService){
         this.productService = productService;
         this.responseHelperService = responseHelperService;
-        this.productValidator = productValidator;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -38,7 +35,6 @@ public class ProductController {
     // adding a Product
     @PostMapping("/products")
     public ResponseEntity<?> addProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
-        productValidator.validate(product, bindingResult);
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
         }
