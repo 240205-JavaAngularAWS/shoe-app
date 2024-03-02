@@ -33,9 +33,6 @@ public class ReviewController {
 
 
     @PostMapping("/reviews")
-
-    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDto){
-
     public ResponseEntity<?> addReview(@Valid @RequestBody ReviewDTO reviewDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
