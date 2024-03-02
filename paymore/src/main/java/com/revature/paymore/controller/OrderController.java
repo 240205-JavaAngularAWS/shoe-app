@@ -55,6 +55,16 @@ public class OrderController {
     }
 
 
+    @PutMapping("/order/item")
+    public ResponseEntity<?> removeItemFromCart(@RequestBody long orderItemId){
+        OrderDTO response = orderService.removeItemFromCart(orderItemId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+
+
+
     @PostMapping("/order/{orderId}")
     public ResponseEntity<OrderDTO> submitCartAsOrder(@PathVariable long orderId){
 

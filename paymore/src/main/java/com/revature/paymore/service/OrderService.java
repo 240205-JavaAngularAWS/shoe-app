@@ -16,21 +16,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 
 @Service
 public class OrderService {
 
 
     private final OrderRepository orderRepository;
-
     private final UserRepository userRepository;
-
     private final ProductRepository productRepository;
-
     private final OrderItemRepository orderItemRepository;
-
-    private ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
 
     @Autowired
@@ -41,20 +36,6 @@ public class OrderService {
         this.productRepository = productRepository;
         this.orderItemRepository = orderItemRepository;
     }
-
-
-    public OrderItem convertOrderItemToEntity(OrderItemDTO orderItemDTO){
-        Order order = orderRepository.findById(orderItemDTO.getOrderId())
-                .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
-        return new OrderItem(orderItemDTO.getPriceTotal(),
-                orderItemDTO.getQuantity(),
-                order,
-                orderItemDTO.getProductId()
-                );
-
-    }
-
-
 
 
     // register new order.
@@ -70,8 +51,24 @@ public class OrderService {
 
     }
 
+    public void checkOrderItem(OrderItem orderItem, Product product) {
+        double expectedTotalPrice = product.getPrice() * orderItem.getQuantity();
+        double actualTotalPrice = orderItem.getPriceTotal();
+
+        // Allow for a small difference to account for floating-point arithmetic issues
+        final double EPSILON = 0.01;
+
+        if (Math.abs(expectedTotalPrice - actualTotalPrice) > EPSILON) {
+            // If the difference is greater than the allowed margin, adjust the price
+            orderItem.setPriceTotal(expectedTotalPrice);
+            orderItemRepository.save(orderItem);
+        }
+    }
+
+
 
     public OrderDTO addItemToCart(OrderItemDTO orderItemDto){
+
         // check order exists
         Order order = orderRepository.findById(orderItemDto.getOrderId())
                 .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
@@ -84,17 +81,21 @@ public class OrderService {
         Product product = productRepository.findById(orderItemDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
 
-        // check stock
-        checkStock(product.getQuantity(), orderItemDto.getQuantity());
+        // create new order item
+        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
 
-        // get product price and add to total order price
-        double updatedOrderPrice = order.getPriceTotal() + product.getPrice();
+        // check stock
+        checkStock(product.getQuantity(), orderItem.getQuantity());
+
+        // ensure price is accurate
+        checkOrderItem(orderItem, product);
+
+        // get orderItem price and add to total order price
+        double updatedOrderPrice = order.getPriceTotal() + (orderItemDto.getQuantity() *  orderItemDto.getPriceTotal());
 
         // update order price total
         order.setPriceTotal(updatedOrderPrice);
 
-        // create new order item
-        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
         // save new order item
         orderItemRepository.save(orderItem);
 
@@ -105,6 +106,30 @@ public class OrderService {
         return modelMapper.map(order, OrderDTO.class);
 
     }
+
+    public OrderDTO removeItemFromCart(long orderItemId){
+        // check order exists
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new EntityNotFoundException("Order Item Not Found"));
+
+        // get Order
+        Order order = orderItem.getOrder();
+
+        // remove Order Item from Order
+        order.removeOrderItem(orderItem);
+
+        // update Price total
+        double updatedOrderPrice = order.getPriceTotal() - (orderItem.getQuantity() *  orderItem.getPriceTotal());
+        order.setPriceTotal(updatedOrderPrice);
+
+
+        orderRepository.save(order);
+        orderItemRepository.deleteById(orderItemId);
+
+        return modelMapper.map(order, OrderDTO.class);
+
+    }
+
 
     public void checkStock(int currentStock, int itemQuantity){
         if(currentStock < itemQuantity){
@@ -125,28 +150,25 @@ public class OrderService {
         if(order.getStatus() != Status.PENDING){
             throw new InvalidEntityException("Order cannot be processed. Invalid Status.");
         }
-        Set<OrderItem> orderItems = order.getOrderItems();
 
-        for(OrderItem orderItem : orderItems){
+        order.getOrderItems().forEach(orderItem -> {
             Product product = productRepository.findById(orderItem.getProductId())
                     .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
             // ensure the stock quantity is valid.
             checkStock(product.getQuantity(), orderItem.getQuantity());
 
-            // update the stock.  Created a variable for clarity
+            // inventory management - update the stock.  Created a variable for clarity
             int updatedProductQuantity = product.getQuantity() - orderItem.getQuantity();
 
             product.setQuantity(updatedProductQuantity);
             productRepository.save(product);
-        }
+        });
+
+        // change status of order to "COMPLETED".
         order.setStatus(Status.COMPLETED);
+        orderRepository.save(order);
         return modelMapper.map(order, OrderDTO.class);
     }
-
-
-
-    
-    
 
 
 }
