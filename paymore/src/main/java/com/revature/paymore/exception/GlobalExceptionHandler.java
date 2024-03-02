@@ -65,5 +65,11 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(StockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleStockException(StockException ex){
+        return ex.getMessage();
+    }
+
 
 }
