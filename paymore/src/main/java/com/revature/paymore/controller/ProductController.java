@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +34,14 @@ public class ProductController {
     // adding a Product
     @PostMapping("/products")
     public ResponseEntity<?> addProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
+        // Maybe change association to ProductDTO? Might make it easier to add new products without inputting the entire Seller Object.
+        // Validation annotations copied to the ProductDTO already in case we decide to do that.
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
         }
         // add product to seller
-        ProductDTO addedProduct = productService.addProduct(product);
-        return new ResponseEntity<>(addedProduct, HttpStatus.OK);
+        ProductDTO response = productService.addProduct(product);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -57,10 +58,10 @@ public class ProductController {
 
     // find all products
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> addProduct(){
+    public ResponseEntity<List<ProductDTO>> getAllProducts(){
 
-        List<ProductDTO> allProducts = productService.getAllProducts();
-        return new ResponseEntity<>(allProducts, HttpStatus.OK);
+        List<ProductDTO> response = productService.getAllProducts();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

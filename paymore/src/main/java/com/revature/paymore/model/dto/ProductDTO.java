@@ -4,18 +4,39 @@ import com.revature.paymore.model.Product;
 import com.revature.paymore.model.enums.Color;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Category;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.URL;
 
 public class ProductDTO {
 
     private Long id;
+
+    @NotBlank(message = "Product name cannot be blank")
     private String productName;
     private double size;
+
+    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     private double price;
+
+    @NotNull(message = "Must select a color")
     private Color color;
+
+    @NotNull(message = "Must select a gender")
     private Gender gender;
+
+    @NotNull(message = "Must select a category")
     private Category category;
+
+    @Min(value = 1, message = "Quantity must be at least 1")
+    @Column(name = "quantity")
     private int quantity;
+
+    @URL(message = "Invalid image URL")
+    @Pattern(regexp = ".*\\.(jpg|png|jpeg|gif)$", message="Image URL must end with a valid image extension (.jpg, .png, .jpeg, .gif)")
     private String imageUrl;
+
+    @NotBlank(message = "Description cannot be blank")
     private String description;
 
     private Long sellerId;
@@ -153,6 +174,14 @@ public class ProductDTO {
 
     // toString method for debugging purposes
 
+    public Long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(Long sellerId) {
+        this.sellerId = sellerId;
+    }
+
     @Override
     public String toString() {
         return "ProductDTO{" +
@@ -166,6 +195,7 @@ public class ProductDTO {
                 ", quantity=" + quantity +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", description='" + description + '\'' +
+                ", sellerId=" + sellerId +
                 '}';
     }
 }
