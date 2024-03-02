@@ -1,5 +1,5 @@
 package com.revature.paymore.service;
-import com.revature.paymore.exception.InvalidOrderException;
+import com.revature.paymore.exception.InvalidEntityException;
 import com.revature.paymore.exception.StockException;
 import com.revature.paymore.model.OrderItem;
 import com.revature.paymore.model.Product;
@@ -15,6 +15,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -61,7 +63,7 @@ public class OrderService {
         userRepository.findById(order.getUser().getId())
                         .orElseThrow(() -> new EntityNotFoundException("User Not Found."));
         if(order.getStatus() != Status.PENDING){
-            throw new InvalidOrderException("Invalid Status. Status must be PENDING for Carts");
+            throw new InvalidEntityException("Invalid Status. Status must be PENDING for Carts");
         }
         orderRepository.save(order);
         return modelMapper.map(order, OrderDTO.class);
@@ -74,14 +76,22 @@ public class OrderService {
         Order order = orderRepository.findById(orderItemDto.getOrderId())
                 .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
         // check order status
+        // Only an order with a PENDING status is considered a cart.
         if(order.getStatus() != Status.PENDING){
-            throw new InvalidOrderException("Invalid Status. Status must be PENDING.");
+            throw new InvalidEntityException("Invalid Status. Status must be PENDING.");
         }
         // check product
         Product product = productRepository.findById(orderItemDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
 
+        // check stock
         checkStock(product.getQuantity(), orderItemDto.getQuantity());
+
+        // get product price and add to total order price
+        double updatedOrderPrice = order.getPriceTotal() + product.getPrice();
+
+        // update order price total
+        order.setPriceTotal(updatedOrderPrice);
 
         // create new order item
         OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
@@ -104,6 +114,33 @@ public class OrderService {
             throw new StockException("Out of Stock");
         }
 
+    }
+
+
+    public OrderDTO submitOrder(Long orderId){
+        // Get order
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
+        // check OrderStatus.  Status must be PENDING, or it cannot be submitted (A completed order has already been submitted)
+        if(order.getStatus() != Status.PENDING){
+            throw new InvalidEntityException("Order cannot be processed. Invalid Status.");
+        }
+        Set<OrderItem> orderItems = order.getOrderItems();
+
+        for(OrderItem orderItem : orderItems){
+            Product product = productRepository.findById(orderItem.getProductId())
+                    .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
+            // ensure the stock quantity is valid.
+            checkStock(product.getQuantity(), orderItem.getQuantity());
+
+            // update the stock.  Created a variable for clarity
+            int updatedProductQuantity = product.getQuantity() - orderItem.getQuantity();
+
+            product.setQuantity(updatedProductQuantity);
+            productRepository.save(product);
+        }
+        order.setStatus(Status.COMPLETED);
+        return modelMapper.map(order, OrderDTO.class);
     }
 
 

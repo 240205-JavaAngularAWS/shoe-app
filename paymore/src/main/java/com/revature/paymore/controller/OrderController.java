@@ -55,6 +55,16 @@ public class OrderController {
     }
 
 
+    @PostMapping("/order/{orderId}")
+    public ResponseEntity<OrderDTO> submitCartAsOrder(@PathVariable long orderId){
+
+        // A cart is a pending order.
+        OrderDTO response = orderService.submitOrder(orderId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+
 
 
 

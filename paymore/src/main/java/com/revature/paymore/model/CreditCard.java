@@ -49,6 +49,12 @@ public class CreditCard {
     @JoinColumn(name = "user_id")
     private User user;
 
+
+
+    public CreditCard(){
+        // no args constructor
+    }
+
     public CreditCard(Long id, String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, User user) {
         this.id = id;
         this.cardNumber = cardNumber;

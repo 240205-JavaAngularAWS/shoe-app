@@ -1,6 +1,7 @@
 package com.revature.paymore.controller;
 
 
+import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.Address;
 import com.revature.paymore.model.dto.AddressDTO;
 import com.revature.paymore.service.AddressService;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -43,6 +46,18 @@ public class AddressController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
+
+
+    @DeleteMapping("/addresses/{addressId}")
+    public ResponseEntity<String> deleteAddressById(@PathVariable Long addressId){
+
+        boolean deleted = addressService.deleteAddress(addressId);
+        if(!deleted){
+            throw new BadRequestException("Product with id " + addressId + " was not found.");
+        }
+        return new ResponseEntity<>("{\"message\":\"Product Successfully Deleted\"}", HttpStatus.OK);
+    }
+
 
 
 

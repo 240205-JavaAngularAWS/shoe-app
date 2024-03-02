@@ -25,7 +25,7 @@ public class User {
 
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotBlank(message = "Username cannot be blank")
@@ -42,13 +42,13 @@ public class User {
 //            joinColumns = @JoinColumn(name = "user_id"),
 //            inverseJoinColumns = @JoinColumn(name = "address_id")
 //    )
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Address> addresses;
 
-    @OneToMany(mappedBy = "user") // Assuming 'user' is the correct field name in CreditCard class
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Assuming 'user' is the correct field name in CreditCard class
     private Set<CreditCard> creditCards = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders;
 
 
@@ -152,6 +152,19 @@ public class User {
     }
 
     // helper functions
+    public void addAddress(Address address){
+        this.addresses.add(address);
+        address.setUser(this);
+
+    }
+    public void removeAddress(Address address){
+        this.addresses.remove(address);
+        address.setUser(null);
+
+    }
+
+
+
     public void addOrder(Order order){
         this.orders.add(order);
         order.setUser(this);
@@ -160,6 +173,17 @@ public class User {
     public void removeOrder(Order order){
         this.orders.remove(order);
         order.setUser(null);
+
+    }
+
+    public void addCreditCard(CreditCard creditCard){
+        this.creditCards.add(creditCard);
+        creditCard.setUser(this);
+
+    }
+    public void removeCreditCard(CreditCard creditCard){
+        this.creditCards.remove(creditCard);
+        creditCard.setUser(null);
 
     }
 

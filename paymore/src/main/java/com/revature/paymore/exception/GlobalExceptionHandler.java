@@ -46,35 +46,24 @@ public class GlobalExceptionHandler {
         return ex.getMessage();
     }
 
-    @ExceptionHandler(InvalidOrderException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidOrderException(InvalidOrderException ex){
-        return ex.getMessage();
-    }
-
-    @ExceptionHandler(InvalidSellerException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidSellerException(InvalidSellerException ex){
-        return ex.getMessage();
-    }
-
-    @ExceptionHandler(InvalidProductException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidProductException(InvalidProductException ex){
-        return ex.getMessage();
-    }
-
-    @ExceptionHandler(InvalidReviewException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidReviewException(InvalidReviewException ex){
-        return ex.getMessage();
-    }
-
-
     @ExceptionHandler(NullPointerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNullPointerException(NullPointerException ex){
         return ex.getMessage();
     }
+
+    @ExceptionHandler(InvalidEntityException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleInvalidEntityException(InvalidEntityException ex){
+        return ex.getMessage();
+    }
+
+
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleEntityAlreadyExistsException(EntityAlreadyExistsException ex){
+        return ex.getMessage();
+    }
+
 
 }

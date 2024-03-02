@@ -66,7 +66,7 @@ public class Product {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews;
 
     public Product() {

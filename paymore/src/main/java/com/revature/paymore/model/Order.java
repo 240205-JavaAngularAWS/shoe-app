@@ -33,7 +33,7 @@ public class Order {
     @Column(name = "time_stamp")
     private LocalDateTime timestamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -69,7 +69,8 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-
+    public Order() {
+    }
 
 
     public Long getId() {

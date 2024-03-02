@@ -43,7 +43,7 @@ public class Seller {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products;
 
     public Seller() {
