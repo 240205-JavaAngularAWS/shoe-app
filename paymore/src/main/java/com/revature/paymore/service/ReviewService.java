@@ -26,13 +26,13 @@ public class ReviewService {
 
     ReviewRepository reviewRepository;
     ProductRepository productRepository;
-    ValidationService validationService;
+
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository, ValidationService validationService) {
+    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
-        this.validationService = validationService;
+
     }
 
 

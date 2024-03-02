@@ -26,7 +26,7 @@ public class SellerService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
-    private final ValidationService validationService;
+
 
 
 
@@ -36,20 +36,20 @@ public class SellerService {
 
 
     @Autowired
-    public SellerService(SellerRepository sellerRepository, UserRepository userRepository, AddressRepository addressRepository, ProductRepository productRepository, ValidationService validationService) {
+    public SellerService(SellerRepository sellerRepository, UserRepository userRepository, AddressRepository addressRepository, ProductRepository productRepository) {
         this.sellerRepository = sellerRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.productRepository = productRepository;
-        this.validationService = validationService;
+
     }
 
 
 
     // register as a seller
     public SellerDTO registerSeller(Seller seller) {
-        // Validate Seller Object
-        validationService.validateSeller(seller);
+
+
 
         // Ensure Username isn't taken by other sellers.
         if (sellerRepository.findByUsername(seller.getUsername()).isPresent()) {
@@ -60,9 +60,6 @@ public class SellerService {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
 
-        // Validate Address
-        validationService.validateAddress(seller.getAddress());
-
         Address sellerAddress = seller.getAddress();
         sellerAddress.setAddressType(AddressType.SELLER);
         // save address to repo
@@ -70,8 +67,6 @@ public class SellerService {
 
         if(!seller.getProducts().isEmpty()){
             for(Product product: seller.getProducts()){
-                // validate product
-                validationService.validateProduct(product);
 
                 // save product to repo
                 productRepository.save(product);
