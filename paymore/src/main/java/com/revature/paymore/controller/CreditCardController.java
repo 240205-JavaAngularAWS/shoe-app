@@ -1,5 +1,6 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
+import com.revature.paymore.model.CreditCard;
 import com.revature.paymore.model.dto.CreditCardDTO;
 import com.revature.paymore.service.CreditCardService;
 import com.revature.paymore.service.ResponseHelperService;
@@ -29,13 +30,13 @@ public class CreditCardController {
 
 
     @PostMapping("/creditcards")
-    public ResponseEntity<?> addCreditCard(@Valid @RequestBody CreditCardDTO creditCardDto, BindingResult bindingResult){
+    public ResponseEntity<?> addCreditCard(@Valid @RequestBody CreditCard creditCard, BindingResult bindingResult){
         // Using DTO so we don't have to use the entire User object.
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
         }
         // add product to seller
-        CreditCardDTO response = creditCardService.addCreditCard(creditCardDto);
+        CreditCardDTO response = creditCardService.addCreditCard(creditCard);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

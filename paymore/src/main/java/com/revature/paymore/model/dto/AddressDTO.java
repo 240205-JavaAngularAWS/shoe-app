@@ -2,15 +2,28 @@ package com.revature.paymore.model.dto;
 
 import com.revature.paymore.model.Address;
 import com.revature.paymore.model.enums.AddressType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
 public class AddressDTO {
 
     private Long id;
-    private String address;
+
+    @NotBlank(message = "Address cannot be blank")
+    private String addressText;
+
+    @NotBlank(message = "City cannot be blank")
     private String city;
+
+    @NotBlank(message = "State cannot be blank")
+    @Size(min = 2, max = 2, message = "State must be a two-letter abbreviation")
     private String state;
+
+    @NotBlank(message = "zip code cannot be blank")
+    @Pattern(regexp = "^\\d{5}(-\\d{4})?$", message = "Invalid ZIP code format")
     private String zipCode;
     private Long userId;
     private Long sellerId;
@@ -21,26 +34,30 @@ public class AddressDTO {
     public AddressDTO() {
     }
 
-    public AddressDTO(Long id, String address, String city, String state, String zipCode, Long userId, Long sellerId) {
+
+
+    public AddressDTO(Long id, String addressText, String city, String state, String zipCode, Long userId, Long sellerId, AddressType addressType) {
         this.id = id;
-        this.address = address;
+        this.addressText = addressText;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
         this.userId = userId;
         this.sellerId = sellerId;
+        this.addressType = addressType;
     }
 
-    // Constructor that accepts an Address entity
-    public AddressDTO(Address address) {
-        this.id = address.getId();
-        this.address = address.getAddressText();
-        this.city = address.getCity();
-        this.state = address.getState();
-        this.zipCode = address.getZipCode();
-        this.userId = address.getUser() != null ? address.getUser().getId() : null;
-        this.sellerId = address.getSeller() != null ? address.getSeller().getId() : null;
+    public AddressDTO(String addressText, String city, String state, String zipCode, Long userId, Long sellerId, AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.userId = userId;
+        this.sellerId = sellerId;
+        this.addressType = addressType;
     }
+
+
 
 
     public Long getId() {
@@ -51,12 +68,12 @@ public class AddressDTO {
         this.id = id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressText() {
+        return addressText;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddressText(String addressText) {
+        this.addressText = addressText;
     }
 
     public String getCity() {
@@ -111,7 +128,7 @@ public class AddressDTO {
     public String toString() {
         return "AddressDTO{" +
                 "id=" + id +
-                ", address='" + address + '\'' +
+                ", address='" + addressText + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", zipCode=" + zipCode +
@@ -125,11 +142,11 @@ public class AddressDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AddressDTO that)) return false;
-        return Objects.equals(zipCode, that.zipCode) && Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(userId, that.userId) && Objects.equals(sellerId, that.sellerId) && addressType == that.addressType;
+        return Objects.equals(zipCode, that.zipCode) && Objects.equals(id, that.id) && Objects.equals(addressText, that.addressText) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(userId, that.userId) && Objects.equals(sellerId, that.sellerId) && addressType == that.addressType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, city, state, zipCode, userId, sellerId, addressType);
+        return Objects.hash(id, addressText, city, state, zipCode, userId, sellerId, addressType);
     }
 }

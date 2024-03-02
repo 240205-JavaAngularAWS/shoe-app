@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class AddressController {
 
 
-
     private final AddressService addressService;
     private final ResponseHelperService responseHelperService;
 
@@ -34,12 +33,12 @@ public class AddressController {
     }
 
 
-    @PostMapping("/registerAddress")
-    public ResponseEntity<?> registerAddress(@Valid @RequestBody Address address, BindingResult bindingResult){
+    @PostMapping("/addresses")
+    public ResponseEntity<?> registerAddress(@Valid @RequestBody AddressDTO addressDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
         }
-        AddressDTO response = addressService.registerAddress(address);
+        AddressDTO response = addressService.registerAddress(addressDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }

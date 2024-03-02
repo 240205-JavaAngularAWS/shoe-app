@@ -2,12 +2,11 @@ package com.revature.paymore.service;
 
 import com.revature.paymore.exception.EntityAlreadyExistsException;
 import com.revature.paymore.model.*;
-import com.revature.paymore.model.dto.AddressDTO;
 import com.revature.paymore.model.dto.CreditCardDTO;
-import com.revature.paymore.model.dto.ProductDTO;
+import com.revature.paymore.model.enums.AddressType;
+import com.revature.paymore.repository.AddressRepository;
 import com.revature.paymore.repository.CreditCardRepository;
 import com.revature.paymore.repository.UserRepository;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,43 +18,43 @@ import java.util.List;
 @Service
 public class CreditCardService {
 
-    private CreditCardRepository creditCardRepository;
+    private final CreditCardRepository creditCardRepository;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final AddressRepository addressRepository;
 
 
     @Autowired
-    public CreditCardService(CreditCardRepository creditCardRepository, UserRepository userRepository) {
+    public CreditCardService(CreditCardRepository creditCardRepository, UserRepository userRepository, AddressRepository addressRepository) {
         this.creditCardRepository = creditCardRepository;
         this.userRepository =  userRepository;
+        this.addressRepository =  addressRepository;
     }
 
     ModelMapper modelMapper = new ModelMapper();
 
 
-    public CreditCardDTO addCreditCard(CreditCardDTO creditCardDto) {
+    public CreditCardDTO addCreditCard(CreditCard creditCard) {
+        // uses the entity so that address can be directly added.
         // Make sure user exists.
-        User user = userRepository.findById(creditCardDto.getUserId())
+        User user = userRepository.findById(creditCard.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
         // check if credit card is already associated with user.
-        creditCardRepository.findByUserAndCardNumber(user, creditCardDto.getCardNumber())
-                .ifPresent(creditCard -> {
-                    throw new EntityAlreadyExistsException("Credit Card Already Added");
+        creditCardRepository.findByUserAndCardNumber(user, creditCard.getCardNumber())
+                .ifPresent(c -> {
+                    throw new EntityAlreadyExistsException("Credit Card Already Added.");
                 });
 
-        // create new credit card with user.
-        CreditCard creditCard = new CreditCard(creditCardDto.getCardNumber(),
-                creditCardDto.getSecurityCode(),
-                creditCardDto.getFirstName(),
-                creditCardDto.getLastName(),
-                creditCardDto.getExpirationDate(),
-                user);
+        Address address = creditCard.getAddress();
+        // always ensure address type is set to billing
+        address.setAddressType(AddressType.BILLING);
+
+        Address savedAddress = addressRepository.save(address);
+        creditCard.setAddress(savedAddress);
 
         creditCardRepository.save(creditCard);
-        user.addCreditCard(creditCard); // Assuming there's a method in User to add a credit card
-
-        userRepository.save(user);
         return modelMapper.map(creditCard, CreditCardDTO.class);
     }
 
@@ -69,16 +68,11 @@ public class CreditCardService {
 
     public boolean deleteCreditCard(long creditCardId){
         // ensure at least one creditcard exists prior to deletion.
-        CreditCard creditCard = creditCardRepository.findById(creditCardId)
-                .orElseThrow(() -> new EntityNotFoundException("Credit Card Not Found"));
+        return creditCardRepository.findById(creditCardId)
+                .map(user -> { creditCardRepository.deleteById(creditCardId);
+                    return true;})
+                .orElse(false);
 
-        User user = creditCard.getUser();
-        user.removeCreditCard(creditCard);
-        userRepository.save(user);
-
-        creditCardRepository.deleteById(creditCardId);
-
-        return true;
 
 
 

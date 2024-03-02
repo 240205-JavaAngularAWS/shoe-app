@@ -188,17 +188,6 @@ public class User {
 
     }
 
-    public void addCreditCard(CreditCard creditCard){
-        this.creditCards.add(creditCard);
-        creditCard.setUser(this);
-
-    }
-    public void removeCreditCard(CreditCard creditCard){
-        this.creditCards.remove(creditCard);
-        creditCard.setUser(null);
-
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

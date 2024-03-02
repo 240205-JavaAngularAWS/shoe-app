@@ -58,6 +58,33 @@ public class Address {
     public Address() {
     }
 
+
+    public Address(String addressText, String city, String state, String zipCode,AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.addressType = addressType;
+    }
+
+    public Address(String addressText, String city, String state, String zipCode, User user, AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.user = user;
+        this.addressType = addressType;
+    }
+
+    public Address(String addressText, String city, String state, String zipCode, Seller seller, AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.seller = seller;
+        this.addressType = addressType;
+    }
+
     public Address(Long id, String addressText, String city, String state, String zipCode, User user, AddressType addressType) {
         this.id = id;
         this.addressText = addressText;
@@ -68,12 +95,13 @@ public class Address {
         this.addressType = addressType;
     }
 
-    public Address(String addressText, String city, String state, String zipCode, User user, AddressType addressType) {
+    public Address(Long id, String addressText, String city, String state, String zipCode, Seller seller, AddressType addressType) {
+        this.id = id;
         this.addressText = addressText;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.user = user;
+        this.seller = seller;
         this.addressType = addressType;
     }
 
