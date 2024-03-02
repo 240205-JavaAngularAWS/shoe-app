@@ -1,10 +1,8 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.model.Review;
 import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.service.ResponseHelperService;
 import com.revature.paymore.service.ReviewService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +39,14 @@ public class ReviewController {
         logger.info(reviewDto.toString());
         ReviewDTO response = reviewService.addReview(reviewDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/reviews/all")
+    public ResponseEntity<List<ReviewDTO>> findAllReviews(){
+        List<ReviewDTO> response = reviewService.findAllReviews();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 

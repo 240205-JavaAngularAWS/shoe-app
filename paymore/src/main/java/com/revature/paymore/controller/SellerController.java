@@ -43,7 +43,6 @@ public class SellerController {
             return responseHelperService.getBindingErrors(bindingResult);
         }
         SellerDTO response = sellerService.registerSeller(seller);
-        logger.info(response.toString());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
