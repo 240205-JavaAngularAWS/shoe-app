@@ -3,6 +3,7 @@ import com.revature.paymore.exception.InvalidEntityException;
 import com.revature.paymore.exception.StockException;
 import com.revature.paymore.model.OrderItem;
 import com.revature.paymore.model.Product;
+import com.revature.paymore.model.User;
 import com.revature.paymore.model.dto.OrderDTO;
 import com.revature.paymore.model.Order;
 import com.revature.paymore.model.dto.OrderItemDTO;
@@ -163,6 +164,13 @@ public class OrderService {
             product.setQuantity(updatedProductQuantity);
             productRepository.save(product);
         });
+
+        // ensure the User has at least one credit card attached to their account.
+        User user = order.getUser();
+        if(user.getCreditCards().isEmpty()){
+            throw new EntityNotFoundException("No valid creditcards are associated with User id " + user.getId() + ".");
+        }
+
 
         // change status of order to "COMPLETED".
         order.setStatus(Status.COMPLETED);

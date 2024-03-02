@@ -68,6 +68,7 @@ public class CreditCardService {
     }
 
     public boolean deleteCreditCard(long creditCardId){
+        // ensure at least one creditcard exists prior to deletion.
         CreditCard creditCard = creditCardRepository.findById(creditCardId)
                 .orElseThrow(() -> new EntityNotFoundException("Credit Card Not Found"));
 
