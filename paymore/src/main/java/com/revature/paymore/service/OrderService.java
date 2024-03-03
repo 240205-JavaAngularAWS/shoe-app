@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -44,6 +46,7 @@ public class OrderService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.orderItemRepository = orderItemRepository;
+
     }
 
 
@@ -67,17 +70,15 @@ public class OrderService {
                     null,
                     user);
 
-            orderRepository.save(order);
-            Order existingOrder = orderRepository.findByUserAndStatus(user, Status.PENDING).get(0);
-
-            user.addOrder(existingOrder);
+            Order savedOrder = orderRepository.save(order);
+            user.addOrder(savedOrder);
             userRepository.save(user);
-
             return modelMapper.map(order, OrderDTO.class);
         }
     }
 
     public void checkOrderItem(OrderItem orderItem, Product product) {
+        // this method validates that the price is accurate.
         double expectedTotalPrice = product.getPrice() * orderItem.getQuantity();
         double actualTotalPrice = orderItem.getPrice();
 
@@ -95,19 +96,41 @@ public class OrderService {
 
     @Transactional
     public OrderDTO addItemToCart(OrderItemDTO orderItemDto) {
+        OrderItem orderItem;
         logger.info("Adding Item to Cart: {}", orderItemDto);
         Order order = validateAndGetOrder(orderItemDto.getOrderId());
         Product product = validateAndGetProduct(orderItemDto.getProductId());
+        checkStock(product.getQuantity(), orderItemDto.getQuantity());
 
-        OrderItem orderItem = createOrderItem(orderItemDto, product);
+        // check to see if orderItem is already in cart.
+        Optional<OrderItem> existingOrderItem = order.getOrderItems().stream()
+                .filter(item -> Objects.equals(item.getProductId(), product.getId()))
+                .findFirst();
+        if(existingOrderItem.isPresent()){
+            // if present, just update the quantity.
+            orderItem = existingOrderItem.get();
+            int newQuantity = orderItem.getQuantity() + orderItemDto.getQuantity();
+            orderItem.setQuantity(newQuantity);
+            orderItemRepository.save(orderItem);
+        }
+        else {
+            orderItem = createOrderItem(orderItemDto, product);
+            order.addOrderItem(orderItem);
+
+
+        }
         updateOrderTotalPrice(order, orderItem);
-        order.addOrderItem(orderItem);
-
         orderRepository.save(order);
         return modelMapper.map(order, OrderDTO.class);
-    }
+
+        }
+
+
+
+
 
     private Order validateAndGetOrder(Long orderId) {
+        // ensures that the order has the correct status.
         return orderRepository.findById(orderId)
                 .filter(order -> order.getStatus() == Status.PENDING)
                 .orElseThrow(() -> new EntityNotFoundException("Order Not Found or Invalid Status"));
@@ -118,8 +141,8 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
     }
 
-    private OrderItem createOrderItem(OrderItemDTO dto, Product product) {
-        OrderItem orderItem = modelMapper.map(dto, OrderItem.class);
+    private OrderItem createOrderItem(OrderItemDTO orderItemDto, Product product) {
+        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
         orderItem.setProductId(product.getId());
         checkStock(product.getQuantity(), orderItem.getQuantity());
         return orderItemRepository.save(orderItem);
@@ -130,9 +153,8 @@ public class OrderService {
         order.setPriceTotal(updatedPrice);
     }
 
-
-
     public OrderDTO removeItemFromCart(long orderItemId){
+        // this removes an item from the cart completely regardless of quantity.
         // check order exists
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new EntityNotFoundException("Order Item Not Found"));
@@ -157,6 +179,7 @@ public class OrderService {
 
 
     public void checkStock(int currentStock, int itemQuantity){
+        // checks to ensure the stock and quantity are valid.
         if(currentStock < itemQuantity){
             throw new StockException("Stock too low for current quantity.");
         }
@@ -165,6 +188,7 @@ public class OrderService {
         }
 
     }
+
 
 
     public OrderDTO submitOrder(Long orderId){

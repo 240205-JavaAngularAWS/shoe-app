@@ -37,9 +37,9 @@ public class CreditCardService {
 
     public CreditCardDTO addCreditCard(CreditCard creditCard) {
         // uses the entity so that address can be directly added.
-        // Make sure user exists.
-        User user = userRepository.findById(creditCard.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        // Get user
+        User user = creditCard.getUser();
+
 
         // check if credit card is already associated with user.
         creditCardRepository.findByUserAndCardNumber(user, creditCard.getCardNumber())

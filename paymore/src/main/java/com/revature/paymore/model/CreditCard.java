@@ -36,32 +36,33 @@ public class CreditCard {
     @Column(name = "expiration_date")
     private String expirationDate;
 
-    // Replace the User object with a userId field
-    @Column(name = "user_id")
-    private Long userId; // Assuming the User ID is of type Long
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
 
-    public CreditCard(Long id, String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, Long userId, Address address) {
+    public CreditCard(Long id, String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, User user, Address address) {
         this.id = id;
         this.cardNumber = cardNumber;
         this.securityCode = securityCode;
         this.firstName = firstName;
         this.lastName = lastName;
         this.expirationDate = expirationDate;
-        this.userId = userId;
+        this.user = user;
         this.address = address;
     }
 
-    public CreditCard(String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, Long userId, Address address) {
+    public CreditCard(String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, User user, Address address) {
         this.cardNumber = cardNumber;
         this.securityCode = securityCode;
         this.firstName = firstName;
         this.lastName = lastName;
         this.expirationDate = expirationDate;
-        this.userId = userId;
+        this.user = user;
         this.address = address;
     }
 
@@ -114,12 +115,12 @@ public class CreditCard {
         this.expirationDate = expirationDate;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Address getAddress() {
