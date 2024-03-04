@@ -34,10 +34,6 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public OrderItem(){
-
-    }
-
 
     public OrderItem(){
         // empty constructor
