@@ -16,6 +16,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderService {
 
@@ -29,6 +31,10 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     private ModelMapper modelMapper = new ModelMapper();
+
+    private OrderDTO convertToOrderDTO(Order order){
+        return modelMapper.map(order, OrderDTO.class);
+    }
 
 
     @Autowired
@@ -107,9 +113,50 @@ public class OrderService {
     }
 
 
+    // removing order from database
+    public boolean deleteOrder(Long orderId){
+        return orderRepository.findById(orderId)
+                .map(order -> { orderRepository.deleteById(orderId);
+                return true;})
+                .orElse(false);
+    }
 
+
+    // remove orderItem from cart
+    public boolean removeItemFromCart(Long orderItemId){
+        return orderItemRepository.findById(orderItemId)
+                .map(orderItem -> {orderItemRepository.deleteById(orderItemId);
+                return true;})
+                .orElse(false);
+    }
     
-    
+
+    // view order history
+    public List<OrderDTO> getAllOrders(){
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream()
+                .map(this::convertToOrderDTO).toList();
+    }
+
+
+
+    // see placed order (Completed order)
+    public List<OrderDTO> findPlacedOrdersByUserId(Long userId){
+
+        OrderDTO orderDTO = new OrderDTO();
+
+        // first check orderId exists
+        Order order = orderRepository.findById(orderDTO.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
+
+        // order status has to be completed
+        if(order.getStatus() != Status.COMPLETED){
+            throw new InvalidOrderException("Invalid Status. Status must be Completed.");
+        }
+
+        return orderRepository.findById(userId)
+                .stream().map(placedOrders -> modelMapper.map(placedOrders, OrderDTO.class)).toList();
+    }
 
 
 }
