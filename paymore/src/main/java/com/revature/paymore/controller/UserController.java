@@ -55,8 +55,6 @@ public class UserController {
     }
 
 
-
-
     @PostMapping("/loginUser")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
 

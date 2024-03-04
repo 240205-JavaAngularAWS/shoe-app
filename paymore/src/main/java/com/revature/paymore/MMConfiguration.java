@@ -85,6 +85,18 @@ public class MMConfiguration {
         });
 
 
+        // custom mapping for OrderItems DTOs in OrderDTO
+        modelMapper.typeMap(Order.class, OrderDTO.class).addMappings(mapper -> {
+
+            mapper.<Set<OrderItemDTO>>map(src -> {
+                Set<OrderItem> orderItems = src.getOrderItems();
+                return (orderItems != null) ? orderItems.stream()
+                        .map(orderItem -> modelMapper.map(orderItem, OrderItemDTO.class))
+                        .collect(Collectors.toSet()) : Collections.emptySet();
+            }, OrderDTO::setOrderItems);
+        });
+
+
         return modelMapper;
 
 

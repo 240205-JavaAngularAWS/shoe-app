@@ -8,6 +8,7 @@ import com.revature.paymore.model.User;
 import com.revature.paymore.model.dto.OrderDTO;
 import com.revature.paymore.model.Order;
 import com.revature.paymore.model.dto.OrderItemDTO;
+import com.revature.paymore.model.dto.ReviewDTO;
 import com.revature.paymore.model.enums.Status;
 import com.revature.paymore.repository.OrderItemRepository;
 import com.revature.paymore.repository.OrderRepository;
@@ -34,18 +35,19 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, OrderItemRepository orderItemRepository){
+    public OrderService(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, OrderItemRepository orderItemRepository, ModelMapper modelMapper){
 
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.orderItemRepository = orderItemRepository;
+        this.modelMapper = modelMapper;
 
     }
 
@@ -104,7 +106,7 @@ public class OrderService {
 
         // check to see if orderItem is already in cart.
         Optional<OrderItem> existingOrderItem = order.getOrderItems().stream()
-                .filter(item -> Objects.equals(item.getProduct(), product.getId()))
+                .filter(item -> Objects.equals(item.getProduct().getId(), product.getId()))
                 .findFirst();
         if(existingOrderItem.isPresent()){
             // if present, just update the quantity.
@@ -174,7 +176,7 @@ public class OrderService {
 
     }
 
-    public List<OrderItemDTO> findOrderItemsByProduct(long productId){
+    public List<OrderItemDTO> findOrderItemsByProductId(long productId){
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
 
@@ -232,6 +234,17 @@ public class OrderService {
 
     }
 
+
+    public List<OrderDTO> findOrdersByUserAndStatus(long userId, Status status){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        return orderRepository.findByUserAndStatus(user, status).stream()
+                .map(order ->  modelMapper.map(order, OrderDTO.class)).toList();
+
+
+
+    }
+
     public boolean deleteOrder(long orderId){
         return orderRepository.findById(orderId)
                 .map(user -> { orderRepository.deleteById(orderId);
@@ -246,6 +259,10 @@ public class OrderService {
         return orderItemRepository.findByOrder(order).stream()
                 .map(orderItem -> modelMapper.map(orderItem, OrderItemDTO.class)).toList();
 
+    }
+
+    public List<OrderDTO> findAllOrders(){
+        return orderRepository.findAll().stream().map(order -> modelMapper.map(order, OrderDTO.class)).toList();
     }
 
 

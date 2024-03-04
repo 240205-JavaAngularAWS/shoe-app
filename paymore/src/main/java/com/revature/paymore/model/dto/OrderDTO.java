@@ -2,7 +2,9 @@ package com.revature.paymore.model.dto;
 import com.revature.paymore.model.enums.Status;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 public class OrderDTO {
@@ -15,26 +17,31 @@ public class OrderDTO {
     private LocalDateTime timestamp;
     private Long userId;
 
+    private Set<OrderItemDTO> orderItems = new HashSet<>();
 
-    // Default constructor
-    public OrderDTO() {
-    }
 
-    public OrderDTO(Long id, double priceTotal, Status status, LocalDateTime timestamp, Long userId) {
+    public OrderDTO(Long id, double priceTotal, Status status, LocalDateTime timestamp, Long userId, Set<OrderItemDTO> orderItems) {
         this.id = id;
         this.priceTotal = priceTotal;
         this.status = status;
         this.timestamp = timestamp;
         this.userId = userId;
+        this.orderItems = orderItems;
     }
 
-    public OrderDTO(double priceTotal, Status status, LocalDateTime timestamp, Long userId) {
+    // Default constructor
+    public OrderDTO() {
+    }
+
+
+
+    public OrderDTO(double priceTotal, Status status, LocalDateTime timestamp, Long userId, Set<OrderItemDTO> orderItems) {
         this.priceTotal = priceTotal;
         this.status = status;
         this.timestamp = timestamp;
         this.userId = userId;
+        this.orderItems = orderItems;
     }
-
     public OrderDTO(double priceTotal, Status status, Long userId) {
         this.priceTotal = priceTotal;
         this.status = status;
@@ -82,8 +89,15 @@ public class OrderDTO {
         this.userId = userId;
     }
 
+    public Set<OrderItemDTO> getOrderItems() {
+        return orderItems;
+    }
 
-    // toString method for debugging purposes
+    public void setOrderItems(Set<OrderItemDTO> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+
     @Override
     public String toString() {
         return "OrderDTO{" +
@@ -106,6 +120,8 @@ public class OrderDTO {
     public int hashCode() {
         return Objects.hash(id, priceTotal, status, timestamp, userId);
     }
+
+
 }
 
 

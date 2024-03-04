@@ -3,6 +3,7 @@ package com.revature.paymore.service;
 import com.revature.paymore.model.Seller;
 import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
+import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.repository.ProductRepository;
 import com.revature.paymore.repository.SellerRepository;
 
@@ -25,17 +26,20 @@ public class ProductService {
 
     private final SellerRepository sellerRepository;
 
+    private final ModelMapper modelMapper;
+
 
     @Autowired
-    public ProductService(ProductRepository productRepository, SellerRepository sellerRepository) {
+    public ProductService(ProductRepository productRepository, SellerRepository sellerRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.sellerRepository = sellerRepository;
+        this.modelMapper = modelMapper;
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
 
-    private ModelMapper modelMapper = new ModelMapper();
+
 
     private ProductDTO convertToDto(Product product) {
         return modelMapper.map(product, ProductDTO.class);
@@ -48,9 +52,9 @@ public class ProductService {
 
     public ProductDTO addProduct(Product product){
         // check if seller exists
-        sellerRepository.findById(product.getSeller().getId())
+        Seller seller = sellerRepository.findById(product.getSeller().getId())
                 .orElseThrow(() -> new EntityNotFoundException(" This product does not have any Seller "));
-
+        product.setSeller(seller);
         productRepository.save(product);
         return modelMapper.map(product, ProductDTO.class);
     }
@@ -78,12 +82,27 @@ public class ProductService {
         return productRepository.findBySeller(seller).stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
     }
 
+    public List<ProductDTO> findProductsByCategory(Category category){
+        return productRepository.findByCategory(category).stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
+    }
+
+
+    public List<ProductDTO> findProductsBySellerIdAndCategory(Long sellerId, Category category){
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new EntityNotFoundException("There is no product because seller wasn't found"));
+        return productRepository.findBySellerAndCategory(seller, category).stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
+    }
+
 
     //
     public ProductDTO findProductById(Long productId){
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("There is no product because given ID wasn't found"));
         return convertToDto(product);
+    }
+
+    public List<Product> findProductsByKeyword(String keyword) {
+        return productRepository.findByProductNameContainingIgnoreCase(keyword);
     }
 
 }

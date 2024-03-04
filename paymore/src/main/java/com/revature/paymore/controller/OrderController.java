@@ -2,6 +2,8 @@ package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.dto.OrderDTO;
 import com.revature.paymore.model.dto.OrderItemDTO;
+import com.revature.paymore.model.dto.ProductDTO;
+import com.revature.paymore.model.enums.Status;
 import com.revature.paymore.service.OrderService;
 import com.revature.paymore.service.ResponseHelperService;
 import jakarta.validation.Valid;
@@ -61,15 +63,20 @@ public class OrderController {
     }
 
 
+    @GetMapping("/orders/all")
+    public ResponseEntity<List<OrderDTO>> findAllOrders(){
+
+        List<OrderDTO> response = orderService.findAllOrders();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
 
 
 
-    @PostMapping("/orders/{orderId}")
-    public ResponseEntity<OrderDTO> submitCartAsOrder(@PathVariable long orderId){
 
-        // A cart is a pending order.
+    @PostMapping("/orders/submit")
+    public ResponseEntity<OrderDTO> submitCartAsOrder(@RequestParam(name = "orderId") Long orderId){
         OrderDTO response = orderService.submitOrder(orderId);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
@@ -77,18 +84,33 @@ public class OrderController {
 
 
 
-    @GetMapping("/orders/users/{userId}")
-    public ResponseEntity<List<OrderDTO>> findOrdersByUser(@PathVariable long userId){
-        // A cart is a pending order.
+    @GetMapping("/orders/users/filterBy")
+    public ResponseEntity<List<OrderDTO>> findOrdersByUserId(@RequestParam(name = "userId") Long userId){
+        // Get Orders by User Id
         List<OrderDTO> response = orderService.findOrdersByUser(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 
-    @GetMapping("/orders/items/{productId}")
-    public ResponseEntity<List<OrderDTO>> findOrderItemsByProduct(@PathVariable long productId){
+
+
+    @GetMapping("/orders/filterBy")
+    public ResponseEntity<List<OrderDTO>> findOrdersByUserIdAndStatus(@RequestParam(name = "userId") Long userId,
+                                                                      @RequestParam(name = "status") String status){
+        // Get Orders by User Id and Status.  Status must be all caps.
+        Status convertedStatus = Status.valueOf(status.toUpperCase());
+        if(convertedStatus != Status.COMPLETED && convertedStatus != Status.PENDING){
+            throw new BadRequestException("Please format the enum as an all caps string of the available choices.");
+        }
+        List<OrderDTO> response = orderService.findOrdersByUserAndStatus(userId, convertedStatus);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/orders/items/filterBy")
+    public ResponseEntity<List<OrderItemDTO>> findOrderItemsByProductId(@RequestParam(name = "productId") Long productId){
         // A cart is a pending order.
-        List<OrderDTO> response = orderService.findOrdersByUser(productId);
+        List<OrderItemDTO> response = orderService.findOrderItemsByProductId(productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }

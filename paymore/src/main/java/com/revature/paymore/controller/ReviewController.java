@@ -53,8 +53,8 @@ public class ReviewController {
     }
 
 
-    @GetMapping("/reviews")
-    public ResponseEntity<List<ReviewDTO>> findReviews(@RequestParam(name = "productid") long productId,
+    @GetMapping("/reviews/filterBy")
+    public ResponseEntity<List<ReviewDTO>> findReviews(@RequestParam(name = "productId") long productId,
                                                        @RequestParam(name = "rating", required = false) Integer rating) {
         List<ReviewDTO> response;
         if (rating != null) {

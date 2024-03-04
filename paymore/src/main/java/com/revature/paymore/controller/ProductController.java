@@ -2,6 +2,7 @@ package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.model.Product;
+import com.revature.paymore.model.enums.Category;
 import com.revature.paymore.service.ProductService;
 import com.revature.paymore.service.ResponseHelperService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProductController {
@@ -57,7 +59,7 @@ public class ProductController {
     }
 
     // find all products
-    @GetMapping("/products")
+    @GetMapping("/products/all")
     public ResponseEntity<List<ProductDTO>> findAllProducts(){
 
         List<ProductDTO> response = productService.getAllProducts();
@@ -67,11 +69,39 @@ public class ProductController {
 
 
     // find product by sellerId
-    @GetMapping("/products/seller/{sellerId}")
-    public ResponseEntity<List<ProductDTO>> findProductsBySellerId(@PathVariable Long sellerId){
+    @GetMapping("/products/filterBy")
+    public ResponseEntity<List<ProductDTO>> findProducts(
+            @RequestParam(name = "category", required = false) Optional<String> category,
+            @RequestParam(name = "sellerId", required = false) Optional<Long> sellerId) {
 
-        List<ProductDTO> allProducts = productService.findProductsBySellerID(sellerId);
-        return new ResponseEntity<>(allProducts, HttpStatus.OK);
+        List<ProductDTO> response;
+
+        // Check if both parameters are missing
+        if (category.isEmpty() && sellerId.isEmpty()) {
+            throw new BadRequestException("Please provide at least one filter: category or sellerId.");
+        }
+
+        Category convertedCategory = null;
+        if (category.isPresent()) {
+            try {
+                convertedCategory = Category.valueOf(category.get().toUpperCase());
+                if (convertedCategory != Category.ATHLETIC && convertedCategory != Category.CASUAL && convertedCategory != Category.DRESS) {
+                    throw new BadRequestException("Invalid category. Please format the enum as an all caps string of the available choices.");
+                }
+            } catch (IllegalArgumentException e) {
+                throw new BadRequestException("Invalid category provided.");
+            }
+        }
+
+        if (category.isPresent() && sellerId.isEmpty()) {
+            response = productService.findProductsByCategory(convertedCategory);
+        } else if (category.isEmpty() && sellerId.isPresent()) {
+            response = productService.findProductsBySellerID(sellerId.get());
+        } else {
+            response = productService.findProductsBySellerIdAndCategory(sellerId.get(), convertedCategory);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -82,6 +112,12 @@ public class ProductController {
         ProductDTO product = productService.findProductById(productId);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
+
+//    @GetMapping("/products/searchBy")
+//    public ResponseEntity<List<Product>> findProductsByKeyword(@RequestParam(name = "keyword") String keyword) {
+//        List<Product> products = productService.findProductsByKeyword(keyword);
+//        return ResponseEntity.ok(products);
+//    }
 
 
     // Need Browse By Category
