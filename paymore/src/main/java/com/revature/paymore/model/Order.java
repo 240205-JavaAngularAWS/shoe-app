@@ -43,6 +43,10 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems;
 
+    public Order(){
+
+    }
+
     public Order(User user, Set<OrderItem> orderItems) {
         this.user = user;
         this.status = Status.PENDING;

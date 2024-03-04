@@ -29,6 +29,10 @@ public class OrderItem {
     @Column(name = "product_id")
     private Long productId;
 
+    public OrderItem(){
+
+    }
+
 
     public OrderItem(Long id, double priceTotal, int quantity, Order order, Long productId) {
         this.id = id;
