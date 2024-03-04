@@ -47,10 +47,10 @@ public class User {
     private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Assuming 'user' is the correct field name in CreditCard class
-    private Set<CreditCard> creditCards = new HashSet<>();;
+    private Set<CreditCard> creditCards = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Order> orders = new HashSet<>();;
+    private Set<Order> orders = new HashSet<>();
 
 
     public User() {

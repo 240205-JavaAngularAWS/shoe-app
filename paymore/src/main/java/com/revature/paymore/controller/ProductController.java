@@ -113,11 +113,20 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-//    @GetMapping("/products/searchBy")
-//    public ResponseEntity<List<Product>> findProductsByKeyword(@RequestParam(name = "keyword") String keyword) {
-//        List<Product> products = productService.findProductsByKeyword(keyword);
+
+//    @PutMapping("/products/update")
+//    public ResponseEntity<Product> changeProductQuantity(@RequestParam(name = "quantity") int quantity, @RequestParam(name = "productId") long productId) {
+//        List<Product> products = productService.(quantity);
 //        return ResponseEntity.ok(products);
 //    }
+
+
+
+    @GetMapping("/products/searchBy")
+    public ResponseEntity<List<Product>> findProductsByKeyword(@RequestParam(name = "keyword") String keyword) {
+        List<Product> products = productService.findProductsByKeyword(keyword);
+        return ResponseEntity.ok(products);
+    }
 
 
     // Need Browse By Category

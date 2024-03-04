@@ -116,6 +116,10 @@ public class OrderController {
     }
 
 
+    // maybe could create a find order items by product id and order status?
+    // could make an enum field in order items for if product is shipped or unshipped status
+
+
 
     @DeleteMapping("/orders/{orderId}")
     public ResponseEntity<String> deleteOrderById(@PathVariable Long orderId){
