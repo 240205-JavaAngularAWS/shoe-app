@@ -83,7 +83,7 @@ public class SellerService {
 
         }
         sellerRepository.save(seller);
-        return new SellerDTO(seller);
+        return modelMapper.map(seller, SellerDTO.class);
     }
 
 
