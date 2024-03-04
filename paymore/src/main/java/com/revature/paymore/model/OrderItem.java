@@ -30,27 +30,29 @@ public class OrderItem {
     private Order order;
 
 
-    @Column(name = "product_id")
-    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
 
     public OrderItem(){
         // empty constructor
     }
 
 
-    public OrderItem(Long id, double price, int quantity, Order order, Long productId) {
+    public OrderItem(Long id, double price, int quantity, Order order, Product product) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
         this.order = order;
-        this.productId = productId;
+        this.product = product;
     }
 
-    public OrderItem(double price, int quantity, Order order, Long productId) {
+    public OrderItem(double price, int quantity, Order order, Product product) {
         this.price = price;
         this.quantity = quantity;
         this.order = order;
-        this.productId = productId;
+        this.product = product;
     }
 
     public Long getId() {
@@ -77,12 +79,12 @@ public class OrderItem {
         this.order = order;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public int getQuantity() {
@@ -97,13 +99,8 @@ public class OrderItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof OrderItem orderItem)) return false;
-        return Double.compare(price, orderItem.price) == 0 && quantity == orderItem.quantity && Objects.equals(id, orderItem.id) && Objects.equals(order, orderItem.order) && Objects.equals(productId, orderItem.productId);
+        return Double.compare(price, orderItem.price) == 0 && quantity == orderItem.quantity && Objects.equals(id, orderItem.id) && Objects.equals(order, orderItem.order) && Objects.equals(product, orderItem.product);
     }
-
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, priceTotal, quantity, order, productId);
-//    }
 
     @Override
     public String toString() {
@@ -112,7 +109,7 @@ public class OrderItem {
                 ", priceTotal=" + price +
                 ", quantity=" + quantity +
                 ", order=" + order +
-                ", productId=" + productId +
+                ", product=" + product +
                 '}';
     }
 }

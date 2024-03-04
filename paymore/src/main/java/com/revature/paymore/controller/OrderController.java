@@ -1,16 +1,13 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
 import com.revature.paymore.model.dto.OrderDTO;
-import com.revature.paymore.model.Order;
 import com.revature.paymore.model.dto.OrderItemDTO;
-import com.revature.paymore.model.dto.ProductDTO;
 import com.revature.paymore.service.OrderService;
 import com.revature.paymore.service.ResponseHelperService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,20 +78,21 @@ public class OrderController {
 
 
     @GetMapping("/orders/users/{userId}")
-    public ResponseEntity<List<OrderDTO>> findCartByUser(@PathVariable long userId){
+    public ResponseEntity<List<OrderDTO>> findOrdersByUser(@PathVariable long userId){
         // A cart is a pending order.
-        List<OrderDTO> response = orderService.findCartByUser(userId);
+        List<OrderDTO> response = orderService.findOrdersByUser(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 
-    @GetMapping("/orders/{orderId}/items")
-    public ResponseEntity<List<OrderItemDTO>> findOrderItemsByOrder(@PathVariable long orderId){
+    @GetMapping("/orders/items/{productId}")
+    public ResponseEntity<List<OrderDTO>> findOrderItemsByProduct(@PathVariable long productId){
         // A cart is a pending order.
-        List<OrderItemDTO> response = orderService.findOrderItemsByOrder(orderId);
+        List<OrderDTO> response = orderService.findOrdersByUser(productId);
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
+
 
 
     @DeleteMapping("/orders/{orderId}")

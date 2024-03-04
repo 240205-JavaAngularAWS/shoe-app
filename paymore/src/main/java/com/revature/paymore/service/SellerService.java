@@ -27,20 +27,23 @@ public class SellerService {
     private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
 
+    private final ModelMapper modelMapper;
+
 
 
 
     private static final Logger logger = LoggerFactory.getLogger(SellerService.class);
 
-    private ModelMapper modelMapper = new ModelMapper();
+
 
 
     @Autowired
-    public SellerService(SellerRepository sellerRepository, UserRepository userRepository, AddressRepository addressRepository, ProductRepository productRepository) {
+    public SellerService(SellerRepository sellerRepository, UserRepository userRepository, AddressRepository addressRepository, ProductRepository productRepository, ModelMapper modelMapper) {
         this.sellerRepository = sellerRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
         this.productRepository = productRepository;
+        this.modelMapper =  modelMapper;
 
     }
 
@@ -48,33 +51,22 @@ public class SellerService {
 
     // register as a seller
     public SellerDTO registerSeller(Seller seller) {
-
-
-
-        // Ensure Username isn't taken by other sellers.
-        if (sellerRepository.findByUsername(seller.getUsername()).isPresent()) {
+        // Ensure Username isn't taken by other sellers or users.
+        if (sellerRepository.findByUsername(seller.getUsername()).isPresent() || userRepository.findByUsername(seller.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistsException("Username already exists");
         }
-        // Ensure Username isn't taken by other users.
-        if (userRepository.findByUsername(seller.getUsername()).isPresent()) {
-            throw new UsernameAlreadyExistsException("Username already exists");
-        }
-
         Address sellerAddress = seller.getAddress();
         sellerAddress.setAddressType(AddressType.SELLER);
         // save address to repo
         addressRepository.save(sellerAddress);
 
-        if(!seller.getProducts().isEmpty()){
-            for(Product product: seller.getProducts()){
+        seller.getProducts().forEach(productRepository::save);
+        Seller savedSeller = sellerRepository.save(seller);
 
-                // save product to repo
-                productRepository.save(product);
-            }
+        sellerAddress.setSeller(savedSeller);
+        addressRepository.save(sellerAddress);
 
-        }
-        sellerRepository.save(seller);
-        return modelMapper.map(seller, SellerDTO.class);
+        return modelMapper.map(savedSeller, SellerDTO.class);
     }
 
 

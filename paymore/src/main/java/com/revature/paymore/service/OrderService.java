@@ -104,7 +104,7 @@ public class OrderService {
 
         // check to see if orderItem is already in cart.
         Optional<OrderItem> existingOrderItem = order.getOrderItems().stream()
-                .filter(item -> Objects.equals(item.getProductId(), product.getId()))
+                .filter(item -> Objects.equals(item.getProduct(), product.getId()))
                 .findFirst();
         if(existingOrderItem.isPresent()){
             // if present, just update the quantity.
@@ -136,22 +136,7 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Order Not Found or Invalid Status"));
     }
 
-    private Product validateAndGetProduct(Long productId) {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
-    }
 
-    private OrderItem createOrderItem(OrderItemDTO orderItemDto, Product product) {
-        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
-        orderItem.setProductId(product.getId());
-        checkStock(product.getQuantity(), orderItem.getQuantity());
-        return orderItemRepository.save(orderItem);
-    }
-
-    private void updateOrderTotalPrice(Order order, OrderItem item) {
-        double updatedPrice = order.getPriceTotal() + (item.getQuantity() * item.getPrice());
-        order.setPriceTotal(updatedPrice);
-    }
 
     public OrderDTO removeItemFromCart(long orderItemId){
         // this removes an item from the cart completely regardless of quantity.
@@ -189,6 +174,16 @@ public class OrderService {
 
     }
 
+    public List<OrderItemDTO> findOrderItemsByProduct(long productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Order Not Found"));
+
+        return orderItemRepository.findByProduct(product).stream()
+                .map(orderItem -> modelMapper.map(orderItem, OrderItemDTO.class)).toList();
+
+    }
+
+
 
 
     public OrderDTO submitOrder(Long orderId){
@@ -201,8 +196,8 @@ public class OrderService {
         }
 
         order.getOrderItems().forEach(orderItem -> {
-            Product product = productRepository.findById(orderItem.getProductId())
-                    .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
+            Product product = orderItem.getProduct();
+
             // ensure the stock quantity is valid.
             checkStock(product.getQuantity(), orderItem.getQuantity());
 
@@ -227,10 +222,10 @@ public class OrderService {
     }
 
 
-    public List<OrderDTO> findCartByUser(long userId){
+    public List<OrderDTO> findOrdersByUser(long userId){
         User user = userRepository.findById(userId)
                         .orElseThrow(() -> new EntityNotFoundException("User Not Found"));
-        return orderRepository.findByUserAndStatus(user, Status.PENDING).stream()
+        return orderRepository.findByUser(user).stream()
                 .map(order ->  modelMapper.map(order, OrderDTO.class)).toList();
 
 
@@ -251,6 +246,24 @@ public class OrderService {
         return orderItemRepository.findByOrder(order).stream()
                 .map(orderItem -> modelMapper.map(orderItem, OrderItemDTO.class)).toList();
 
+    }
+
+
+    private Product validateAndGetProduct(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
+    }
+
+    private OrderItem createOrderItem(OrderItemDTO orderItemDto, Product product) {
+        OrderItem orderItem = modelMapper.map(orderItemDto, OrderItem.class);
+        orderItem.setProduct(product);
+        checkStock(product.getQuantity(), orderItem.getQuantity());
+        return orderItemRepository.save(orderItem);
+    }
+
+    private void updateOrderTotalPrice(Order order, OrderItem item) {
+        double updatedPrice = order.getPriceTotal() + (item.getQuantity() * item.getPrice());
+        order.setPriceTotal(updatedPrice);
     }
 
 

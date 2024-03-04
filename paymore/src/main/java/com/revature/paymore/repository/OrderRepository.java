@@ -15,6 +15,8 @@ import static com.revature.paymore.model.enums.Status.PENDING;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    List<Order> findByUser(User user);
+
     List<Order> findByUserAndStatus(User user, Status status);
 
 }

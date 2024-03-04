@@ -22,19 +22,21 @@ import java.util.List;
 public class ReviewService {
 
 
-    ReviewRepository reviewRepository;
-    ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
 
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository, ModelMapper modelMapper) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
+        this.modelMapper = modelMapper;
 
     }
 
 
-    private ModelMapper modelMapper = new ModelMapper();
+
 
     private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
@@ -42,30 +44,14 @@ public class ReviewService {
        if(reviewDto == null){
            throw new NullPointerException("Object cannot be empty.");
        }
-
         // check if product exists
         Product product = productRepository.findById(reviewDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException(" This product does not have any Seller "));
 
         // convert DTO to review.
-        Review review = new Review(reviewDto.getContent(),
-                                    reviewDto.getRating(),
-                                    product);
-
-
-
-        // validate review object
-
-
-
-
+        Review review = modelMapper.map(reviewDto, Review.class);
         // get local timestamp
         review.setReviewDate(LocalDateTime.now());
-
-
-        // add review to product.
-        product.addReview(review);
-
         reviewRepository.save(review);
         productRepository.save(product);
 

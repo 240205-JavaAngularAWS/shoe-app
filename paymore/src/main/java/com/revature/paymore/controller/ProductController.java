@@ -58,7 +58,7 @@ public class ProductController {
 
     // find all products
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDTO>> getAllProducts(){
+    public ResponseEntity<List<ProductDTO>> findAllProducts(){
 
         List<ProductDTO> response = productService.getAllProducts();
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -75,12 +75,19 @@ public class ProductController {
     }
 
 
+
     @GetMapping("/products/{productId}")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable Long productId){
 
         ProductDTO product = productService.findProductById(productId);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
+
+
+    // Need Browse By Category
+
+
+    // Browse By Keywords
 
 
 }

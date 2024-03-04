@@ -1,12 +1,16 @@
 package com.revature.paymore.model.dto;
 
 import com.revature.paymore.model.Product;
+import com.revature.paymore.model.Review;
+import com.revature.paymore.model.Seller;
 import com.revature.paymore.model.enums.Color;
 import com.revature.paymore.model.enums.Gender;
 import com.revature.paymore.model.enums.Category;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
+
+import java.util.List;
 
 public class ProductDTO {
 
@@ -39,16 +43,16 @@ public class ProductDTO {
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
-    private Long sellerId;
+    private SellerDTO seller;
+
+    private List<ReviewDTO> reviews;
 
     // Constructors
     public ProductDTO() {
         // empty no args constructor
     }
 
-
-
-    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Long sellerId) {
+    public ProductDTO(Long id, String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, SellerDTO seller, List<ReviewDTO> reviews) {
         this.id = id;
         this.productName = productName;
         this.size = size;
@@ -59,10 +63,11 @@ public class ProductDTO {
         this.quantity = quantity;
         this.imageUrl = imageUrl;
         this.description = description;
-        this.sellerId = sellerId;
+        this.seller = seller;
+        this.reviews = reviews;
     }
 
-    public ProductDTO(String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, Long sellerId) {
+    public ProductDTO(String productName, double size, double price, Color color, Gender gender, Category category, int quantity, String imageUrl, String description, SellerDTO seller, List<ReviewDTO> reviews) {
         this.productName = productName;
         this.size = size;
         this.price = price;
@@ -72,24 +77,10 @@ public class ProductDTO {
         this.quantity = quantity;
         this.imageUrl = imageUrl;
         this.description = description;
-        this.sellerId = sellerId;
+        this.seller = seller;
+        this.reviews = reviews;
     }
 
-    // Constructor that converts a Product entity into a Product DTO
-
-    public ProductDTO(Product product){
-        this.id = product.getId();
-        this.productName = product.getProductName();
-        this.size = product.getSize();
-        this.price = product.getPrice();
-        this.color = product.getColor();
-        this.gender = product.getGender();
-        this.category = product.getCategory();
-        this.quantity = product.getQuantity();
-        this.imageUrl = product.getImageUrl();
-        this.description = product.getDescription();
-
-    }
 
     // Getters and Setters
     public Long getId() {
@@ -174,12 +165,12 @@ public class ProductDTO {
 
     // toString method for debugging purposes
 
-    public Long getSellerId() {
-        return sellerId;
+    public SellerDTO getSeller() {
+        return seller;
     }
 
-    public void setSellerId(Long sellerId) {
-        this.sellerId = sellerId;
+    public void setSeller(SellerDTO seller) {
+        this.seller = seller;
     }
 
     @Override
@@ -195,7 +186,15 @@ public class ProductDTO {
                 ", quantity=" + quantity +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", description='" + description + '\'' +
-                ", sellerId=" + sellerId +
+                ", sellerId=" + seller +
                 '}';
+    }
+
+    public List<ReviewDTO> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<ReviewDTO> reviews) {
+        this.reviews = reviews;
     }
 }

@@ -45,6 +45,11 @@ public class CreditCard {
     @JoinColumn(name = "address_id")
     private Address address;
 
+
+    public CreditCard(){
+        // empty constructor
+    }
+
     public CreditCard(Long id, String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, User user, Address address) {
         this.id = id;
         this.cardNumber = cardNumber;

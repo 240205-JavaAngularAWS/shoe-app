@@ -1,9 +1,14 @@
 package com.revature.paymore.model.dto;
 
+import com.revature.paymore.model.CreditCard;
 import com.revature.paymore.model.User;
 import com.revature.paymore.model.Order;
 import com.revature.paymore.model.Address;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,23 +18,39 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String username;
-    // Addresses and orders could be represented by their IDs or simplified DTOs
+
+    private Set<AddressDTO> addresses;
+
+    private Set<CreditCardDTO> creditCards;
+
+    private Set<OrderDTO> orders;
 
 
     public UserDTO() {
     }
 
-    // Constructor to directly initialize fields
-    public UserDTO(Long id, String firstName, String lastName, String email, String username) {
+
+    public UserDTO(Long id, String firstName, String lastName, String email, String username, Set<AddressDTO> addresses, Set<CreditCardDTO> creditCards, Set<OrderDTO> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
-
+        this.addresses = addresses;
+        this.creditCards = creditCards;
+        this.orders = orders;
     }
 
 
+    public UserDTO(String firstName, String lastName, String email, String username, Set<AddressDTO> addresses, Set<CreditCardDTO> creditCards, Set<OrderDTO> orders) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.addresses = addresses;
+        this.creditCards = creditCards;
+        this.orders = orders;
+    }
 
 
     // Getters and Setters
@@ -74,6 +95,31 @@ public class UserDTO {
     }
 
 
+    public Set<AddressDTO> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<AddressDTO> addresses) {
+        this.addresses = addresses;
+    }
+
+    public Set<CreditCardDTO> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(Set<CreditCardDTO> creditCards) {
+        this.creditCards = creditCards;
+    }
+
+    public Set<OrderDTO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<OrderDTO> orders) {
+        this.orders = orders;
+    }
+
+
     // toString method for debugging purposes
     @Override
     public String toString() {
@@ -85,4 +131,5 @@ public class UserDTO {
                 ", username='" + username + '\'' +
                 '}';
     }
+
 }

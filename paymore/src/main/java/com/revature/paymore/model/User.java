@@ -44,13 +44,13 @@ public class User {
 //            inverseJoinColumns = @JoinColumn(name = "address_id")
 //    )
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Address> addresses;
+    private Set<Address> addresses = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Assuming 'user' is the correct field name in CreditCard class
-    private Set<CreditCard> creditCards = new HashSet<>();
+    private Set<CreditCard> creditCards = new HashSet<>();;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Order> orders;
+    private Set<Order> orders = new HashSet<>();;
 
 
     public User() {
