@@ -1,8 +1,11 @@
 package com.revature.paymore.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 
+import java.lang.annotation.Native;
 import java.util.Objects;
 
 import java.util.Set;
@@ -19,15 +22,20 @@ public class Seller {
     @Column(name = "seller_id")
     private Long id;
 
+    @NotBlank(message = "Company name cannot be blank")
     @Column(name = "company_name")
     private String companyName;
 
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
     @Column(name = "email")
     private String email;
 
-    @Column(name = "username")
+    @NotBlank(message = "Username cannot be blank")
+    @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank(message = "Password cannot be blank")
     @Column(name = "password")
     private String password;
 
@@ -35,7 +43,7 @@ public class Seller {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products;
 
     public Seller() {

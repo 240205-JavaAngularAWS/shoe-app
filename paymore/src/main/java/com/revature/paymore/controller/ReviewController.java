@@ -1,43 +1,60 @@
 package com.revature.paymore.controller;
 import com.revature.paymore.exception.BadRequestException;
-import com.revature.paymore.model.Review;
 import com.revature.paymore.model.dto.ReviewDTO;
+import com.revature.paymore.service.ResponseHelperService;
 import com.revature.paymore.service.ReviewService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ReviewController {
 
 
-    ReviewService reviewService;
+    private final ReviewService reviewService;
+    private final ResponseHelperService responseHelperService;
 
     private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 
     @Autowired
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, ResponseHelperService responseHelperService) {
         this.reviewService = reviewService;
+        this.responseHelperService = responseHelperService;
     }
 
 
     @PostMapping("/reviews")
-    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewDTO reviewDto){
+    public ResponseEntity<?> addReview(@Valid @RequestBody ReviewDTO reviewDto, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            // using DTO so we don't have to use the entire Product object in schema.
+            return responseHelperService.getBindingErrors(bindingResult);
+        }
         logger.info(reviewDto.toString());
+
         ReviewDTO response = reviewService.addReview(reviewDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
-    @GetMapping("/reviews")
-    public ResponseEntity<List<ReviewDTO>> findReviews(@RequestParam(name = "productid") long productId,
+    @GetMapping("/reviews/all")
+    public ResponseEntity<List<ReviewDTO>> findAllReviews(){
+        List<ReviewDTO> response = reviewService.findAllReviews();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+
+    @GetMapping("/reviews/filterBy")
+    public ResponseEntity<List<ReviewDTO>> findReviews(@RequestParam(name = "productId") long productId,
                                                        @RequestParam(name = "rating", required = false) Integer rating) {
         List<ReviewDTO> response;
         if (rating != null) {

@@ -3,6 +3,11 @@ package com.revature.paymore.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -17,10 +22,14 @@ public class Review {
     private Long id;
 
     @Lob // Used for longer text
+    @NotBlank(message = "Review content cannot be blank")
+    @Size(max = 10000, message = "Review content must be less than 10000 characters")
     @Column(name = "content")
     private String content;
 
 
+    @Min(1)
+    @Max(5)
     @Column(name = "rating")
     private int rating;
 

@@ -1,18 +1,32 @@
 package com.revature.paymore.model.dto;
-
-import com.revature.paymore.model.CreditCard;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.Objects;
 
 public class CreditCardDTO {
 
     private Long id;
+
+    @NotBlank(message = "Card number cannot be blank")
+    @Pattern(regexp = "^(\\d{13,19})$", message = "Invalid card number format")
     private String cardNumber;
-    // Omitting security code in the DTO
+
+    @NotBlank(message =  "Security code cannot be blank")
+    @Pattern(regexp = "^(\\d{3,4})$", message = "Invalid security code format")
     private String securityCode;
+
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
+
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
+
+    @NotBlank(message = "Expiration date cannot be blank")
+    @Pattern(regexp = "^(0[1-9]|1[0-2])\\/([0-9]{2})$", message = "Invalid expiration date format")
     private String expirationDate;
+
+
     private Long userId; // Only the user ID to reference the user, not the entire User object
 
     // Default constructor
@@ -20,13 +34,25 @@ public class CreditCardDTO {
     }
 
     // Constructor that converts a CreditCard entity to CreditCardDTO
-    public CreditCardDTO(CreditCard creditCard) {
-        this.id = creditCard.getId();
-        this.cardNumber = creditCard.getCardNumber();
-        this.firstName = creditCard.getFirstName();
-        this.lastName = creditCard.getLastName();
-        this.expirationDate = creditCard.getExpirationDate();
-        this.userId = creditCard.getUser() != null ? creditCard.getUser().getId() : null;
+
+
+    public CreditCardDTO(String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, Long userId) {
+        this.cardNumber = cardNumber;
+        this.securityCode = securityCode;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.expirationDate = expirationDate;
+        this.userId = userId;
+    }
+
+    public CreditCardDTO(Long id, String cardNumber, String securityCode, String firstName, String lastName, String expirationDate, Long userId) {
+        this.id = id;
+        this.cardNumber = cardNumber;
+        this.securityCode = securityCode;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.expirationDate = expirationDate;
+        this.userId = userId;
     }
 
     // Getters and Setters

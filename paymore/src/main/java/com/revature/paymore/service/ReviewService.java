@@ -1,7 +1,5 @@
 package com.revature.paymore.service;
 
-
-import com.revature.paymore.controller.AddressController;
 import com.revature.paymore.model.Product;
 import com.revature.paymore.model.Review;
 
@@ -18,52 +16,42 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+
 
 @Service
 public class ReviewService {
 
 
-    ReviewRepository reviewRepository;
-    ProductRepository productRepository;
-
-    ValidationService validationService;
-
-    ModelMapper modelMapper;
-
-    private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
-
+    private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
 
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository, ValidationService validationService) {
+    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository, ModelMapper modelMapper) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
-        this.validationService = validationService;
+        this.modelMapper = modelMapper;
+
     }
+
+
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
     public ReviewDTO addReview(ReviewDTO reviewDto) throws EntityNotFoundException{
        if(reviewDto == null){
            throw new NullPointerException("Object cannot be empty.");
        }
-       logger.info(reviewDto.toString());
-        // convert DTO to review.
-        Review review = new Review();
-
-        // validate review object
-        validationService.validateReview(review);
-
         // check if product exists
-        Product product = productRepository.findById(review.getProduct().getId())
+        Product product = productRepository.findById(reviewDto.getProductId())
                 .orElseThrow(() -> new EntityNotFoundException(" This product does not have any Seller "));
 
+        // convert DTO to review.
+        Review review = modelMapper.map(reviewDto, Review.class);
         // get local timestamp
         review.setReviewDate(LocalDateTime.now());
-
-
-        // add review to product.
-        product.addReview(review);
-
         reviewRepository.save(review);
         productRepository.save(product);
 
@@ -76,6 +64,13 @@ public class ReviewService {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found.  No reviews"));
         return reviewRepository.findByProductId(productId).stream().map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
     }
+
+    public List<ReviewDTO> findAllReviews(){
+        return reviewRepository.findAll().stream().map(review -> modelMapper.map(review, ReviewDTO.class)).toList();
+    }
+
+
+
 
 
     public boolean deleteReview(long reviewId){

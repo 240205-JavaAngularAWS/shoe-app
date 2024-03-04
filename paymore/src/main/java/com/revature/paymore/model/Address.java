@@ -3,6 +3,10 @@ package com.revature.paymore.model;
 
 import com.revature.paymore.model.enums.AddressType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -16,18 +20,24 @@ public class Address {
     private Long id;
 
 
+    @NotBlank(message = "Address cannot be blank")
     @Column(name = "address")
     private String addressText;
 
+    @NotBlank(message = "City cannot be blank")
     @Column(name = "city")
     private String city;
 
 
+    @NotBlank(message = "State cannot be blank")
+    @Size(min = 2, max = 2, message = "State must be a two-letter abbreviation")
     @Column(name = "state")
     private String state;
 
+    @NotBlank(message = "zip code cannot be blank")
+    @Pattern(regexp = "^\\d{5}(-\\d{4})?$", message = "Invalid ZIP code format")
     @Column(name = "zip_code")
-    private int zipCode;
+    private String zipCode;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,7 +58,34 @@ public class Address {
     public Address() {
     }
 
-    public Address(Long id, String addressText, String city, String state, int zipCode, User user, AddressType addressType) {
+
+    public Address(String addressText, String city, String state, String zipCode,AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.addressType = addressType;
+    }
+
+    public Address(String addressText, String city, String state, String zipCode, User user, AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.user = user;
+        this.addressType = addressType;
+    }
+
+    public Address(String addressText, String city, String state, String zipCode, Seller seller, AddressType addressType) {
+        this.addressText = addressText;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.seller = seller;
+        this.addressType = addressType;
+    }
+
+    public Address(Long id, String addressText, String city, String state, String zipCode, User user, AddressType addressType) {
         this.id = id;
         this.addressText = addressText;
         this.city = city;
@@ -58,12 +95,13 @@ public class Address {
         this.addressType = addressType;
     }
 
-    public Address(String addressText, String city, String state, int zipCode, User user, AddressType addressType) {
+    public Address(Long id, String addressText, String city, String state, String zipCode, Seller seller, AddressType addressType) {
+        this.id = id;
         this.addressText = addressText;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.user = user;
+        this.seller = seller;
         this.addressType = addressType;
     }
 
@@ -100,11 +138,11 @@ public class Address {
         this.state = state;
     }
 
-    public int getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
+    public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 

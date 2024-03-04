@@ -10,7 +10,7 @@ public class OrderItemDTO {
 
 
 
-    private double priceTotal;
+    private double price;
 
     private int quantity;
 
@@ -20,17 +20,21 @@ public class OrderItemDTO {
 
     private Long productId;
 
+    public OrderItemDTO(){
+        // empty constructor
+    }
 
-    public OrderItemDTO(Long id, double priceTotal, int quantity, Long orderId, Long productId) {
+
+    public OrderItemDTO(Long id, double price, int quantity, Long orderId, Long productId) {
         this.id = id;
-        this.priceTotal = priceTotal;
+        this.price = price;
         this.quantity = quantity;
         this.orderId = orderId;
         this.productId = productId;
     }
 
-    public OrderItemDTO(double priceTotal, int quantity, Long orderId, Long productId) {
-        this.priceTotal = priceTotal;
+    public OrderItemDTO(double price, int quantity, Long orderId, Long productId) {
+        this.price = price;
         this.quantity = quantity;
         this.orderId = orderId;
         this.productId = productId;
@@ -44,12 +48,12 @@ public class OrderItemDTO {
         this.id = id;
     }
 
-    public double getPriceTotal() {
-        return priceTotal;
+    public double getPrice() {
+        return price;
     }
 
-    public void setPriceTotal(double priceTotal) {
-        this.priceTotal = priceTotal;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public Long getOrderId() {
@@ -80,19 +84,19 @@ public class OrderItemDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof OrderItemDTO that)) return false;
-        return Double.compare(priceTotal, that.priceTotal) == 0 && quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(orderId, that.orderId) && Objects.equals(productId, that.productId);
+        return Double.compare(price, that.price) == 0 && quantity == that.quantity && Objects.equals(id, that.id) && Objects.equals(orderId, that.orderId) && Objects.equals(productId, that.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, priceTotal, quantity, orderId, productId);
+        return Objects.hash(id, price, quantity, orderId, productId);
     }
 
     @Override
     public String toString() {
         return "OrderItemDTO{" +
                 "id=" + id +
-                ", priceTotal=" + priceTotal +
+                ", priceTotal=" + price +
                 ", quantity=" + quantity +
                 ", orderId=" + orderId +
                 ", productId=" + productId +

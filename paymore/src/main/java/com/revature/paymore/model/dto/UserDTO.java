@@ -1,9 +1,14 @@
 package com.revature.paymore.model.dto;
 
+import com.revature.paymore.model.CreditCard;
 import com.revature.paymore.model.User;
 import com.revature.paymore.model.Order;
 import com.revature.paymore.model.Address;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,34 +18,40 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String username;
-    // Addresses and orders could be represented by their IDs or simplified DTOs
-    private Set<Long> addressIds;
-    private Set<Long> orderIds;
+
+    private Set<AddressDTO> addresses;
+
+    private Set<CreditCardDTO> creditCards;
+
+    private Set<OrderDTO> orders;
+
 
     public UserDTO() {
     }
 
-    // Constructor to directly initialize fields
-    public UserDTO(Long id, String firstName, String lastName, String email, String username, Set<Long> addressIds, Set<Long> orderIds) {
+
+    public UserDTO(Long id, String firstName, String lastName, String email, String username, Set<AddressDTO> addresses, Set<CreditCardDTO> creditCards, Set<OrderDTO> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.username = username;
-        this.addressIds = addressIds;
-        this.orderIds = orderIds;
+        this.addresses = addresses;
+        this.creditCards = creditCards;
+        this.orders = orders;
     }
 
-    // Constructor to convert User entity to UserDTO
-    public UserDTO(User user) {
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
-        this.username = user.getUsername();
-        this.addressIds = user.getAddresses().stream().map(Address::getId).collect(Collectors.toSet());
-        this.orderIds = user.getOrders().stream().map(Order::getId).collect(Collectors.toSet());
+
+    public UserDTO(String firstName, String lastName, String email, String username, Set<AddressDTO> addresses, Set<CreditCardDTO> creditCards, Set<OrderDTO> orders) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.addresses = addresses;
+        this.creditCards = creditCards;
+        this.orders = orders;
     }
+
 
     // Getters and Setters
     public Long getId() {
@@ -83,21 +94,31 @@ public class UserDTO {
         this.username = username;
     }
 
-    public Set<Long> getAddressIds() {
-        return addressIds;
+
+    public Set<AddressDTO> getAddresses() {
+        return addresses;
     }
 
-    public void setAddressIds(Set<Long> addressIds) {
-        this.addressIds = addressIds;
+    public void setAddresses(Set<AddressDTO> addresses) {
+        this.addresses = addresses;
     }
 
-    public Set<Long> getOrderIds() {
-        return orderIds;
+    public Set<CreditCardDTO> getCreditCards() {
+        return creditCards;
     }
 
-    public void setOrderIds(Set<Long> orderIds) {
-        this.orderIds = orderIds;
+    public void setCreditCards(Set<CreditCardDTO> creditCards) {
+        this.creditCards = creditCards;
     }
+
+    public Set<OrderDTO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<OrderDTO> orders) {
+        this.orders = orders;
+    }
+
 
     // toString method for debugging purposes
     @Override
@@ -108,8 +129,7 @@ public class UserDTO {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
-                ", addressIds=" + addressIds +
-                ", orderIds=" + orderIds +
                 '}';
     }
+
 }

@@ -1,5 +1,8 @@
 package com.revature.paymore.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.*;
 import java.util.Set;
@@ -13,18 +16,24 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @NotBlank(message = "First name cannot be blank")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank(message = "Last name cannot be blank")
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "username")
+    @NotBlank(message = "Username cannot be blank")
+    @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank(message = "Password cannot be blank")
     @Column(name = "password")
     private String password;
 
@@ -34,14 +43,14 @@ public class User {
 //            joinColumns = @JoinColumn(name = "user_id"),
 //            inverseJoinColumns = @JoinColumn(name = "address_id")
 //    )
-    @OneToMany(mappedBy = "user")
-    private Set<Address> addresses;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Address> addresses = new HashSet<>();
 
-    @OneToMany(mappedBy = "user") // Assuming 'user' is the correct field name in CreditCard class
-    private Set<CreditCard> creditCards = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Assuming 'user' is the correct field name in CreditCard class
+    private Set<CreditCard> creditCards = new HashSet<>();;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders = new HashSet<>();;
 
 
     public User() {
@@ -69,6 +78,17 @@ public class User {
         this.addresses = addresses;
         this.orders = orders;
     }
+
+
+    public User(String firstName, String lastName, String email, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+
+    }
+
 
 
     public Long getId() {
@@ -144,6 +164,19 @@ public class User {
     }
 
     // helper functions
+    public void addAddress(Address address){
+        this.addresses.add(address);
+        address.setUser(this);
+
+    }
+    public void removeAddress(Address address){
+        this.addresses.remove(address);
+        address.setUser(null);
+
+    }
+
+
+
     public void addOrder(Order order){
         this.orders.add(order);
         order.setUser(this);
