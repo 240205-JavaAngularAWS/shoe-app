@@ -114,11 +114,21 @@ public class ProductController {
     }
 
 
-//    @PutMapping("/products/update")
-//    public ResponseEntity<Product> changeProductQuantity(@RequestParam(name = "quantity") int quantity, @RequestParam(name = "productId") long productId) {
-//        List<Product> products = productService.(quantity);
-//        return ResponseEntity.ok(products);
-//    }
+    @PutMapping("/products/update")
+    public ResponseEntity<ProductDTO> changeProductQuantity(@RequestParam(name = "quantity") int quantity,
+                                                         @RequestParam(name = "productId") long productId) {
+        ProductDTO products = productService.changeProductQuantity(productId, quantity);
+        return ResponseEntity.ok(products);
+    }
+
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<ProductDTO> changeProductPicture(@PathVariable long productId, @RequestBody String imageUrl) {
+        ProductDTO products = productService.changeProductPicture(productId, imageUrl);
+        return ResponseEntity.ok(products);
+    }
+
+
 
 
 
