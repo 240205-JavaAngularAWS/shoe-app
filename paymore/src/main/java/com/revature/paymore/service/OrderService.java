@@ -108,12 +108,22 @@ public class OrderService {
         Optional<OrderItem> existingOrderItem = order.getOrderItems().stream()
                 .filter(item -> Objects.equals(item.getProduct().getId(), product.getId()))
                 .findFirst();
+
         if(existingOrderItem.isPresent()){
-            // if present, just update the quantity.
-            orderItem = existingOrderItem.get();
-            int newQuantity = orderItem.getQuantity() + orderItemDto.getQuantity();
-            orderItem.setQuantity(newQuantity);
-            orderItemRepository.save(orderItem);
+
+            int newQuantity = orderItemDto.getQuantity() + existingOrderItem.get().getQuantity();
+
+            if(newQuantity > product.getQuantity()){
+                throw new StockException("Insufficient Stock");
+            }
+            else {
+
+                orderItem = existingOrderItem.get();
+                orderItem.setQuantity(newQuantity);
+                orderItemRepository.save(orderItem);
+
+            }
+
         }
         else {
             orderItem = createOrderItem(orderItemDto, product);
@@ -168,12 +178,8 @@ public class OrderService {
     public void checkStock(int currentStock, int itemQuantity){
         // checks to ensure the stock and quantity are valid.
         if(currentStock < itemQuantity){
-            throw new StockException("Stock too low for current quantity.");
+            throw new StockException("Insufficient Stock.");
         }
-        if(currentStock == 0){
-            throw new StockException("Out of Stock");
-        }
-
     }
 
     public List<OrderItemDTO> findOrderItemsByProductId(long productId){

@@ -130,19 +130,12 @@ public class ProductController {
 
 
 
-
-
     @GetMapping("/products/searchBy")
-    public ResponseEntity<List<Product>> findProductsByKeyword(@RequestParam(name = "keyword") String keyword) {
-        List<Product> products = productService.findProductsByKeyword(keyword);
+    public ResponseEntity<List<ProductDTO>> findProductsByKeyword(@RequestParam(name = "keyword") String keyword) {
+        List<ProductDTO> products = productService.findProductsByKeyword(keyword);
         return ResponseEntity.ok(products);
     }
 
-
-    // Need Browse By Category
-
-
-    // Browse By Keywords
 
 
 }

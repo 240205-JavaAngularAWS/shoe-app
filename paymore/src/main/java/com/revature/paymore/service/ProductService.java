@@ -132,8 +132,9 @@ public class ProductService {
         return convertToDto(product);
     }
 
-    public List<Product> findProductsByKeyword(String keyword) {
-        return productRepository.findByProductNameContainingIgnoreCase(keyword);
+    public List<ProductDTO> findProductsByKeyword(String keyword) {
+        return productRepository.findByProductNameContainingIgnoreCase(keyword).stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class)).toList();
     }
 
 }
