@@ -52,8 +52,9 @@ public class Product {
     @Column(name = "quantity")
     private int quantity;
 
-    @URL(message = "Invalid image URL")
-    @Pattern(regexp = ".*\\.(jpg|png|jpeg|gif)$", message="Image URL must end with a valid image extension (.jpg, .png, .jpeg, .gif)")
+//    @NotBlank(message = "Image Url cannot be blank")
+//    @URL(message = "Invalid image URL")
+//    @Pattern(regexp = ".*\\.(jpg|png|jpeg|gif)$", message="Image URL must end with a valid image extension (.jpg, .png, .jpeg, .gif)")
     @Column(name = "image")
     private String imageUrl;
 

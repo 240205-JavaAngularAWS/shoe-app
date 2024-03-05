@@ -86,6 +86,37 @@ public class ProductService {
         return productRepository.findByCategory(category).stream().map(product -> modelMapper.map(product, ProductDTO.class)).toList();
     }
 
+    public ProductDTO changeProductQuantity(long productId, int quantityChange){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
+
+        int newQuantity = product.getQuantity() + quantityChange;
+
+        // make sure newQuantity is not negative
+        newQuantity = Math.max(newQuantity, 0);
+
+        product.setQuantity(newQuantity);
+
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductDTO.class);
+
+    }
+
+    public ProductDTO changeProductPicture(long productId, String imageUrl){
+        if (imageUrl.startsWith("\"") && imageUrl.endsWith("\"")) {
+            imageUrl = imageUrl.substring(1, imageUrl.length() - 1);
+        }
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product Not Found"));
+
+        product.setImageUrl(imageUrl);
+
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductDTO.class);
+
+
+    }
+
 
     public List<ProductDTO> findProductsBySellerIdAndCategory(Long sellerId, Category category){
         Seller seller = sellerRepository.findById(sellerId)
@@ -101,8 +132,9 @@ public class ProductService {
         return convertToDto(product);
     }
 
-    public List<Product> findProductsByKeyword(String keyword) {
-        return productRepository.findByProductNameContainingIgnoreCase(keyword);
+    public List<ProductDTO> findProductsByKeyword(String keyword) {
+        return productRepository.findByProductNameContainingIgnoreCase(keyword).stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class)).toList();
     }
 
 }
