@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="720a9985-e030-4c44-bc81-ba72d2d68eb5" name="Changes" comment="adds product seller and user model classes">
-      <change beforePath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/model/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/service/SellerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/paymore/src/main/java/com/revature/paymore/service/SellerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paymore/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/paymore/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,15 +45,16 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;working&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Documents/JPMC/Project 3/shoe-app&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.PaymoreApplication.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Kendra",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Documents/JPMC/Project 3/shoe-app"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

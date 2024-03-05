@@ -60,7 +60,7 @@ public class SellerService {
         // save address to repo
         addressRepository.save(sellerAddress);
 
-        seller.getProducts().forEach(productRepository::save);
+//        seller.getProducts().forEach(productRepository::save);
         Seller savedSeller = sellerRepository.save(seller);
 
         sellerAddress.setSeller(savedSeller);
