@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -178,6 +179,8 @@ public class OrderService {
     public void checkStock(int currentStock, int itemQuantity){
         // checks to ensure the stock and quantity are valid.
         if(currentStock < itemQuantity){
+            logger.info("Current Stock " + currentStock);
+            logger.info("Current Item Quantity " + itemQuantity);
             throw new StockException("Insufficient Stock.");
         }
     }
@@ -203,8 +206,10 @@ public class OrderService {
             throw new InvalidEntityException("Order cannot be processed. Invalid Status.");
         }
 
+
         order.getOrderItems().forEach(orderItem -> {
             Product product = orderItem.getProduct();
+            logger.info(product.getProductName());
 
             // ensure the stock quantity is valid.
             checkStock(product.getQuantity(), orderItem.getQuantity());
@@ -225,6 +230,7 @@ public class OrderService {
 
         // change status of order to "COMPLETED".
         order.setStatus(Status.COMPLETED);
+        order.setTimestamp(LocalDateTime.now());
         orderRepository.save(order);
         return modelMapper.map(order, OrderDTO.class);
     }

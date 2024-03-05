@@ -35,7 +35,7 @@ public class CreditCardController {
         if (bindingResult.hasErrors()) {
             return responseHelperService.getBindingErrors(bindingResult);
         }
-        // add product to seller
+
         CreditCardDTO response = creditCardService.addCreditCard(creditCard);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -46,6 +46,13 @@ public class CreditCardController {
     public ResponseEntity<List<CreditCardDTO>> findCreditCardsByUserId(@PathVariable Long userId){
 
         List<CreditCardDTO> response = creditCardService.findCreditCardsByUserId(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/creditcards")
+    public ResponseEntity<List<CreditCardDTO>> findAllCreditCards(){
+
+        List<CreditCardDTO> response = creditCardService.findAllCreditCards();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

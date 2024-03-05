@@ -48,7 +48,6 @@ public class Product {
     @Column(name = "category")
     private Category category;
 
-    @Min(value = 1, message = "Quantity must be at least 1")
     @Column(name = "quantity")
     private int quantity;
 

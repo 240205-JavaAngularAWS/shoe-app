@@ -128,7 +128,7 @@ public class OrderController {
         if(!deleted){
             throw new BadRequestException("Product with id " + orderId + " was not found.");
         }
-        return new ResponseEntity<>("{\"message\":\"Product Successfully Deleted\"}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"message\":\"Order Successfully Deleted\"}", HttpStatus.OK);
     }
 
 

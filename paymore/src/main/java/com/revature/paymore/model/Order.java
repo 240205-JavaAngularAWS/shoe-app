@@ -142,16 +142,14 @@ public class Order {
     }
 
 
-
-
     @Override
     public String toString() {
-        return "Orders{" +
+        return "Order{" +
                 "id=" + id +
                 ", priceTotal=" + priceTotal +
                 ", status=" + status +
                 ", timestamp=" + timestamp +
-                ", products=" + orderItems +
+                ", orderItems=" + orderItems +
                 '}';
     }
 }

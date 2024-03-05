@@ -52,6 +52,7 @@ public class CreditCardService {
         address.setAddressType(AddressType.BILLING);
 
         Address savedAddress = addressRepository.save(address);
+        creditCard.setUser(user);
         creditCard.setAddress(savedAddress);
 
         creditCardRepository.save(creditCard);
@@ -65,6 +66,13 @@ public class CreditCardService {
                 .orElseThrow(() -> new EntityNotFoundException("There is no product because user wasn't found"));
         return creditCardRepository.findByUser(user).stream().map(creditCard -> modelMapper.map(creditCard, CreditCardDTO.class)).toList();
     }
+
+
+    public List<CreditCardDTO> findAllCreditCards(){
+        return creditCardRepository.findAll().stream().map(creditCard -> modelMapper.map(creditCard, CreditCardDTO.class)).toList();
+    }
+
+
 
     public boolean deleteCreditCard(long creditCardId){
         // ensure at least one creditcard exists prior to deletion.
