@@ -9,6 +9,7 @@ import com.revature.paymore.model.dto.LoginDTO;
 import com.revature.paymore.model.dto.UserDTO;
 import com.revature.paymore.model.User;
 import com.revature.paymore.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,6 +90,13 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(user -> modelMapper.map(user, UserDTO.class)).toList();
 
+    }
+
+
+    public UserDTO getUserById(long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
+        return modelMapper.map(user, UserDTO.class);
     }
 
 

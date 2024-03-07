@@ -65,7 +65,6 @@ public class OrderController {
 
     @GetMapping("/orders/all")
     public ResponseEntity<List<OrderDTO>> findAllOrders(){
-
         List<OrderDTO> response = orderService.findAllOrders();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
